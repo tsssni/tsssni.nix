@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 {
+	imports = [ ./hyprland ];
 	home = {
 		username = "tsssni";
 		homeDirectory = "/home/tsssni";
