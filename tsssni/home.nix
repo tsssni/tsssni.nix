@@ -3,6 +3,7 @@
 	imports = [ 
 		./hyprland
 		./kitty
+		./misc.nix
 	];
 	home = {
 		username = "tsssni";
