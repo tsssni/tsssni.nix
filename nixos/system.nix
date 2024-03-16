@@ -23,6 +23,17 @@
 		};
 	};
 
+	services.xserver.videoDrivers = [ "nvidia" ];
+
+	hardware = {
+		opengl.enable = true;
+		nvidia = {
+			package = config.boot.kernelPackages.nvidiaPackages.latest;
+			open = false;
+			modesetting.enable = true;
+		};
+	};
+
   	time.timeZone = "Asia/Shanghai";
 
   	i18n.defaultLocale = "en_US.UTF-8";
@@ -38,6 +49,8 @@
 			options = "--delete-older-than 1w";
 		};
 	};
+
+	nixpkgs.config.allowUnfree = true;
 
 	users.users.tsssni = {
 		name = "tsssni";
