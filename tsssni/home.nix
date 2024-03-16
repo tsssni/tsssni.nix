@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 {
-	imports = [ ./hyprland ];
+	imports = [ 
+		./hyprland
+		./kitty
+	];
 	home = {
 		username = "tsssni";
 		homeDirectory = "/home/tsssni";
