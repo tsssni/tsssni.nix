@@ -55,6 +55,7 @@
 	users.users.tsssni = {
 		name = "tsssni";
 		home = "/home/tsssni";
+		extraGroups = [ "wheel" ];
 		isNormalUser = true;
 	};
 
