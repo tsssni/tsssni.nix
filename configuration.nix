@@ -1,0 +1,56 @@
+{ config, lib, pkgs, ... }:
+
+{
+	imports = [ ./hardware-configuration.nix ];
+
+	boot.loader = {
+		systemd-boot = {
+			enable = true;
+			configurationLimit = 10;
+		};
+		efi = {
+			canTouchEfiVariables = true;
+			efiSysMountPoint = "/efi";
+		};
+	};
+
+	networking = {
+		hostName = "tsssni";
+		networkmanager.enable = true;
+		proxy = {
+			default = "192.168.31.101:7890";
+			noProxy = "127.0.0.1,localhost,internal.domain";
+		};
+	};
+
+  	time.timeZone = "Asia/Shanghai";
+
+  	i18n.defaultLocale = "en_US.UTF-8";
+
+	nix = {
+		settings = {
+			experimental-features = [ "nix-command" "flakes" ];
+			auto-optimise-store = true;
+		};
+		gc = {
+			automatic = true;
+			dates = "weekly";
+			options = "--delete-older-than 1w";
+		};
+	};
+
+	users.users.tsssni = {
+		name = "tsssni";
+		home = "/home/tsssni";
+		isNormalUser = true;
+	};
+
+  	environment = {
+		systemPackages = with pkgs; [ git vim wget curl ];
+		variables.EDITOR = "vim";
+	};
+
+  	system.stateVersion = "23.11";
+
+}
+
