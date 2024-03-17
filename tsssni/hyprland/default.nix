@@ -161,8 +161,8 @@
 				# "ignorezero, gtk-layer-shell"
 				"blur, rofi"
 				"ignorezero, rofi"
-				# "blur, notification"
-				# "ignorezero, notification"
+				"blur, notification"
+				"ignorezero, notification"
 			];
 		};
 	};

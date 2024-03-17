@@ -4,6 +4,7 @@
 		./hyprland
 		./kitty
 		./rofi
+		./dunst
 		./theme.nix
 		./misc.nix
 	];
