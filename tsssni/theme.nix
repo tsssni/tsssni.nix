@@ -1,14 +1,10 @@
 { pkgs, ... }:
 {
-	home = {
-		packages = with pkgs; [ dconf ];
-
-		pointerCursor = {
-			gtk.enable = true;
-			package = pkgs.apple-cursor;
-			name = "macOS-BigSur";
-			size = 24;
-		};
+	home.pointerCursor = {
+		gtk.enable = true;
+		package = pkgs.apple-cursor;
+		name = "macOS-BigSur";
+		size = 24;
 	};
 
 	gtk = {

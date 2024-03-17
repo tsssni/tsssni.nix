@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-	home.packages = with pkgs; [ dmenu xdg-utils ];
-
 	services.dunst = {
 		enable = true;
 		settings = {

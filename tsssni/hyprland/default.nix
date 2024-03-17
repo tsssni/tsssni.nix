@@ -150,7 +150,7 @@
 			];
 
 			exec-once = [
-				# "swww init; swww img; ~/Pictures/plana.jpeg --transition-type once"
+				"swww init; swww img ${./wallpaper/plana.jpeg} --transition-type once"
 				# "eww -c ~/.config/eww open dashboard"
 				"${pkgs.polkit_gnome}/libexec/polkit-gnome/polkit-gnome-authentication-agent-1"
 				# "fcitx5"
