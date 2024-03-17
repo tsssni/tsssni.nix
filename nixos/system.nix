@@ -33,6 +33,7 @@
 		};
 
 		v2raya.enable = true;
+		openssh.enable = true;
 	};
 
 	hardware = {
