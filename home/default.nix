@@ -19,7 +19,9 @@
 		packages = with pkgs; [
 			# programming
 			python3
+      # shell
 			blesh
+      neofetch
 			# wallpaper
 			swww
 			# bar
