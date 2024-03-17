@@ -18,7 +18,7 @@
 		hostName = "tsssni";
 		networkmanager.enable = true;
 		proxy = {
-			default = "192.168.31.101:7890";
+			default = "127.0.0.1:7890";
 			noProxy = "127.0.0.1,localhost,internal.domain";
 		};
 	};
@@ -31,6 +31,8 @@
 			alsa.enable = true;
 			pulse.enable = true;
 		};
+
+		v2raya.enable = true;
 	};
 
 	hardware = {
