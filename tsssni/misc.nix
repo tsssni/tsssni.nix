@@ -4,6 +4,9 @@
 		polkit
 		polkit_gnome
 
+		xdg-utils
+		xdg-user-dirs
+
 		noto-fonts
 		noto-fonts-cjk
 		noto-fonts-emoji
