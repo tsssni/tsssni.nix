@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 {
 	imports = [ 
+		./nvim
 		./bash
 		./kitty
 		./eww
