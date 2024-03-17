@@ -107,6 +107,17 @@
 				"$main_mod CTRL, up, movewindow, u"
 				"$main_mod CTRL, down, movewindow, d"
 
+				"$main_mod, 1, workspace, 1"
+				"$main_mod, 2, workspace, 2"
+				"$main_mod, 3, workspace, 3"
+				"$main_mod, 4, workspace, 4"
+				"$main_mod, 5, workspace, 5"
+				"$main_mod, 6, workspace, 6"
+				"$main_mod, 7, workspace, 7"
+				"$main_mod, 8, workspace, 8"
+				"$main_mod, 9, workspace, 9"
+				"$main_mod, 0, workspace, 10"
+
 				"$main_mod SHIFT, 1, movetoworkspace, 1"
 				"$main_mod SHIFT, 2, movetoworkspace, 2"
 				"$main_mod SHIFT, 3, movetoworkspace, 3"
@@ -116,7 +127,7 @@
 				"$main_mod SHIFT, 7, movetoworkspace, 7"
 				"$main_mod SHIFT, 8, movetoworkspace, 8"
 				"$main_mod SHIFT, 9, movetoworkspace, 9"
-				"$main_mod SHIFT, 10, movetoworkspace, 10"
+				"$main_mod SHIFT, 0, movetoworkspace, 10"
 
 				"$main_mod, mouse_down, workspace, e+1"
 				"$main_mod, mouse_up, workspace, e-1"

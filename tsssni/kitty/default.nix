@@ -4,6 +4,8 @@
 		enable = true;
 		
 		settings = {
+			confirm_os_window_close = "0";
+
 			font_family = "MonaspiceNe NFM";
 			bold_font = "auto";
 			italic_font = "auto";
