@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
 	wayland.windowManager.hyprland = {
 		enable = true;
 
@@ -152,7 +152,7 @@
 			exec-once = [
 				# "swww init; swww img; ~/Pictures/plana.jpeg --transition-type once"
 				# "eww -c ~/.config/eww open dashboard"
-				# "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+				"${pkgs.polkit_gnome}/libexec/polkit-gnome/polkit-gnome-authentication-agent-1"
 				# "fcitx5"
 			];
 
