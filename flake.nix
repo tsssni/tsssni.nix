@@ -20,7 +20,7 @@
 					home-manager = {
 						useGlobalPkgs = true;
 						useUserPackages = true;
-						users.tsssni = import ./tsssni/home.nix;
+						users.tsssni = import ./home;
 					};
 				}
 			];

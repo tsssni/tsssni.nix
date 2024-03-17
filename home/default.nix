@@ -1,9 +1,10 @@
 { config, pkgs, ... }:
 {
 	imports = [ 
-		./hyprland
-		./eww
+		./bash
 		./kitty
+		./eww
+		./hyprland
 		./rofi
 		./dunst
 		./fcitx5
@@ -16,6 +17,7 @@
 		packages = with pkgs; [
 			# programming
 			python3
+			blesh
 			# wallpaper
 			swww
 			# bar
