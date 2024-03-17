@@ -3,6 +3,7 @@
 	imports = [ 
 		./hyprland
 		./kitty
+		./theme.nix
 		./misc.nix
 	];
 	home = {

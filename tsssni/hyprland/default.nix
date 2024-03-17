@@ -139,13 +139,15 @@
 			];
 
 			env = [
-				"XCURSOR_SIZE,24"
-				"QT_QPA_PLATFORMTHEME,qt5ct"
+				"QT_QPA_PLATFORMTHEME,gtk"
+				"QT_STYPE_OVERRIDE,gtk2"
 				"LIBVA_DRIVER_NAME,nvidia"
 				"XDG_SESSION_TYPE,wayland"
+				"XCURSOR_SIZE,24"
+				"QT_QPA_PLATFORMTHEME,gtk"
 				"GBM_BACKEND,nvidia-drm"
 				"__GLX_VENDOR_LIBRARY_NAME,nvidia"
-				"WLR_NO_HARDWARE_CURSORS,1"
+				"WLR_NO_HARDWARE_CURSORS,1"	
 			];
 
 			exec-once = [
