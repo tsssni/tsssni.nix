@@ -6,6 +6,7 @@
 		./kitty
 		./rofi
 		./dunst
+		./fcitx5
 		./theme.nix
 		./misc.nix
 	];

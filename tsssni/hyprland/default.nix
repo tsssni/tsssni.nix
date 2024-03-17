@@ -153,7 +153,7 @@
 				"swww init; swww img ${./wallpaper/plana.jpeg} --transition-type once"
 				"eww -c ~/.config/eww open dashboard"
 				"${pkgs.polkit_gnome}/libexec/polkit-gnome/polkit-gnome-authentication-agent-1"
-				# "fcitx5"
+				"fcitx5"
 			];
 
 			layerrule = [
@@ -166,4 +166,16 @@
 			];
 		};
 	};
+
+ 
+	xdg.portal = {
+		enable = true;
+		xdgOpenUsePortal = true;
+		config = {
+			common.default = [ "gtk" ];
+			hyprland.default = [ "gtk" "hyprland" ];
+		};
+		extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+	};
+
 }
