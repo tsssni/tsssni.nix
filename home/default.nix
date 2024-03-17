@@ -26,6 +26,8 @@
 			swww
 			# bar
 			eww
+      # screenshot
+      grim
 			# media
 			playerctl
 			imagemagick
