@@ -4,6 +4,7 @@
 		./nvim
 		./bash
 		./kitty
+		./git
 		./eww
 		./hyprland
 		./rofi
