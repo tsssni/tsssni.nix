@@ -3,6 +3,7 @@
 	imports = [ 
 		./hyprland
 		./kitty
+		./rofi
 		./theme.nix
 		./misc.nix
 	];

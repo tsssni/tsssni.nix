@@ -87,7 +87,7 @@
 				"$main_mod, Q, exit"
 				"$main_mod, F, exec, index"
 				"$main_mod, V, togglefloating"
-				"$main_mod, A, exec, rofi -show run"
+				"$main_mod, A, exec, rofi -show drun"
 				"$main_mod, H, fullscreen, 0"
 				"$main_mod, M, fullscreen, 1"
 				"$main_mod, O, toggleopaque"
@@ -139,8 +139,7 @@
 			];
 
 			env = [
-				"QT_QPA_PLATFORMTHEME,gtk"
-				"QT_STYPE_OVERRIDE,gtk2"
+				"QT_QPA_PLATFORMTHEME,qt5ct"
 				"LIBVA_DRIVER_NAME,nvidia"
 				"XDG_SESSION_TYPE,wayland"
 				"XCURSOR_SIZE,24"
@@ -160,8 +159,8 @@
 			layerrule = [
 				# "blur, gtk-layer-shell"
 				# "ignorezero, gtk-layer-shell"
-				# "blur, rofi"
-				# "ignorezero, rofi"
+				"blur, rofi"
+				"ignorezero, rofi"
 				# "blur, notification"
 				# "ignorezero, notification"
 			];

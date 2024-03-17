@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
 	home = {
-		packages = [ pkgs.dconf ];
+		packages = with pkgs; [ dconf ];
 
 		pointerCursor = {
 			gtk.enable = true;
