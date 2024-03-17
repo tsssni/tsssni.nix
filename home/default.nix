@@ -28,6 +28,7 @@
 			eww
       # screenshot
       grim
+      slurp
 			# media
 			playerctl
 			imagemagick
