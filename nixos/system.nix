@@ -23,7 +23,15 @@
 		};
 	};
 
-	services.xserver.videoDrivers = [ "nvidia" ];
+	services = {
+		xserver.videoDrivers = [ "nvidia" ];
+
+		pipewire = {
+			enable = true;
+			alsa.enable = true;
+			pulse.enable = true;
+		};
+	};
 
 	hardware = {
 		opengl.enable = true;
@@ -31,6 +39,11 @@
 			package = config.boot.kernelPackages.nvidiaPackages.latest;
 			open = false;
 			modesetting.enable = true;
+		};
+
+		bluetooth = {
+			enable = true;
+			powerOnBoot = true;
 		};
 	};
 

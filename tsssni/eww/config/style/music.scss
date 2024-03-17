@@ -1,0 +1,49 @@
+.music {
+  background-color: rgba(#f5c1e9, 0.6);
+  padding: 0px;
+  border-radius: 10px;
+}
+
+.music-panel {
+  background-color: rgba(#f5c1e9, 0.6);
+  padding: 0px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.music-panel-button {
+  opacity: 0.6;
+  border-radius: 10px;
+  margin: 3px;
+  padding: 3px;
+}
+
+.prev-label {
+  color: #ff0055;
+  font-size: 25px;
+}
+
+.play-label {
+  color: #ff0055;
+  font-size: 20px;
+}
+
+.next-label {
+  color: #ff0055;
+  font-size: 25px;
+}
+
+.music-scale {
+  opacity: 0.6;
+  padding: 0px 10px 10px 10px;
+}
+
+.music-scale scale trough {
+  background-color: #87012e;
+  border-radius: 10px;
+  min-height: 5px;
+}
+
+.music-scale scale trough highlight {
+  background-color: #ff0055;
+  border-radius: 10px;
+}

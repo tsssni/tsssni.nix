@@ -151,14 +151,14 @@
 
 			exec-once = [
 				"swww init; swww img ${./wallpaper/plana.jpeg} --transition-type once"
-				# "eww -c ~/.config/eww open dashboard"
+				"eww -c ~/.config/eww open dashboard"
 				"${pkgs.polkit_gnome}/libexec/polkit-gnome/polkit-gnome-authentication-agent-1"
 				# "fcitx5"
 			];
 
 			layerrule = [
-				# "blur, gtk-layer-shell"
-				# "ignorezero, gtk-layer-shell"
+				"blur, gtk-layer-shell"
+				"ignorezero, gtk-layer-shell"
 				"blur, rofi"
 				"ignorezero, rofi"
 				"blur, notification"

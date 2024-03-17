@@ -1,0 +1,326 @@
+(defvar year "2002")
+(defvar month "08")
+(defvar day "08")
+(defvar art-url "")
+
+(defvar power-reveal "false")
+(defvar network-reveal "false")
+(defvar bluetooth-reveal "false")
+(defvar volume-reveal "false")
+(defvar brightness-reveal "false")
+(defvar battery-reveal "false")
+
+(defpoll weekday :interval "0.1s" "script/date.sh -a")
+(defpoll hour :interval "0.1s" "script/date.sh -H")
+(defpoll minute :interval "0.1s" "script/date.sh -M")
+(defpoll second :interval "0.1s" "script/date.sh -S")
+(defpoll title :interval "0.1s" "script/media.sh --title")
+(defpoll artist :interval "0.1s" "script/media.sh --artist")
+(defpoll lores-cover :interval "0.1s" "script/media.sh --cover --lores")
+(defpoll hires-cover :interval "0.1s" "script/media.sh --cover --hires")
+(defpoll volume :interval "0.1s" "script/volume.sh --get")
+(defpoll brightness :interval "0.1s" "script/brightness.sh --get")
+(defpoll battery :interval "0.1s" "script/battery.sh --get")
+(defpoll network :interval "0.1s" "script/network.sh")
+(defpoll bluetooth-device :interval "0.1s" "script/bluetooth.sh")
+
+(defwindow dashboard
+  :monitor 0
+  :geometry 
+    (geometry 
+      :x "10px"
+      :y "10px"
+      :width "98%"
+      :height "50px"
+      :anchor "top center")
+  :stacking "fg"
+  :exclusive true
+  (bar))
+
+(defwidget bar []
+  (box
+    :class "dashboard-bar"
+    :orientation "h"
+    :space-evenly "true"
+    :halign "fill"
+    :valign "fill"
+    (info)
+    (music)
+    (quick-operation)))
+
+(defwidget info []
+  (box
+    :orientation "h"
+    :space-evenly "false"
+    :valign "fill"
+    (date)))
+
+(defwidget date []
+  (box
+    :class "dashboard-button"
+    :orientation "v"
+    :valign "fill"
+    :halign "fill"
+    (label
+      :class "date-label"
+      :halign "center"
+      :text "${weekday}/${hour}:${minute}:${second}")))
+
+(defwidget music []
+  (box
+    :orientation "h"
+    :space-evenly "false"
+    :spacing "5"
+    :halign "center"
+    (box
+      :halign "fill"
+      :valign "fill"
+      (eventbox
+        :cursor "pointer"
+        (button
+          :onclick "script/music.sh"
+          (image
+            :path lores-cover))))
+    (box
+      :orientation "v"
+      :halign "fill"
+      :valign "fill"
+      (box
+        :class "title"
+        (label
+          :class "title-label"
+          :halign "center"
+          :text title
+          :limit-width "30"))
+      (box
+        :class "artist"
+        (label
+          :class "artist-label"
+          :halign "center"
+          :text artist
+          :limit-width "15")))))
+
+(defwidget quick-operation []
+  (box
+    :orientation "h"
+    :space-evenly "false"
+    :halign "end"
+    :valign "fill"
+    (volume)
+    (brightness)
+    (battery)
+    (network)
+    (bluetooth)
+    (power)))
+
+(defwidget volume []
+  (eventbox
+    :onhover "${eww} update volume-reveal=true;"
+    :onhoverlost "${eww} update volume-reveal=false;"
+    (box
+      :class "dashboard-button"
+      :orientation "h"
+      :space-evenly "false"
+      (box
+        :width 20
+        (button
+          (label
+            :class "volume-label"
+            :text "󰕾")))
+      (revealer
+        :reveal volume-reveal
+        :transition "slideright"
+        :duration "350ms"
+        (box
+          :class "quick-operation-scale"
+          :orientation "h"
+          :space-evenly "false"
+          :halign "center"
+          :valign "center"
+          (eventbox
+              :cursor "pointer"
+            (scale
+              :width "100"
+              :min "0"
+              :max "100"
+              :value volume
+              :orientation "h"
+              :onchange "script/volume.sh --set {}")))))))
+
+(defwidget brightness []
+  (eventbox
+    :onhover "${eww} update brightness-reveal=true;"
+    :onhoverlost "${eww} update brightness-reveal=false;"
+    (box
+      :class "dashboard-button"
+      :orientation "h"
+      :space-evenly "false"
+      (box
+        :width 20
+        (button
+          (label
+            :class "brightness-label"
+            :text "󰃟")))
+      (revealer
+        :reveal brightness-reveal
+        :transition "slideright"
+        :duration "350ms"
+        (box
+          :class "quick-operation-scale"
+          :orientation "h"
+          :space-evenly "false"
+          :halign "center"
+          :valign "center"
+          (eventbox
+            :cursor "pointer"
+            (scale
+              :width "100"
+              :min "0"
+              :max "100"
+              :value brightness
+              :orientation "h"
+              :onchange "script/brightness.sh --set {}")))))))
+
+(defwidget battery []
+  (eventbox
+    :onhover "${eww} update battery-reveal=true;"
+    :onhoverlost "${eww} update battery-reveal=false;"
+    (box
+      :class "dashboard-button"
+      :orientation "h"
+      :space-evenly "false"
+      (box
+        :width 20
+        (button
+          (label
+            :class "battery-label"
+            :text "󰂄")))
+      (revealer
+        :reveal battery-reveal
+        :transition "slideright"
+        :duration "350ms"
+        (box
+          :class "quick-operation-scale"
+          :orientation "h"
+          :space-evenly "false"
+          (scale
+            :width "100"
+            :min "0"
+            :max "100"
+            :value battery
+            :orientation "h"))))))
+
+(defwidget network []
+  (eventbox
+    :cursor "pointer"
+    :onhover "${eww} update network-reveal=true;"
+    :onhoverlost "${eww} update network-reveal=false;"
+    (box
+      :class "dashboard-button"
+      :orientation "h"
+      :space-evenly "false"
+      (box
+        :width 20
+        (label
+          :class "network-label"
+          :text "󰖩"))
+      (revealer
+        :reveal network-reveal
+        :transition "slideright"
+        :duration "350ms"
+        (box
+          :class "network-info"
+          :orientation "h"
+          :space-evenly "false"
+          :halign "fill"
+          :valign "fill"
+          (label
+            :halign "center"
+            :valign "center"
+            :text network))))))
+
+(defwidget bluetooth []
+  (eventbox
+    :cursor "pointer"
+    :onhover "${eww} update bluetooth-reveal=true;"
+    :onhoverlost "${eww} update bluetooth-reveal=false;"
+    (box
+      :class "dashboard-button"
+      :orientation "h"
+      :space-evenly "false"
+      (box
+        :width 20
+        (label
+          :class "bluetooth-label"
+          :text "󰂯"))
+      (revealer
+        :reveal bluetooth-reveal
+        :transition "slideright"
+        :duration "350ms"
+        (box
+          :class "bluetooth-info"
+          :orientation "h"
+          :space-evenly "false"
+          :halign "fill"
+          :valign "fill"
+          (label
+            :halign "center"
+            :valign "center"
+            :markup "${bluetooth-device}"))))))
+
+(defwidget power []
+  (eventbox
+    :onhover "${eww} update power-reveal=true"
+    :onhoverlost "${eww} update power-reveal=false"
+    (box
+      :orientation "h"
+      :space-evenly "false"
+      (revealer
+        :reveal power-reveal
+        :transition "slideright"
+        :duration "350ms"
+        (box
+          :orientation "h"
+          :space-evenly "false"
+          :halign "fill"
+          :valign "fill"
+          (eventbox
+            :cursor "pointer"
+            (box
+              :class "dashboard-button"
+              :width 20
+              (button
+                :onclick "hyprctl dispatch exit"
+                (label
+                  :class "exit-label"
+                  :text "󰍃"))))
+          (eventbox
+            :cursor "pointer"
+            (box
+              :class "dashboard-button"
+              :width 20
+              (button
+                :onclick "systemctl suspend"
+                (label
+                  :class "suspend-label"
+                  :text "󰤄"))))
+          (eventbox
+            :cursor "pointer"
+            (box
+              :class "dashboard-button"
+              :width 20
+              (button
+                :onclick "systemctl reboot"
+                (label
+                  :class "reboot-label"
+                  :text ""))))))
+      (eventbox
+        :cursor "pointer"
+        (box
+          :class "dashboard-button"
+          :width 20
+          (button
+            :onclick "systemctl poweroff"
+            (label
+              :class "poweroff-label"
+              :text "")))))))

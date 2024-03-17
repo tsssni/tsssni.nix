@@ -1,0 +1,4 @@
+(defvar eww "eww -c ~/.config/eww")
+
+(include "widget/dashboard.yuck")
+(include "widget/music.yuck")
