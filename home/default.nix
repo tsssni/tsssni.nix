@@ -10,8 +10,8 @@
 		./rofi
 		./dunst
 		./fcitx5
+		./browser.nix
 		./theme.nix
-		./misc.nix
 	];
 	home = {
 		username = "tsssni";
@@ -22,10 +22,18 @@
       # shell
 			blesh
       neofetch
+      # terminal
+      kitty
+      # wm
+      hyprland
 			# wallpaper
 			swww
 			# bar
 			eww
+      # launcher
+      rofi-wayland
+      # notification
+      dunst
       # screenshot
       grim
       slurp
@@ -51,6 +59,7 @@
 			dmenu
 			xdg-utils
 			xdg-user-dirs
+      ripgrep
 		];
 		stateVersion = "23.11";
 	};

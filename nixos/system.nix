@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-	imports = [ ./hardware-configuration.nix ];
+	imports = [ ./hardware.nix ];
 
 	boot.loader = {
 		systemd-boot = {
