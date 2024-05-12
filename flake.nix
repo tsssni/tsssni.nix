@@ -8,18 +8,20 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 		hyprland.url = "github:hyprwm/Hyprland";
+    ags.url = "github:Aylur/ags";
 	};
 
-	outputs = { nixpkgs, home-manager, hyprland, ... }@inputs: {
+	outputs = { self, nixpkgs, home-manager, ... }@inputs: {
 		nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
 			system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
 			modules = [
-				./nixos/system.nix
-				hyprland.nixosModules.default
+				./nixos
 				home-manager.nixosModules.home-manager {
 					home-manager = {
 						useGlobalPkgs = true;
 						useUserPackages = true;
+            extraSpecialArgs = { inherit inputs; };
 						users.tsssni = import ./home;
 					};
 				}

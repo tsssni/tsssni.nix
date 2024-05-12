@@ -1,0 +1,4 @@
+{ ... }:
+{
+  programs.ags.enable = true;
+}

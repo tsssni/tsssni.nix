@@ -1,0 +1,15 @@
+source zsh-syntax-highlighting-placeholder/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source zsh-autosuggestions-placeholder/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+HISTFILE=$HOME/.config/zsh/zsh_history
+HISTSIZE=114514
+SAVEHIST=114514
+
+EDITOR=nvim
+
+export http_proxy=127.0.0.1:7890
+export https_proxy=127.0.0.1:7890
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
+eval "$(starship init zsh)"
+

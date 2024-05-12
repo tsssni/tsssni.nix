@@ -1,8 +1,5 @@
 { config, lib, pkgs, ... }:
-
 {
-	imports = [ ./hardware.nix ];
-
 	boot.loader = {
 		systemd-boot = {
 			enable = true;
@@ -71,16 +68,18 @@
 	users.users.tsssni = {
 		name = "tsssni";
 		home = "/home/tsssni";
+    shell = pkgs.zsh;
 		extraGroups = [ "wheel" ];
 		isNormalUser = true;
 	};
 
-  	environment = {
-		systemPackages = with pkgs; [ git vim wget curl ];
-		variables.EDITOR = "vim";
+  environment = {
+		systemPackages = with pkgs; [ neovim ];
+		variables.EDITOR = "nvim";
 	};
 
-  	system.stateVersion = "23.11";
+  programs.zsh.enable = true;
 
+  system.stateVersion = "23.11";
 }
 
