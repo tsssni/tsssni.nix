@@ -1,0 +1,5 @@
+Host *
+  ForwardAgent yes
+  AddKeysToAgent yes
+  HashKnownHosts yes
+  

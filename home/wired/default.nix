@@ -8,5 +8,6 @@
 
   imports = [
     ./firefox.nix
+    ./ssh.nix
   ];
 }

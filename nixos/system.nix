@@ -47,9 +47,9 @@
 		};
 	};
 
-  	time.timeZone = "Asia/Shanghai";
+  time.timeZone = "Asia/Shanghai";
 
-  	i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
 	nix = {
 		settings = {
@@ -78,7 +78,10 @@
 		variables.EDITOR = "nvim";
 	};
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    ssh.startAgent = true;
+  };
 
   system.stateVersion = "23.11";
 }
