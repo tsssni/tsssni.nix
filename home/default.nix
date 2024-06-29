@@ -9,7 +9,6 @@
 	programs.home-manager.enable = true;
 
 	imports = [ 
-    inputs.hyprland.homeManagerModules.default
     inputs.ags.homeManagerModules.default
 		./devel
     ./shell

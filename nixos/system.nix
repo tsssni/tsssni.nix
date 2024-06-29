@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 {
 	boot.loader = {
 		systemd-boot = {
@@ -34,7 +34,7 @@
 	};
 
 	hardware = {
-		opengl.enable = true;
+		graphics.enable = true;
 		nvidia = {
 			package = config.boot.kernelPackages.nvidiaPackages.latest;
 			open = false;
