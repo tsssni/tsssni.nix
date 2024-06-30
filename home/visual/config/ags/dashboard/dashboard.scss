@@ -1,0 +1,83 @@
+.dashboard {
+  background-color: rgba(#f5c1e9, 0.6);
+  border-radius: 10px;
+  min-height: 50px;
+
+  .logo {
+    min-width: 42px;
+    min-height: 42px;
+    color: #00ffc8;
+    background-color: rgba(#ff0055, 0.5);
+    border-radius: 10px;
+    font-size: 36px;
+    margin: 4px;
+    border-width: 2px;
+    border-style: groove;
+    border-color: #00ffc8;
+  }
+
+  .workspace {
+    font-size: 20px;
+    .active {
+      color: rgba(#ff0055, 0.6);
+    }
+    .inactive {
+      color: rgba(#ff6699, 0.6);
+    }
+  }
+
+  .icon {
+    margin-left: 10px;
+    font-size: 10px;
+  }
+
+  .app {
+    color: rgba(#ff0055, 0.6);
+  }
+
+  .music {
+    color: rgba(#ff0055, 0.6);
+    .img {
+      min-width: 40px;
+      min-height: 40px;
+      // background-image: url('dashboard/music/cover.png');
+      background-repeat: no-repeat;
+      margin: 4px;
+    }
+    .title {
+      font-size: 14px;
+    }
+    .artist {
+      font-size: 14px;
+    }
+  }
+
+  .hardware {
+    font-size: 20px;
+    margin: 0px 10px 0px 10px;
+    .type {
+      color: rgba(#ff0055, 0.6);
+    }
+    .usage {
+      color: #85b4ff;
+    }
+    .freq {
+      color: rgba(#8b4efc, 0.8);
+    }
+    .power {
+      color: rgba(#ffff40, 0.8);
+    }
+    .temp {
+      color: #4685ea;
+    }
+    .mem {
+      color: #7ff5f5;
+    }
+  }
+
+  .date {
+    color: rgba(#ff0055, 0.6);
+    font-size: 20px;
+    margin-right: 4px;
+  }
+}
