@@ -1,6 +1,9 @@
 { ... }:
 {
-  programs.ssh.enable = true;
-
-  home.file.".ssh/config".source = ./config/ssh/config;
+  programs.ssh = {
+    enable = true;
+    forwardAgent = true;
+    addKeysToAgent = "yes";
+    hashKnownHosts = true;
+  };
 }
