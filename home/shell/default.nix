@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./zsh.nix
+    ./elvish.nix
     ./neovim.nix
     ./kitty.nix
     ./starship.nix

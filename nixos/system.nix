@@ -63,7 +63,7 @@
 	users.users.tsssni = {
 		name = "tsssni";
 		home = "/home/tsssni";
-    shell = pkgs.zsh;
+    shell = pkgs.elvish;
 		extraGroups = [ "wheel" ];
 		isNormalUser = true;
 	};
