@@ -70,7 +70,6 @@
 
   environment = {
 		systemPackages = with pkgs; [ neovim ];
-		variables.EDITOR = "nvim";
 	};
 
   programs = {
