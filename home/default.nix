@@ -10,7 +10,9 @@
 
 	imports = [ 
     inputs.ags.homeManagerModules.default
+    inputs.nixvim.homeManagerModules.nixvim
 		./devel
+    ./nixvim
     ./shell
     ./visual
     ./wired
