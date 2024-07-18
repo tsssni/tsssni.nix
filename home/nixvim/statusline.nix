@@ -2,7 +2,6 @@
 {
   programs.nixvim = {
     plugins = {
-      lsp-status.enable = true;
       lualine = {
         enable = true;
         globalstatus = true;
@@ -58,8 +57,56 @@
             {
               fmt.__raw = ''
                 function()
-                  local func = 'Not in any scope'
-                  return func
+                  local params = { textDocument = vim.lsp.util.make_text_document_params() }
+                  if lualine_scope_name == nil then
+                    lualine_scope_name = "Not in any scope"
+                  end
+                  vim.lsp.buf_request_all(0, "textDocument/documentSymbol", params, function(response, err)
+                    local no_scope = true
+                    local is_scope = function(kind)
+                      local available_symbol_kind = { 2, 3, 4, 5, 6, 9, 11, 12}
+                      for _, scope_kind in pairs(available_symbol_kind) do
+                        if kind == scope_kind then
+                          return true
+                        end
+                      end
+                      return false
+                    end
+
+                    local row = vim.api.nvim_win_get_cursor(0)[1]
+                    local scope_start = 0
+                    local scope_end = 1145141919810
+
+                    if response then
+                      for client_id, result in pairs(response) do
+                        if result and result.result then
+                          for _, symbol in ipairs(result.result) do
+                            if is_scope(symbol.kind) then
+                              no_scope = false
+                              local symbol_start = symbol.range["start"].line
+                              local symbol_end = symbol.range["end"].line
+                              if true
+                                and symbol_start >= scope_start 
+                                and symbol_end <= scope_end
+                                and symbol_start <= row 
+                                and symbol_end >= row
+                              then
+                                lualine_scope_name = symbol.name
+                                scope_start = symbol_start
+                                scope_end = symbol_end
+                              end
+                            end
+                          end
+                        end
+                      end
+                    end
+
+                    if no_scope then
+                      lualine_scope_name = "Not in any scope"
+                    end
+                  end)
+                  
+                  return lualine_scope_name
                 end
               '';
               icon = "󰊕 ->";
@@ -82,11 +129,11 @@
           lualine_z = [ { name = ""; }];
         };
       };
+      gitsigns.enable = true;
     };
 
     extraPlugins = with pkgs; [
       vimPlugins.nvim-web-devicons
-      vimPlugins.gitsigns-nvim
       (vimUtils.buildVimPlugin {
         name = "incline";
         src = fetchFromGitHub {
@@ -115,9 +162,10 @@
             if signs == nil then
               return labels
             end
+            local group_name = { removed = 'Delete', changed = 'Change', added = 'Add' }
             for name, icon in pairs(icons) do
               if tonumber(signs[name]) and signs[name] > 0 then
-                table.insert(labels, { icon .. ' ' .. signs[name] .. ' ', group = 'Diff' .. name })
+                table.insert(labels, { icon .. ' ' .. signs[name] .. ' ', group = 'Diff' .. group_name[name] })
               end
             end
             if #labels > 0 then

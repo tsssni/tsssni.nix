@@ -56,13 +56,15 @@
           };
         };
         settings = {
-          snippet.expand = ''
+          snippet.expand.__raw = ''
             function(args)
               require'luasnip'.lsp_expand(args.body)
             end
           '';
           sources = [
               { name = "nvim_lsp"; }
+              { name = "nvim_lsp_signature_help"; }
+              { name = "nvim_lsp_document_symbol"; }
               { name = "luasnip"; }
               { name = "buffer"; }
               { name = "path"; }
@@ -77,6 +79,7 @@
           };
         };
       };
+      luasnip.enable = true;
       nvim-autopairs.enable = true;
     };
 
