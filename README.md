@@ -1,3 +1,5 @@
-# NixOS dotfile
+# NixOS config
 
-![desktop](./home/visual/desktop.png)
+![md0](./home/visual/md0.png)
+
+![md1](./home/visual/md1.png)
