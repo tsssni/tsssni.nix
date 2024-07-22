@@ -4,7 +4,7 @@
     enable = true;
     settings = {
       # font
-      font_family = "MonaspiceNe NFM";
+      font_family = "MonaspiceNe Nerd Font";
       bold_font = "auto";
       italic_font = "auto";
       bold_italic_font = "auto";

@@ -24,7 +24,7 @@
             }
             {
               name = "location";
-              icon = "[-]";
+              icon = "";
               color.fg = "#7ff5f5";
             }
             {

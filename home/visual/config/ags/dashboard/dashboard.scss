@@ -9,8 +9,9 @@
     color: #00ffc8;
     background-color: rgba(#ff0055, 0.5);
     border-radius: 10px;
-    font-size: 36px;
+    font-size: 30px;
     margin: 4px;
+    padding-right: 2px;
     border-width: 2px;
     border-style: groove;
     border-color: #00ffc8;
@@ -40,7 +41,6 @@
     .img {
       min-width: 40px;
       min-height: 40px;
-      // background-image: url('dashboard/music/cover.png');
       background-repeat: no-repeat;
       margin: 4px;
     }

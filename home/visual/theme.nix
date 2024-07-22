@@ -32,7 +32,7 @@
 			package = pkgs.fluent-icon-theme;
 		};
 
-		font.name = "MonaspiceNe Nerd Font Mono Medium 12";
+		font.name = "MonaspiceNe Nerd Font Medium 12";
 
 		gtk2.extraConfig = "gtk-application-prefer-dark-theme = 1";
 		gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;

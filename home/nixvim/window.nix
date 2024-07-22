@@ -9,12 +9,12 @@
     keymaps = [
       {
         mode = "n";
-        key = "<A-s>v";
+        key = "<A-v>";
         action = ":vsp<CR>";
       }
       {
         mode = "n";
-        key = "<A-s>h";
+        key = "<A-s>";
         action = ":sp<CR>";
       }
       {

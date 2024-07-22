@@ -23,7 +23,7 @@
         truncation_length = 1;
       };
       git_branch = {
-        symbol = "";
+        symbol = "";
         format = "[ $symbol $branch ](fg:#8b4efc bg:#a8a8ff)";
       };
       git_status = {
@@ -37,7 +37,7 @@
         disabled = false;
         time_format = "%R"; # Hour:Minute Format
         style = "bg:#1d2230";
-        format = "[  $time ](fg:#ff0055 bg:#f5c1e9)";
+        format = "[  $time ](fg:#ff0055 bg:#f5c1e9)";
       };
       character.format = "[> ](#00ffc8)";
     };
