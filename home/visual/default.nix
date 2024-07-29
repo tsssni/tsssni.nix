@@ -8,5 +8,6 @@
     ./hyprland.nix
     ./ags.nix
     ./theme.nix
+    ./yoasobi.nix
   ];
 }
