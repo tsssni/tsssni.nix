@@ -69,7 +69,7 @@
       
       bind = [
         "SUPER, T, exec, kitty"
-        "SUPER, K, killactive"
+        "SUPER, X, killactive"
         "SUPER, Q, exit"
         "SUPER, V, togglefloating"
         "SUPER, B, exec, firefox"
