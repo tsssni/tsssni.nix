@@ -121,14 +121,6 @@
   };
   home = {
     packages = with pkgs; [
-      # lsp
-      clang-tools
-      cmake-language-server
-      lua-language-server
-      nil
-      nodePackages.typescript-language-server
-      texlab
-      # dap
       lldb
     ];
   };
