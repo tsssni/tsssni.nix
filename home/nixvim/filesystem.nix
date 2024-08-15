@@ -15,10 +15,12 @@
         };
         bufferline = {
           enable = true;
-          alwaysShowBufferline = true;
-          diagnostics = "nvim_lsp";
-          numbers = "buffer_id";
-          showBufferCloseIcons = false;
+          settings.options = {
+            alwaysShowBufferline = true;
+            diagnostics = "nvim_lsp";
+            numbers = "buffer_id";
+            showBufferCloseIcons = false;
+          };
         };
         telescope = {
           enable = true;
