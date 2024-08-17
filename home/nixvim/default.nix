@@ -5,7 +5,6 @@
     defaultEditor = true;
   };
   imports = [
-    ./cmake.nix
     ./compiler.nix
     ./filesystem.nix
     ./session.nix

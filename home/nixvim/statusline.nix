@@ -57,14 +57,23 @@
             {
               fmt.__raw = ''
                 function()
-                  local params = { textDocument = vim.lsp.util.make_text_document_params() }
                   if lualine_scope_name == nil then
                     lualine_scope_name = "Not in any scope"
                   end
+
+                  local clients = vim.lsp.get_active_clients()
+                  for _, client in ipairs(clients) do
+                    if not client.server_capabilities.documentSymbolProvider then
+                      lualine_scope_name = "Not in any scope"
+                      return lualine_scope_name
+                    end
+                  end
+
+                  local params = { textDocument = vim.lsp.util.make_text_document_params() }
                   vim.lsp.buf_request_all(0, "textDocument/documentSymbol", params, function(response, err)
                     local no_scope = true
                     local is_scope = function(kind)
-                      local available_symbol_kind = { 2, 3, 4, 5, 6, 9, 11, 12}
+                      local available_symbol_kind = { 2, 3, 4, 5, 6, 9, 10, 11, 12, 23 }
                       for _, scope_kind in pairs(available_symbol_kind) do
                         if kind == scope_kind then
                           return true
@@ -82,7 +91,6 @@
                         if result and result.result then
                           for _, symbol in ipairs(result.result) do
                             if is_scope(symbol.kind) then
-                              no_scope = false
                               local symbol_start = symbol.range["start"].line
                               local symbol_end = symbol.range["end"].line
                               if true
@@ -91,6 +99,7 @@
                                 and symbol_start <= row 
                                 and symbol_end >= row
                               then
+                                no_scope = false
                                 lualine_scope_name = symbol.name
                                 scope_start = symbol_start
                                 scope_end = symbol_end
@@ -114,7 +123,7 @@
             }
             {
               name = "branch";
-              color.fg = "a8a8ff";
+              color.fg = "#a8a8ff";
             }
           ];
           lualine_y = [ { name = ""; }];

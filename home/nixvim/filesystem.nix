@@ -16,10 +16,10 @@
         bufferline = {
           enable = true;
           settings.options = {
-            alwaysShowBufferline = true;
+            always_show_bufferlinhe = true;
             diagnostics = "nvim_lsp";
             numbers = "buffer_id";
-            showBufferCloseIcons = false;
+            show_buffer_close_icons = false;
           };
         };
         telescope = {
