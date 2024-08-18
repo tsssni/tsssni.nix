@@ -5,8 +5,10 @@
       treesitter = {
         enable = true;
         nixvimInjections = true;
+        grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;
+        nixGrammars = true;
         settings = {
-          auto_install = true;
+          auto_install = false;
           highlight.enable = true;
           incremental_selection = {
             enable = true;
