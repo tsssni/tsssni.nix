@@ -1,16 +1,16 @@
-{ inputs, ... }:
+{ ags, nixvim, ... }:
 {
 	home = {
 		username = "tsssni";
 		homeDirectory = "/home/tsssni";
-		stateVersion = "23.11";
+		stateVersion = "24.05";
 	};
 
 	programs.home-manager.enable = true;
 
 	imports = [ 
-    inputs.ags.homeManagerModules.default
-    inputs.nixvim.homeManagerModules.nixvim
+    ags.homeManagerModules.default
+    nixvim.homeManagerModules.nixvim
 		./devel
     ./nixvim
     ./shell

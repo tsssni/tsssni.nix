@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, tsssni-pkgs, ... }:
 {
   programs.nixvim = {
     plugins = {
@@ -141,18 +141,9 @@
       gitsigns.enable = true;
     };
 
-    extraPlugins = with pkgs; [
-      vimPlugins.nvim-web-devicons
-      (vimUtils.buildVimPlugin {
-        name = "incline";
-        src = fetchFromGitHub {
-          owner = "b0o";
-          repo = "incline.nvim";
-          rev = "16fc9c0";
-          hash = "sha256-5DoIvIdAZV7ZgmQO2XmbM3G+nNn4tAumsShoN3rDGrs=";
-        };
-      })
-    ];
+    extraPlugins = []
+      ++ (with pkgs.vimPlugins; [ nvim-web-devicons ]) 
+      ++ (with tsssni-pkgs.vimPlugins; [ incline-nvim ]);
 
     extraConfigLua = ''
       require'incline'.setup {

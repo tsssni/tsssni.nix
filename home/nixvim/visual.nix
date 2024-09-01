@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, tsssni-pkgs, ... }:
 {
   programs.nixvim = {
     plugins.dashboard = {
@@ -28,19 +28,9 @@
         ];
       };
     };
-    extraPlugins = with pkgs; [
-      vimPlugins.lush-nvim
-      vimPlugins.hologram-nvim
-      (vimUtils.buildVimPlugin {
-        name = "tsssni-theme";
-        src = fetchFromGitHub {
-          owner = "tsssni";
-          repo = "tsssni-theme.nvim";
-          rev = "4731cf5";
-          hash = "sha256-V9LkOxoh1cJwn4t00c1a0/MkfFUuwIezypkiW46AIPo=";
-        };
-      })
-    ];
+    extraPlugins = []
+      ++ (with pkgs.vimPlugins; [ lush-nvim ]) 
+      ++ (with tsssni-pkgs.vimPlugins; [ tsssni-theme-nvim ]);
     colorscheme = "tsssni-theme";
   };
 }

@@ -3,6 +3,10 @@
 
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    tsssni-nur = {
+      url = "github:tsssni/nur-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 		home-manager = {
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -17,17 +21,29 @@
     };
 	};
 
-	outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+	outputs = { 
+    nixpkgs
+    , tsssni-nur
+    , home-manager
+    , nixvim
+    , ags
+    , ... 
+  }:
+  let
+    system = "x86_64-linux";
+    tsssni-pkgs = tsssni-nur.packages.${system};
+  in 
+  {
 		nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
-			system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      inherit system;
+      specialArgs = { inherit tsssni-pkgs; };
 			modules = [
 				./nixos
 				home-manager.nixosModules.home-manager {
 					home-manager = {
 						useGlobalPkgs = true;
 						useUserPackages = true;
-            extraSpecialArgs = { inherit inputs; };
+            extraSpecialArgs = { inherit tsssni-pkgs nixvim ags; };
 						users.tsssni = import ./home;
 					};
 				}
