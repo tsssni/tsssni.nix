@@ -6,7 +6,7 @@
     systemd.enable = false;
     settings = {
       monitor = [
-        "DP-5, highrr, 0x0, 1.25"
+        "desc:Philips Consumer Electronics Company PHL24M1N5500Z UK82338003590, highrr, 0x0, 1.25"
         "Unknown-1, disable"
       ];
       cursor.no_hardware_cursors = true;
