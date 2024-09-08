@@ -51,6 +51,8 @@
               outboundTag = "wired";
               type = "field";
               domains = [
+                "cc98.org"
+                "zju.edu.cn"
                 "geosite:cn"
               ];
             }
