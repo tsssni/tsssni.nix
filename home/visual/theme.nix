@@ -14,7 +14,7 @@
     pointerCursor = {
       gtk.enable = true;
       package = pkgs.apple-cursor;
-      name = "macOS-BigSur";
+      name = "macOS";
       size = 24;
     };
 	};

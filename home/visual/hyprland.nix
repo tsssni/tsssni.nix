@@ -106,6 +106,7 @@
       ];
       env = [
         "XCURSOR_SIZE,24"
+        "XCURSOR_THEME,macOS"
         "QT_QPA_PLATFORMTHEME,qt5ct"
 
         # gpu
