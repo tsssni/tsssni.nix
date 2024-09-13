@@ -4,7 +4,7 @@
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     tsssni-nur = {
-      url = "github:tsssni/nur-packages";
+      url = "github:tsssni/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 		home-manager = {
@@ -31,7 +31,7 @@
   }:
   let
     system = "x86_64-linux";
-    tsssni-pkgs = tsssni-nur.packages.${system};
+    tsssni-pkgs = tsssni-nur.pkgs { localSystem = system; };
   in 
   {
 		nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
