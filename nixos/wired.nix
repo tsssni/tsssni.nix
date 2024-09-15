@@ -52,7 +52,7 @@
               type = "field";
               domains = [
                 "cc98.org"
-                "zju.edu.cn"
+                "bilibili.com"
                 "geosite:cn"
               ];
             }
