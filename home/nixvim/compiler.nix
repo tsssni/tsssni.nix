@@ -13,9 +13,8 @@
           incremental_selection = {
             enable = true;
             keymaps = {
-              init_selection = "<C-i>";
+              init_selection = "<C-s>";
               node_incremental = "<C-n>";
-              scope_incremental = "<C-s>";
               node_decremental = "<C-d>";
             };
           };
@@ -37,6 +36,7 @@
           cmake.enable = true;
           lua-ls.enable = true;
           nil-ls.enable = true;
+          pylyzer.enable = true;
           tsserver.enable = true;
         };
       };
