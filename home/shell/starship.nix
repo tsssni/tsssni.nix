@@ -40,6 +40,7 @@
         format = "[  $time ](fg:#ff0055 bg:#f5c1e9)";
       };
       character.format = "[> ](#00ffc8)";
+      command_timeout = 10000;
     };
   };
 }
