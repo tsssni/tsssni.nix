@@ -15,8 +15,8 @@
     ];
 
     file.".config/ags" = {
-			source = ./config/ags;
-			recursive = true;
-		};
+      source = ./config/ags;
+      recursive = true;
+    };
   };
 }

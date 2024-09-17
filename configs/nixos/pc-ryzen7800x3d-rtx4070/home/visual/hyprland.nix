@@ -123,18 +123,18 @@
     };
   };
 
-	home = {
+  home = {
     packages = with pkgs; [ 
       swww
       grim
       slurp
     ];
 
-		file.".config/hypr/wallpaper" = {
-			source = ./config/hypr/wallpaper;
-			recursive = true;
-		};
-	};
+    file.".config/hypr/wallpaper" = {
+      source = ./config/hypr/wallpaper;
+      recursive = true;
+    };
+  };
   
   xdg.portal = {
     enable = true;

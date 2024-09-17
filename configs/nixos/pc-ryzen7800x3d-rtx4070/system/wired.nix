@@ -6,10 +6,10 @@
   networking = {
     hostName = "tsssni-" + tsssni.host;
     hostId = "01145140";
-		networkmanager.enable = true;
-		proxy.default = "127.0.0.1:7890";
+    networkmanager.enable = true;
+    proxy.default = "127.0.0.1:7890";
     useDHCP = lib.mkDefault true;
-	};
+  };
   services = {
     v2ray = {
       enable = true;

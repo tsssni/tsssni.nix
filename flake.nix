@@ -1,16 +1,16 @@
 {
-	description = "tsssni flake";
+  description = "tsssni flake";
 
-	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-		home-manager = {
-			url = "github:nix-community/home-manager";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,9 +19,9 @@
       url = "github:Aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-	};
+  };
 
-	outputs = {
+  outputs = {
     nixpkgs
     , nix-darwin
     , home-manager
@@ -62,5 +62,5 @@
     };
     nixosConfigurations = collectConfigs "nixos";
     darwinConfigurations = collectConfigs "nix-darwin";
-	};
+  };
 }

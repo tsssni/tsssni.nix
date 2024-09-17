@@ -34,8 +34,8 @@ os.chmod(NIX_DAEMON_PLIST, 0o444)
 
 # reload the plist
 for cmd in (
-	f"launchctl unload {NIX_DAEMON_PLIST}",
-	f"launchctl load {NIX_DAEMON_PLIST}",
+    f"launchctl unload {NIX_DAEMON_PLIST}",
+    f"launchctl load {NIX_DAEMON_PLIST}",
 ):
     print(cmd)
     subprocess.run(shlex.split(cmd), capture_output=False)
