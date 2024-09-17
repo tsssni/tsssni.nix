@@ -1,4 +1,4 @@
-{ ags, nixvim, ... }:
+{ ... }:
 {
 	home = {
 		username = "tsssni";
@@ -9,12 +9,10 @@
 	programs.home-manager.enable = true;
 
 	imports = [ 
-    ags.homeManagerModules.default
-    nixvim.homeManagerModules.nixvim
 		./devel
-    ./nixvim
     ./shell
     ./visual
     ./wired
+    ../../../nixvim
 	];
 }

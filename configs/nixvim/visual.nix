@@ -1,4 +1,4 @@
-{ pkgs, tsssni-pkgs, ... }:
+{ pkgs, tsssni, ... }:
 {
   programs.nixvim = {
     plugins.dashboard = {
@@ -30,7 +30,7 @@
     };
     extraPlugins = []
       ++ (with pkgs.vimPlugins; [ lush-nvim ]) 
-      ++ (with tsssni-pkgs.vimPlugins; [ tsssni-theme-nvim ]);
+      ++ (with tsssni.pkgs.vimPlugins; [ tsssni-nvim ]);
     colorscheme = "tsssni-theme";
   };
 }

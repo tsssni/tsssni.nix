@@ -1,4 +1,4 @@
-{ pkgs, tsssni-pkgs, ... }:
+{ pkgs, tsssni, ... }:
 {
   programs.nixvim = {
     plugins = {
@@ -147,7 +147,7 @@
 
     extraPlugins = []
       ++ (with pkgs.vimPlugins; [ nvim-web-devicons ]) 
-      ++ (with tsssni-pkgs.vimPlugins; [ incline-nvim ]);
+      ++ (with tsssni.pkgs.vimPlugins; [ incline-nvim ]);
 
     extraConfigLua = ''
       require'incline'.setup {

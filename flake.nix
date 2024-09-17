@@ -3,10 +3,6 @@
 
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    tsssni-nur = {
-      url = "github:tsssni/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 		home-manager = {
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -21,33 +17,37 @@
     };
 	};
 
-	outputs = { 
+	outputs = {
     nixpkgs
-    , tsssni-nur
     , home-manager
     , nixvim
     , ags
-    , ... 
-  }:
+    , self
+  }@inputs: 
   let
-    system = "x86_64-linux";
-    tsssni-pkgs = tsssni-nur.pkgs { localSystem = system; };
-  in 
-  {
-		nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = { inherit tsssni-pkgs; };
-			modules = [
-				./nixos
-				home-manager.nixosModules.home-manager {
-					home-manager = {
-						useGlobalPkgs = true;
-						useUserPackages = true;
-            extraSpecialArgs = { inherit tsssni-pkgs nixvim ags; };
-						users.tsssni = import ./home;
-					};
-				}
-			];
-		};
+    lib = inputs.nixpkgs.lib;
+    collectConfigs = args: root: lib.mapAttrs (dir: type: 
+      if type == "regular" then null
+      else import ./configs/${root}/${dir} (args // { host = dir; })
+    ) (builtins.readDir ./configs/${root});
+    addPrefixToConfigs = configs: builtins.listToAttrs (
+        map (host: { 
+          name = "tsssni-" + host; 
+          value = configs.${host}; }
+        ) (builtins.attrNames configs));
+  in rec {
+    pkgs = import ./pkgs { inherit (inputs) nixpkgs; };
+    lib = import ./lib { inherit (inputs.nixpkgs) lib; };
+    nixosModules = {
+      tsssni = import ./modules/nixos self;
+      default = self.nixosModules.tsssni;
+    };
+    homeManagerModules = {
+      tsssni = import ./modules/home-manager self;
+      default = self.homeManagerModules.tsssni;
+    };
+    nixosConfigurations = let
+      args = { inherit inputs; tsssni = { inherit pkgs lib nixosModules homeManagerModules; }; };
+    in (addPrefixToConfigs (collectConfigs args "nixos"));
 	};
 }

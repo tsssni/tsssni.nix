@@ -7,5 +7,6 @@
     ./nix.nix
     ./system.nix
     ./wired.nix
+    ../../../proxy
   ];
 }
