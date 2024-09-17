@@ -59,7 +59,7 @@ specialArgs = { tsssni.pkgs = tsssni.pkgs {
 
 ## Config
 
-You can put your configs under `./configs/(nixos|nix-darwin)/${your-host-name}`, then write nixos/nix-darwin configs under `system/` and home-manager configs under `home/`, then run `(nixos|darwin)-rebuild switch --flake .` to build your system.
+You can put your configs under `./configs/(nixos|nix-darwin)/${your-host-name}`, then write nixos/nix-darwin configs under `system/` and home-manager configs under `home/` (should have `default.nix` under the directory), then run `(nixos|darwin)-rebuild switch --flake .` to build your system.
 
 Your `default.nix` should follow this format. `system` is required since I could not detect it, and you could add `extra*` configs.
 ```nix
