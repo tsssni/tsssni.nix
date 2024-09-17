@@ -10,9 +10,9 @@
 
 	imports = [ 
 		./devel
+    ./nixvim
     ./shell
     ./visual
     ./wired
-    ../../../nixvim
 	];
 }

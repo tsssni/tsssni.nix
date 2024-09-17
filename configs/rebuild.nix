@@ -14,7 +14,10 @@ let
     // {
       tsssni = {
         inherit host;
-        pkgs = tsssni.pkgs { localSystem = system; };
+        pkgs = tsssni.pkgs { 
+          localSystem = system;
+          config.allowUnfree = true;
+        };
         lib = tsssni.lib;
       };
     }

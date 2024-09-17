@@ -3,6 +3,10 @@
 
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 		home-manager = {
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -19,6 +23,7 @@
 
 	outputs = {
     nixpkgs
+    , nix-darwin
     , home-manager
     , nixvim
     , ags
@@ -26,7 +31,11 @@
   }@inputs: 
   let
     lib = inputs.nixpkgs.lib;
-    collectConfigs = args: root: lib.mapAttrs (dir: type: 
+    configArgs = {
+      inherit inputs;
+      tsssni = { inherit (self) pkgs lib nixosModules darwinModules homeManagerModules; };
+    };
+    collectRoot = root: args: lib.mapAttrs (dir: type: 
       if type == "regular" then null
       else import ./configs/${root}/${dir} (args // { host = dir; })
     ) (builtins.readDir ./configs/${root});
@@ -35,19 +44,23 @@
           name = "tsssni-" + host; 
           value = configs.${host}; }
         ) (builtins.attrNames configs));
-  in rec {
-    pkgs = import ./pkgs { inherit (inputs) nixpkgs; };
-    lib = import ./lib { inherit (inputs.nixpkgs) lib; };
+    collectConfigs = root: addPrefixToConfigs (collectRoot root configArgs);
+  in {
+    pkgs = import ./pkgs { inherit nixpkgs; };
+    lib = import ./lib { inherit lib; };
     nixosModules = {
       tsssni = import ./modules/nixos self;
       default = self.nixosModules.tsssni;
+    };
+    darwinModules = {
+      tsssni = import ./modules/nix-darwin self;
+      default = self.darwinModules.tsssni;
     };
     homeManagerModules = {
       tsssni = import ./modules/home-manager self;
       default = self.homeManagerModules.tsssni;
     };
-    nixosConfigurations = let
-      args = { inherit inputs; tsssni = { inherit pkgs lib nixosModules homeManagerModules; }; };
-    in (addPrefixToConfigs (collectConfigs args "nixos"));
+    nixosConfigurations = collectConfigs "nixos";
+    darwinConfigurations = collectConfigs "nix-darwin";
 	};
 }
