@@ -37,7 +37,7 @@
           lua-ls.enable = true;
           nil-ls.enable = true;
           pylyzer.enable = true;
-          tsserver.enable = true;
+          ts-ls.enable = true;
         };
       };
       dap.enable = true;

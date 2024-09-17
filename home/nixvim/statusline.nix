@@ -5,37 +5,39 @@
       lualine = {
         enable = true;
         settings = {
-          globalstatus = true;
-          componentSeparators = {
-            left = "";
-            right = "";
-          };
-          sectionSeparators = {
-            left = "";
-            right = "";
+          options = {
+            globalstatus = true;
+            component_separators = {
+              left = "";
+              right = "";
+            };
+            section_separators = {
+              left = "";
+              right = "";
+            };
           };
           sections = {
-            lualine_a = [ { name = ""; } ];
-            lualine_b = [ { name = ""; }];
+            lualine_a = [ "" ];
+            lualine_b = [ "" ];
             lualine_c = [
               {
-                name = "mode";
+                __unkeyed-1 = "mode";
                 icon = "";
                 color.fg = "#00ffc8";
               }
               {
-                name = "location";
+                __unkeyed-1 = "location";
                 icon = "";
                 color.fg = "#7ff5f5";
               }
               {
-                name = "progress";
+                __unkeyed-1 = "progress";
                 color.fg = "#7ff5f5";
               }
             ];
             lualine_x = [
               {
-                fmt.__raw = ''
+                __unkeyed-1.__raw = ''
                   function()
                     local msg = 'No Active Lsp'
                     local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
@@ -56,7 +58,7 @@
                 color.fg = "#bef743";
               }
               {
-                fmt.__raw = ''
+                __unkeyed-1.__raw = ''
                   function()
                     if lualine_scope_name == nil then
                       lualine_scope_name = "Not in any scope"
@@ -123,20 +125,20 @@
                 color.fg = "#85b4ff";
               }
               {
-                name = "branch";
+                __unkeyed-1 = "branch";
                 color.fg = "#a8a8ff";
               }
             ];
-            lualine_y = [ { name = ""; }];
-            lualine_z = [ { name = ""; }];
+            lualine_y = [ "" ];
+            lualine_z = [ "" ];
           };
           inactiveSections = {
-            lualine_a = [ { name = ""; }];
-            lualine_b = [ { name = ""; }];
-            lualine_c = [ { name = ""; }];
-            lualine_x = [ { name = ""; }];
-            lualine_y = [ { name = ""; }];
-            lualine_z = [ { name = ""; }];
+            lualine_a = [ "" ];
+            lualine_b = [ "" ];
+            lualine_c = [ "" ];
+            lualine_x = [ "" ];
+            lualine_y = [ "" ];
+            lualine_z = [ "" ];
           };
         };
       };
