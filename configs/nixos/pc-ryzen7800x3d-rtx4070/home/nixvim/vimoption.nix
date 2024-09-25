@@ -30,7 +30,7 @@
     shiftround = true;
     shiftwidth = 2;
     showmode = false;
-    shortmess = "c";
+    shortmess = "cW";
     showtabline = 2;
     sidescrolloff = 8;
     signcolumn = "yes";
