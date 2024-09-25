@@ -33,6 +33,7 @@
             "<C-p>".__raw = "require('telescope.actions').cycle_history_prev";
           };
         };
+        web-devicons.enable = true;
       };
       
       keymaps = [
