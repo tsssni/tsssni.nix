@@ -30,7 +30,7 @@
           streamSettings = {
             network = "tcp";
             security = "tls";
-            tlsSettings.serverName = "carol.life";
+            tlsSettings.serverName = "";
           };
         } 
       ];
