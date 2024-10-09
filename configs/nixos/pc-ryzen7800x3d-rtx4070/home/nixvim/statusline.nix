@@ -22,61 +22,81 @@
             lualine_c = [
               {
                 __unkeyed-1 = "mode";
-                icon = "";
-                color.fg = "#00ffc8";
+                icon = "󱄅";
+                color = "LualineMode";
               }
               {
                 __unkeyed-1 = "location";
                 icon = "";
-                color.fg = "#7ff5f5";
+                color = "LualineRuler";
               }
               {
                 __unkeyed-1 = "progress";
-                color.fg = "#7ff5f5";
+                color = "LualineRuler";
               }
             ];
             lualine_x = [
               {
                 __unkeyed-1.__raw = ''
                   function()
-                    local msg = 'No Active Lsp'
-                    local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-                    local clients = vim.lsp.get_active_clients()
-                    if next(clients) == nil then
-                      return msg
-                    end
-                    for _, client in ipairs(clients) do
-                      local filetypes = client.config.filetypes
-                      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                        return client.name
+                    local clients = vim.lsp.get_clients{ bufnr = 0, }
+
+                    local active_clients = '['
+                    if next(clients) then
+                      for _, client in ipairs(clients) do
+                        active_clients = active_clients .. ' ' .. client.name;
                       end
                     end
-                    return msg
+                    active_clients = active_clients .. ' ]'
+                    return active_clients
                   end
                 '';
                 icon = "⚙ LSP:";
-                color.fg = "#bef743";
+                color = "LualineLsp";
               }
               {
                 __unkeyed-1.__raw = ''
                   function()
+                    local empty_scope_name = '{ }'
                     if lualine_scope_name == nil then
-                      lualine_scope_name = "Not in any scope"
+                      lualine_scope_name = empty_scope_name
+                      return lualine_scope_name
                     end
 
-                    local clients = vim.lsp.get_active_clients()
+                    local clients = vim.lsp.get_clients{ bufnr = 0, }
+                    if not next(clients) then
+                      lualine_scope_name = empty_scope_name
+                      return lualine_scope_name
+                    end
+
+                    local has_symbol_provider = false;
                     for _, client in ipairs(clients) do
-                      if not client.server_capabilities.documentSymbolProvider then
-                        lualine_scope_name = "Not in any scope"
-                        return lualine_scope_name
+                      if client.server_capabilities.documentSymbolProvider then
+                        has_symbol_provider = true
                       end
                     end
 
+                    if not has_symbol_provider then
+                      lualine_scope_name = empty_scope_name
+                      return lualine_scope_name
+                    end
+
                     local params = { textDocument = vim.lsp.util.make_text_document_params() }
-                    vim.lsp.buf_request_all(0, "textDocument/documentSymbol", params, function(response, err)
+                    vim.lsp.buf_request_all(0, 'textDocument/documentSymbol', params, function(result)
                       local no_scope = true
                       local is_scope = function(kind)
-                        local available_symbol_kind = { 2, 3, 4, 5, 6, 9, 10, 11, 12, 23 }
+                        local available_symbol_kind = { 
+                          2, -- module
+                          3, -- namespace
+                          5, -- class
+                          6, -- method
+                          8, -- field
+                          9, -- constructor
+                          10, -- enum
+                          11, -- interface
+                          12, -- function
+                          23, -- struct
+                        }
                         for _, scope_kind in pairs(available_symbol_kind) do
                           if kind == scope_kind then
                             return true
@@ -85,36 +105,65 @@
                         return false
                       end
 
-                      local row = vim.api.nvim_win_get_cursor(0)[1]
+                      local cursor = vim.api.nvim_win_get_cursor(0)
+                      local row = cursor[1] - 1;
+                      local col = cursor[2];
+                      print(row, col)
                       local scope_start = 0
                       local scope_end = 1145141919810
 
-                      if response then
-                        for client_id, result in pairs(response) do
-                          if result and result.result then
-                            for _, symbol in ipairs(result.result) do
-                              if is_scope(symbol.kind) then
-                                local symbol_start = symbol.range["start"].line
-                                local symbol_end = symbol.range["end"].line
-                                if true
-                                  and symbol_start >= scope_start 
-                                  and symbol_end <= scope_end
-                                  and symbol_start <= row 
-                                  and symbol_end >= row
-                                then
-                                  no_scope = false
-                                  lualine_scope_name = symbol.name
-                                  scope_start = symbol_start
-                                  scope_end = symbol_end
-                                end
+                      if not result then
+                        lualine_scope_name = empty_scope_name
+                        return
+                      end
+
+                      local process_symbol
+                      process_symbol = function (symbol)
+                        if is_scope(symbol.kind) then
+                          local symbol_start_line = symbol.range['start'].line
+                          local symbol_start_col = symbol.range['start'].character
+                          local symbol_end_line = symbol.range['end'].line
+                          local symbol_end_col = symbol.range['end'].character
+
+                          print(symbol.name, symbol_start_line, symbol_end_line)
+
+                          local row_in_symbol = function ()
+                            local inline = symbol_start_line <= row and symbol_end_line >= row
+                            local start_right = row ~= symbol_start_line or col >= symbol_start_col
+                            local end_left = row ~= symbol_end_line or col <= symbol_end_col
+                            print(inline, start_right, end_left)
+                            return inline and start_right and end_left
+                          end
+
+                          local symbol_in_scope = function ()
+                            return symbol_start_line >= scope_start and symbol_end_line <= scope_end
+                          end
+
+                          if row_in_symbol() and symbol_in_scope() then
+                            no_scope = false
+                            lualine_scope_name = '{ ' .. symbol.name .. ' }'
+                            scope_start = symbol_start_line
+                            scope_end = symbol_end_line
+
+                            if (symbol.children) then
+                              for _, child in ipairs(symbol.children) do
+                                process_symbol(child)
                               end
                             end
                           end
                         end
                       end
 
+                      for client_id, client_result in pairs(result) do
+                        if client_result and client_result.result then
+                          for _, symbol in ipairs(client_result.result) do
+                            process_symbol(symbol)
+                          end
+                        end
+                      end
+
                       if no_scope then
-                        lualine_scope_name = "Not in any scope"
+                        lualine_scope_name = empty_scope_name
                       end
                     end)
                     
@@ -122,11 +171,11 @@
                   end
                 '';
                 icon = "󰊕 ->";
-                color.fg = "#85b4ff";
+                color = "LualineScope";
               }
               {
                 __unkeyed-1 = "branch";
-                color.fg = "#a8a8ff";
+                color = "LualineBranch";
               }
             ];
             lualine_y = [ "" ];

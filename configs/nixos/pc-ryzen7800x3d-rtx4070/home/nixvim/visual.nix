@@ -30,7 +30,7 @@
     };
     extraPlugins = []
       ++ (with pkgs.vimPlugins; [ lush-nvim ]) 
-      ++ (with tsssni.pkgs.vimPlugins; [ tsssni-nvim ]);
+      ++ (with tsssni.pkgs.vimPlugins; [ cyyber-nvim ]);
     colorscheme = "tsssni-theme";
   };
 }

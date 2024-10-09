@@ -3,13 +3,13 @@ let
   build = pkgs.vimUtils.buildVimPlugin;
 in 
 with pkgs; {
-  tsssni-nvim = build {
-    name = "tsssni-theme";
+  cyyber-nvim = build {
+    name = "cyyber.nvim";
     src = fetchFromGitHub {
       owner = "tsssni";
-      repo = "tsssni.nvim";
-      rev = "4731cf5";
-      hash = "sha256-V9LkOxoh1cJwn4t00c1a0/MkfFUuwIezypkiW46AIPo=";
+      repo = "cyyber.nvim";
+      rev = "403e2d6";
+      hash = "sha256-NKDXRv6sEwJdUhsyq0LdbVtICL886P7hzyF7XukdDvo=";
     };
   };
   eldritch-nvim = build {

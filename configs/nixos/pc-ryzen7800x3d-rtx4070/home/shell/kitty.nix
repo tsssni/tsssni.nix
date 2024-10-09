@@ -2,6 +2,12 @@
 {
   programs.kitty = {
     enable = true;
+    keybindings = {
+      "ctrl+t" = "new_tab";
+      "ctrl+q" = "close_tab";
+      "ctrl+j" = "previous_tab";
+      "ctrl+k" = "next_tab";
+    };
     settings = {
       # font
       font_family = "MonaspiceNe Nerd Font";
