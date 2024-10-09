@@ -17,15 +17,18 @@
           enable = true;
           settings.options = {
             always_show_bufferlinhe = true;
-            diagnostics = "nvim_lsp";
+            diagnostics = false;
+            hover.enabled = false;
+            indicator.stype = "none";
             numbers = "buffer_id";
             show_buffer_close_icons = false;
+            show_close_icon = false;
           };
         };
         telescope = {
           enable = true;
           keymaps = {
-            "<C-t>" = "find_files";
+            "<C-f>" = "find_files";
             "<C-g>" = "live_grep";
           };
           settings.defaults.mappings.i = {
