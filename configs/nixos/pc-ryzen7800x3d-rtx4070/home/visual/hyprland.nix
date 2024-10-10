@@ -66,7 +66,10 @@
           pseudotile = true;
           preserve_split = true;
       };
-      
+      windowrulev2 = [
+        "noblur, class:^(firefox)$"
+        "opacity 1.0 override, class:^(firefox)$"
+      ];
       bind = [
         "SUPER, T, exec, kitty"
         "SUPER, X, killactive"

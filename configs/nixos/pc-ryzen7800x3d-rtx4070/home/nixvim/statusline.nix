@@ -41,13 +41,12 @@
                   function()
                     local clients = vim.lsp.get_clients{ bufnr = 0, }
 
-                    local active_clients = '['
+                    local active_clients = ""
                     if next(clients) then
                       for _, client in ipairs(clients) do
                         active_clients = active_clients .. ' ' .. client.name;
                       end
                     end
-                    active_clients = active_clients .. ' ]'
                     return active_clients
                   end
                 '';
@@ -57,7 +56,7 @@
               {
                 __unkeyed-1.__raw = ''
                   function()
-                    local empty_scope_name = '{ }'
+                    local empty_scope_name = ""
                     if lualine_scope_name == nil then
                       lualine_scope_name = empty_scope_name
                       return lualine_scope_name
@@ -90,7 +89,6 @@
                           3, -- namespace
                           5, -- class
                           6, -- method
-                          8, -- field
                           9, -- constructor
                           10, -- enum
                           11, -- interface
@@ -108,7 +106,6 @@
                       local cursor = vim.api.nvim_win_get_cursor(0)
                       local row = cursor[1] - 1;
                       local col = cursor[2];
-                      print(row, col)
                       local scope_start = 0
                       local scope_end = 1145141919810
 
@@ -125,13 +122,10 @@
                           local symbol_end_line = symbol.range['end'].line
                           local symbol_end_col = symbol.range['end'].character
 
-                          print(symbol.name, symbol_start_line, symbol_end_line)
-
                           local row_in_symbol = function ()
                             local inline = symbol_start_line <= row and symbol_end_line >= row
                             local start_right = row ~= symbol_start_line or col >= symbol_start_col
                             local end_left = row ~= symbol_end_line or col <= symbol_end_col
-                            print(inline, start_right, end_left)
                             return inline and start_right and end_left
                           end
 
@@ -141,7 +135,7 @@
 
                           if row_in_symbol() and symbol_in_scope() then
                             no_scope = false
-                            lualine_scope_name = '{ ' .. symbol.name .. ' }'
+                            lualine_scope_name = symbol.name
                             scope_start = symbol_start_line
                             scope_end = symbol_end_line
 
