@@ -3,6 +3,9 @@
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.hyprland;
+    plugins = with pkgs.hyprlandPlugins; [
+      hyprscroller
+    ];
     systemd.enable = false;
     settings = {
       monitor = [
@@ -22,7 +25,7 @@
           border_size = 2;
           "col.active_border" = "rgba(f5c1e9ff)";
           "col.inactive_border" = "rgba(f5c1e9ff)";
-          layout = "dwindle";
+          layout = "scroller";
       };
       decoration = {
           rounding = 20;
@@ -66,6 +69,12 @@
           pseudotile = true;
           preserve_split = true;
       };
+      plugins.scrooler = {
+        column_default_width = "onehalf";
+        window_default_height = "one";
+        column_widths = "onethird onehalf twothirds";
+        window_heights = "onethird onehalf twothirds one";
+      };
       windowrulev2 = [
         "noblur, class:^(firefox)$"
         "opacity 1.0 override, class:^(firefox)$"
@@ -85,15 +94,24 @@
         "SUPER, N, changegroupactive, f"
         "SUPER, R, exec, grim -g \"$(slurp)\""
 
-        "SUPER, H, movefocus, l"
-        "SUPER, L, movefocus, r"
-        "SUPER, J, movefocus, d"
-        "SUPER, K, movefocus, u"
+        "SUPER, H, scroller:movefocus, l"
+        "SUPER, L, scroller:movefocus, r"
+        "SUPER, J, scroller:movefocus, d"
+        "SUPER, K, scroller:movefocus, u"
 
-        "SUPERCTRL, H, movewindow, l"
-        "SUPERCTRL, L, movewindow, r"
-        "SUPERCTRL, J, movewindow, d"
-        "SUPERCTRL, K, movewindow, u"
+        "SUPERCTRL, H, scroller:movewindow, l"
+        "SUPERCTRL, L, scroller:movewindow, r"
+        "SUPERCTRL, J, scroller:movewindow, d"
+        "SUPERCTRL, K, scroller:movewindow, u"
+        "SUPERCTRL, I, scroller:movewindow, b"
+        "SUPERCTRL, O, scroller:movewindow, e"
+
+        "SUPERALT, J, scroller:setmode, row"
+        "SUPERALT, K, scroller:setmode, col"
+        "SUPERALT, H, scroller:cyclesize, prev"
+        "SUPERALT, L, scroller:cyclesize, next"
+        "SUPERALT, I, scroller:admitwindow"
+        "SUPERALT, O, scroller:expelwindow"
 
         "SUPER, 1, workspace, 1"
         "SUPER, 2, workspace, 2"
