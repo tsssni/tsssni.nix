@@ -140,6 +140,7 @@
         # wallpaper
         "swww init; swww img ~/.config/hypr/wallpaper/plana.jpeg --transition-type none"
         "ags"
+        "fcitx5 -d -r"
       ];
     };
   };

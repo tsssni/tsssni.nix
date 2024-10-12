@@ -5,6 +5,7 @@
   ];
 
   imports = [
+    ./fcitx.nix
     ./hyprland.nix
     ./ags.nix
     ./theme.nix
