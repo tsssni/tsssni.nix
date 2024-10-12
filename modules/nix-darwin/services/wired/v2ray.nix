@@ -4,7 +4,6 @@ with lib;
 
 {
   options = {
-
     services.v2ray = {
       enable = mkOption {
         type = types.bool;

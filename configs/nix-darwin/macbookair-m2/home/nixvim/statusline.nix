@@ -41,13 +41,12 @@
                   function()
                     local clients = vim.lsp.get_clients{ bufnr = 0, }
 
-                    local active_clients = '['
+                    local active_clients = ""
                     if next(clients) then
                       for _, client in ipairs(clients) do
                         active_clients = active_clients .. ' ' .. client.name;
                       end
                     end
-                    active_clients = active_clients .. ' ]'
                     return active_clients
                   end
                 '';
