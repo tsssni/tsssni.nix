@@ -44,7 +44,11 @@
                     local active_clients = ""
                     if next(clients) then
                       for _, client in ipairs(clients) do
-                        active_clients = active_clients .. ' ' .. client.name;
+                        if active_clients == "" then
+                          active_clients = client.name
+                        else
+                          active_clients = active_clients .. ' ' .. client.name;
+                        end
                       end
                     end
                     return active_clients
