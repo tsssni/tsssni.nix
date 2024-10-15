@@ -13,6 +13,7 @@
       "lark"
       "dingtalk"
       "tencent-meeting"
+      "wpsoffice"
     ];
     masApps = {
       Xcode = 497799835;
