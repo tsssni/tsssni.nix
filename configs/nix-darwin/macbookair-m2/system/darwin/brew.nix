@@ -14,6 +14,7 @@
       "dingtalk"
       "tencent-meeting"
       "wpsoffice"
+      "google-chrome"
     ];
     masApps = {
       Xcode = 497799835;
