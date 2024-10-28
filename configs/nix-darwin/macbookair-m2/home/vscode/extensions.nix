@@ -8,6 +8,7 @@
         ms-vscode.cpptools-extension-pack
         ms-vscode-remote.remote-ssh
         asvetliakov.vscode-neovim
+        yzhang.markdown-all-in-one
       ])
       ++ (with tsssni.pkgs.vscode-extensions; [
         Eldritch.eldritch
