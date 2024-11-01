@@ -4,15 +4,15 @@
 }:
 
 stdenv.mkDerivation {
-  pname = "tsssni-grub-theme";
-  version = "dev";
+  pname = "plana-grub";
+  version = "1.0.0";
 
-  src = fetchFromGitHub ({
+  src = fetchFromGitHub {
     owner = "tsssni";
-    repo = "tsssni.grub";
+    repo = "plana.grub";
     rev = "31272f17529ae693eba311ac556e91a2660242f1";
     hash = "sha256-N9uyk88QtIlG15kveiOF/Yh8E/frEwWbT3kB5PEvq3M=";
-  });
+  };
 
   installPhase = ''
     runHook preInstall
@@ -24,9 +24,9 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "tsssmi grub theme";
-    homepage = "https://github.com/tsssni/tssni-grub-theme";
+    description = "plana grub theme";
+    homepage = "https://github.com/tsssni/plana.grub";
     license = lib.licenses.gpl3;
-    platforms = lib.platforms.linux ++ lib.platforms.darwin;
+    platforms = lib.platforms.linux;
   };
 }
