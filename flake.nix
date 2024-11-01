@@ -38,18 +38,21 @@
     lib = inputs.nixpkgs.lib;
     configArgs = {
       inherit inputs;
-      tsssni = { inherit (self) pkgs lib nixosModules darwinModules homeManagerModules; };
+      tsssni = { inherit (self)
+        pkgs
+        lib
+        nixosModules
+        darwinModules
+        homeManagerModules;
+      };
     };
-    collectRoot = root: args: lib.mapAttrs (dir: type: 
-      if type == "regular" then null
-      else import ./configs/${root}/${dir} (args // { host = dir; })
-    ) (builtins.readDir ./configs/${root});
-    addPrefixToConfigs = configs: builtins.listToAttrs (
-        map (host: { 
-          name = "tsssni-" + host; 
-          value = configs.${host}; }
-        ) (builtins.attrNames configs));
-    collectConfigs = root: addPrefixToConfigs (collectRoot root configArgs);
+    mapDir = root: dir: type: lib.nameValuePair 
+      ("tsssni-" + dir)
+      (import ./configs/${root}/${dir} (configArgs // { host = dir; }));
+    collectConfigs = root: ./configs/${root}
+      |> builtins.readDir
+      |> lib.filterAttrs (dir: type: type == "directory")
+      |> lib.mapAttrs' (mapDir root);
   in {
     pkgs = import ./pkgs { inherit nixpkgs; };
     lib = import ./lib { inherit lib; };

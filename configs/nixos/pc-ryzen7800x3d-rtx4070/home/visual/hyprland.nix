@@ -69,8 +69,8 @@
           pseudotile = true;
           preserve_split = true;
       };
-      plugins.scrooler = {
-        column_default_width = "onehalf";
+      plugin.scroller = {
+        column_default_width = "twothirds";
         window_default_height = "one";
         column_widths = "onethird onehalf twothirds";
         window_heights = "onethird onehalf twothirds one";
@@ -105,6 +105,11 @@
         "SUPERCTRL, K, scroller:movewindow, u"
         "SUPERCTRL, I, scroller:movewindow, b"
         "SUPERCTRL, O, scroller:movewindow, e"
+        "SUPERCTRL, Z, scroller:alignwindow, l"
+        "SUPERCTRL, X, scroller:alignwindow, c"
+        "SUPERCTRL, C, scroller:alignwindow, r"
+        "SUPERCTRL, V, scroller:alignwindow, u"
+        "SUPERCTRL, B, scroller:alignwindow, d"
 
         "SUPERALT, J, scroller:setmode, row"
         "SUPERALT, K, scroller:setmode, col"

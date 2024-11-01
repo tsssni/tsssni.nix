@@ -3,10 +3,10 @@
   home = {
     packages = with pkgs; [
       # fonts
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
       (nerdfonts.override { fonts = [ "Monaspace" ]; })
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
       # for gtk
       dconf
     ];
