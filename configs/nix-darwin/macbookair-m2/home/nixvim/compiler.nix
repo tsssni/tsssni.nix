@@ -35,7 +35,7 @@
           clangd.enable = true;
           cmake.enable = true;
           lua_ls.enable = true;
-          nil_ls.enable = true;
+          nixd.enable = true;
           pylyzer.enable = true;
           ts_ls.enable = true;
         };
