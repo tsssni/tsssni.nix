@@ -16,7 +16,7 @@
       xwayland.force_zero_scaling = true;
       input = {
           kb_layout = "us";
-          follow_mouse = 1;
+          follow_mouse = 0;
           sensitivity = 0;
       };
       general = {
