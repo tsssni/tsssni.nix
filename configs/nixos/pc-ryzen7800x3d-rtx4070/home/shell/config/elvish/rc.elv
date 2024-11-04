@@ -1,9 +1,5 @@
-set-env EDITOR nvim
-set-env http_proxy 'http://127.0.0.1:7890'
-set-env https_proxy 'http://127.0.0.1:7890'
-
-fn ls {
-  |@args| e:ls --color $@args 
+fn ls {|@args|
+  e:ls --color $@args 
 }
 
 fn ssh-agent {
@@ -17,5 +13,22 @@ fn ssh-agent {
   $set_ssh_env $auth_sock_cmd
   $set_ssh_env $agent_pid_cmd
 }
+
+var set-base-name = {|@args|
+  e:kitty @ set-tab-title (basename (pwd))
+}
+
+var set-tab-title = {|@args|
+  if (> (count $@args) 0) {
+    e:kitty @ set-tab-title $@args
+  }
+}
+
+set E:EDITOR = nvim
+set E:http_proxy = 'http://127.0.0.1:7890'
+set E:https_proxy = 'http://127.0.0.1:7890'
+
+set edit:before-readline = [ $set-base-name ]
+set edit:after-readline = [ $set-tab-title ]
 
 eval (starship init elvish)

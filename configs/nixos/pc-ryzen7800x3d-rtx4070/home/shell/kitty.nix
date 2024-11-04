@@ -15,6 +15,9 @@
       italic_font = "auto";
       bold_italic_font = "auto";
 
+      # tab
+      allow_remote_control = "yes";
+
       # window
       confirm_os_window_close = 0;
 
