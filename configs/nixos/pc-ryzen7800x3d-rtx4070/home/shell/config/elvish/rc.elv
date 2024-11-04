@@ -28,7 +28,9 @@ set E:EDITOR = nvim
 set E:http_proxy = 'http://127.0.0.1:7890'
 set E:https_proxy = 'http://127.0.0.1:7890'
 
-set edit:before-readline = [ $set-base-name ]
-set edit:after-readline = [ $set-tab-title ]
+if (==s $E:TERM 'xterm-kitty') {
+  set edit:before-readline = [ $set-base-name ]
+  set edit:after-readline = [ $set-tab-title ]
+}
 
 eval (starship init elvish)
