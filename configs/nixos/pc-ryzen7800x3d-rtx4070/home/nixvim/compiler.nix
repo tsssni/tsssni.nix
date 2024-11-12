@@ -38,6 +38,11 @@
           nixd.enable = true;
           pylyzer.enable = true;
           ts_ls.enable = true;
+          rust_analyzer = {
+            enable = true;
+            installRustc = true;
+            installCargo = true;
+          };
         };
       };
       dap.enable = true;
