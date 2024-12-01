@@ -1,12 +1,13 @@
-{ lib, ... }:
+{
+  lib
+, ...
+}:
 {
   services.nix-daemon.enable = true;
 
   nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
-      auto-optimise-store = true;
-    };
+    settings.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
+    optimise.automatic = true;
   };
 
   nixpkgs = {
