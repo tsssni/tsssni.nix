@@ -1,6 +1,6 @@
 { ... }:
 {
   imports = [
-    ./font.nix
+    ./secret.nix
   ];
 }

@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ ... }:
 {
-  home.packages = with pkgs; [ 
-    wireguard-tools
+  imports = [
+    ./vpn.nix
   ];
 }

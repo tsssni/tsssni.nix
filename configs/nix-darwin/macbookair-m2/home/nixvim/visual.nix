@@ -1,4 +1,7 @@
-{ pkgs, tsssni, ... }:
+{
+  tsssni
+, ...
+}:
 {
   programs.nixvim = {
     plugins.dashboard = {
