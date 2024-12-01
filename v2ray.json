@@ -1,0 +1,101 @@
+{
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 7890,
+      "protocol":"http",
+      "settings": {
+        "timeout": 60
+      },
+      "tag": "http"
+    },
+    {
+      "port": 12345,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "followRedirect": true,
+        "network": "tcp,udp"
+      },
+      "sniffing": {
+        "destOverride": ["http", "tls"],
+        "enabled":true
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tproxy":"tproxy"
+        }
+      },
+      "tag": "transparent"
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "wired"
+    },
+    {
+      "protocol": "trojan",
+      "settings": {
+        "servers": [
+          {
+            "address": "carol.life",
+            "password": "19d1bb5d",
+            "port": 443
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "carol.life"
+        }
+      },
+      "tag": "trojan"
+    },
+    {
+      "protocol": "dns",
+      "settings": {
+        "address": "1.1.1.1"
+      },
+      "tag": "nameserver"
+    }
+  ],
+  "routing": {
+    "domainMatcher": "mph",
+    "domainStrategy": "AsIs",
+    "rules":[
+      {
+        "inboundTag": "transparent",
+        "outboundTag": "dns",
+        "port": 53,
+        "type": "field"
+      },
+      {
+        "domains": [
+          "cc98.org",
+	  "zju.edu.cn",
+	  "system-programming.pages.zjusct.io",
+          "bilibili.com",
+          "geosite:cn"
+        ],
+        "outboundTag": "wired",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:cn",
+          "geoip:private"
+        ],
+        "outboundTag": "wired",
+        "type": "field"
+      },
+      {
+        "network": "udp,tcp",
+        "outboundTag": "trojan",
+        "type": "field"
+      }
+    ]
+  }
+}

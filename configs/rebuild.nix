@@ -13,13 +13,16 @@ let
   specialArgs = {}
     // {
       tsssni = {
-        inherit host;
+        inherit
+          host
+          system;
         pkgs = tsssni.pkgs { 
           localSystem = system;
           config.allowUnfree = true;
         };
         lib = tsssni.lib;
       };
+      inherit inputs;
     }
     // extraSpecialArgs;
   checkExtraModules = extraModules:
