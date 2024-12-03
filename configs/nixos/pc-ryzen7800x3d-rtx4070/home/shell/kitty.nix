@@ -8,7 +8,7 @@
       "ctrl+j" = "previous_tab";
       "ctrl+k" = "next_tab";
     };
-    settings = {
+    settings = rec {
       # font
       font_family = "MonaspiceNe Nerd Font";
       bold_font = "auto";
@@ -26,27 +26,6 @@
       background = "#120b10";
       selection_foreground = "none";
       selection_background = "#1a0b63";
-
-      # cursor colors
-      cursor = "#ff0055";
-      cursor_text_color = "#f8f8ff";
-
-      # url underline color when hovering with mouse
-      url_color = "#bef743";
-
-      # kitty window border colors and terminal bell colors
-      active_border_color = "#ff0055";
-      inactive_border_color = "#120b10";
-      bell_border_color = "#ff0055";
-      visual_bell_color = "none";
-
-      # tab bar colors
-      active_tab_foreground = "#120b10";
-      active_tab_background = "#ff0055";
-      inactive_tab_foreground = "#ff0055";
-      inactive_tab_background = "#120b10";
-      tab_bar_background  = "#120b10";
-      tab_bar_margin_color = "#120b10";
 
       # basic 16 colors
 
@@ -81,6 +60,27 @@
       # white
       color7  = "#aaaabb";
       color15 = "#f8f8ff";
+
+      # cursor colors
+      cursor = color1;
+      cursor_text_color = color15;
+
+      # url underline color when hovering with mouse
+      url_color = color10;
+
+      # kitty window border colors and terminal bell colors
+      active_border_color = color1;
+      inactive_border_color = background;
+      bell_border_color = color1;
+      visual_bell_color = "none";
+
+      # tab bar colors
+      active_tab_foreground = background;
+      active_tab_background = color1;
+      inactive_tab_foreground = color1;
+      inactive_tab_background = background;
+      tab_bar_background  = background;
+      tab_bar_margin_color = background;
     };
   };
 }

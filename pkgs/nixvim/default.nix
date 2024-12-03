@@ -8,8 +8,8 @@ with pkgs; {
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "cyyber.nvim";
-      rev = "403e2d6";
-      hash = "sha256-NKDXRv6sEwJdUhsyq0LdbVtICL886P7hzyF7XukdDvo=";
+      rev = "08b1b4f";
+      hash = "sha256-z7/QHtcdYmfGoI436UVDy53AsJZppck788jF6gD48ho=";
     };
   };
   eldritch-nvim = build {
