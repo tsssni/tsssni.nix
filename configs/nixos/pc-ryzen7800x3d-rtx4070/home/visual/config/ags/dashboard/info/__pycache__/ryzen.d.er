@@ -1,0 +1,16 @@
+##[pylyzer] failed /home/tsssni/tsssni.nix/configs/nixos/pc-ryzen7800x3d-rtx4070/home/visual/config/ags/dashboard/info/ryzen.py 1726562148 2023
+.time = pyimport "time"
+
+.psutil = pyimport "__init__"
+.__init__ = pyimport "__init__"
+
+.concurrent = pyimport "<failure>"
+.<failure> = pyimport "<failure>"
+
+.get_usage: () -> Int
+.get_frequency: () -> {None}
+.get_power: () -> Float
+.get_temperature: () -> {None}
+.get_memory_usage: () -> Tuple([{None}, {None}])
+.main: () -> NoneType
+
