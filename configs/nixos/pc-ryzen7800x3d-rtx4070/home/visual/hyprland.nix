@@ -160,6 +160,7 @@
       swww
       grim
       slurp
+      hyprsunset
     ];
 
     file.".config/hypr/wallpaper" = {
