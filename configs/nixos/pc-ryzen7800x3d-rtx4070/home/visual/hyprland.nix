@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs
+, ...
+}:
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -16,7 +19,7 @@
       xwayland.force_zero_scaling = true;
       input = {
           kb_layout = "us";
-          follow_mouse = 0;
+          follow_mouse = 1;
           sensitivity = 0;
       };
       general = {
@@ -41,11 +44,13 @@
               ignore_opacity = true;
           };
 
-          drop_shadow = true;
-          shadow_range = 10;
-          shadow_render_power = 3;
-          "col.shadow" = "rgba(f5c1e9ff)";
-          "col.shadow_inactive" = "rgba(f5c1e9ff)";
+          shadow = {
+            enabled = true;
+            range = 10;
+            render_power = 3;
+            color = "rgba(f5c1e9ff)";
+            color_inactive = "rgba(f5c1e9ff)";
+          };
       };
       animations = {
           enabled = true;
@@ -70,7 +75,7 @@
           preserve_split = true;
       };
       plugin.scroller = {
-        column_default_width = "twothirds";
+        column_default_width = "onehalf";
         window_default_height = "one";
         column_widths = "onethird onehalf twothirds";
         window_heights = "onethird onehalf twothirds one";

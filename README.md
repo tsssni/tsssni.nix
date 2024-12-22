@@ -13,10 +13,10 @@
 ## Usage
 
 ### flake
-Put tsssni.nix in your flake inputs. Only support unstable now, 24.11 release in on the way.
+Put tsssni.nix in your flake inputs. Locked on nixos-24.11.
 ```nix
 inputs = {
-  nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
   tsssni = {
     url = "github:tsssni/tsssni.nix";
     inputs.nixpkgs.follows = "nixpkgs";

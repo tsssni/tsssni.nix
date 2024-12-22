@@ -1,0 +1,6 @@
+{ ... }:
+{
+  imports = [
+    ./secret.nix
+  ];
+}
