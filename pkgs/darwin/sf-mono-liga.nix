@@ -1,4 +1,5 @@
-{ lib
+{
+  lib
 , stdenvNoCC
 , fetchFromGitHub
 , p7zip

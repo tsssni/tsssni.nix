@@ -1,3 +1,5 @@
-{ lib }:
+{
+  lib
+}:
 with lib; {
 }

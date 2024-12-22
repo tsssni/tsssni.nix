@@ -1,4 +1,6 @@
-{ ... }:
+{
+  ...
+}:
 {
   imports = [
     ./services/wired/v2ray.nix

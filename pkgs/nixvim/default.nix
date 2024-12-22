@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs
+, ...
+}:
 let
   build = pkgs.vimUtils.buildVimPlugin;
 in 

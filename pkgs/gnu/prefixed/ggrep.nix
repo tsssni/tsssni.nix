@@ -1,4 +1,6 @@
-{ gnugrep }:
+{
+  gnugrep
+}:
 gnugrep.overrideAttrs {
   configureFlags = [ "--program-prefix=g" ]; 
   postInstall =
