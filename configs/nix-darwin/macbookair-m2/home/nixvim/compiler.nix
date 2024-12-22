@@ -1,5 +1,6 @@
 {
   pkgs
+, tsssni
 , ...
 }:
 {
@@ -41,6 +42,10 @@
         };
         servers = {
           clangd.enable = true;
+          slangd = {
+            enable = true;
+            package = tsssni.pkgs.slang;
+          };
           cmake.enable = true;
           lua_ls.enable = true;
           nixd.enable = true;
