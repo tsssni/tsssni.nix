@@ -26,13 +26,18 @@
       };
       lsp = {
         enable = true;
-        keymaps.lspBuf = {
-          gD = "declaration";
-          gd = "definition";
-          gR = "rename";
-          gr = "references";
-          gf = "format";
-          gh = "hover";
+        keymaps = {
+          diagnostic = {
+            gl = "setloclist";
+          };
+          lspBuf = {
+            gD = "declaration";
+            gd = "definition";
+            gR = "rename";
+            gr = "references";
+            gf = "format";
+            gh = "hover";
+          };
         };
         servers = {
           clangd.enable = true;
