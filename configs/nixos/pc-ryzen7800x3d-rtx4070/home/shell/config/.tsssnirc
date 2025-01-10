@@ -2,4 +2,5 @@
 sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
 sudo ip rule add fwmark 1 table 100
 sudo ip route add local 0.0.0.0/0 dev lo table 100
+openrgb -p tsssni
 Hyprland
