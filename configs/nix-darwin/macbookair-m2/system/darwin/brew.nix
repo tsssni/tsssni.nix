@@ -8,11 +8,6 @@
       upgrade = true;
     };
     casks = [
-      "qq"
-      "wechat"
-      "lark"
-      "dingtalk"
-      "tencent-meeting"
       "wpsoffice"
     ];
     masApps = {
