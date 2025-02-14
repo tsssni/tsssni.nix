@@ -1,7 +1,6 @@
-self:
-{ 
-  ...
-}:
+{ ... }:
 {
-  imports = [];
+  imports = [
+    ./nixvim
+  ];
 }

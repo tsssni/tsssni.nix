@@ -1,6 +1,12 @@
-{ ... }:
 {
-  programs.nixvim = {
+  lib
+, config
+, ...
+}:
+let
+  cfg = config.tsssni.nixvim;
+in {
+  programs.nixvim = lib.mkIf cfg.enable {
     globals = {
       mapleader = " ";
       localmapleader = " ";

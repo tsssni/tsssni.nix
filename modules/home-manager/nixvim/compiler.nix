@@ -1,10 +1,14 @@
 {
   pkgs
 , tsssni
+, lib
+, config
 , ...
 }:
-{
-  programs.nixvim = {
+let
+  cfg = config.tsssni.nixvim;
+in {
+  programs.nixvim = lib.mkIf cfg.enable {
     plugins = {
       treesitter = {
         enable = true;
@@ -101,6 +105,11 @@
       };
       luasnip.enable = true;
       nvim-autopairs.enable = true;
+    };
+
+    filetype.extension = {
+      slang = "shaderslang";
+      hlsl = "hlsl";
     };
 
     keymaps = [

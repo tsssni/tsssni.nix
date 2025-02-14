@@ -11,17 +11,17 @@ with pkgs; {
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "cyyber.nvim";
-      rev = "08b1b4f";
-      hash = "sha256-z7/QHtcdYmfGoI436UVDy53AsJZppck788jF6gD48ho=";
+      rev = "b504b63";
+      hash = "sha256-AkEEVvei9j3PrgAbPmcUrZp8H6mmU/icZ4Py1eqmylc=";
     };
   };
   eldritch-nvim = build {
     name = "eldritch.nvim";
     src = fetchFromGitHub {
-      owner = "eldritch-theme";
+      owner = "tsssni";
       repo = "eldritch.nvim";
-      rev = "48788ef";
-      hash = "sha256-ShjgOkzE4h5zLsM9kSXePXgZossgwV2HW4Axq5y9cP4=";
+      rev = "0c09c40";
+      hash = "sha256-t9q8Sjs46cTukfFMPJuMAWhjhAKBNNkbmiDVPBGApgs=";
     };
   };
   incline-nvim = build {

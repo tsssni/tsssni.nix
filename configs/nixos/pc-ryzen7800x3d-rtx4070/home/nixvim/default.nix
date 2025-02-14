@@ -1,17 +1,7 @@
 { ... }:
 {
-  programs.nixvim = {
+  tsssni.nixvim = {
     enable = true;
-    defaultEditor = true;
+    colorscheme = "cyyber";
   };
-  imports = [
-    ./compiler.nix
-    ./filesystem.nix
-    ./session.nix
-    ./statusline.nix
-    ./terminal.nix
-    ./vimoption.nix
-    ./visual.nix
-    ./window.nix
-  ];
 }

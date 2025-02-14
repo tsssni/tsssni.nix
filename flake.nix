@@ -59,15 +59,15 @@
     pkgs = import ./pkgs { inherit nixpkgs; };
     lib = import ./lib { inherit lib; };
     nixosModules = {
-      tsssni = import ./modules/nixos self;
+      tsssni = import ./modules/nixos;
       default = self.nixosModules.tsssni;
     };
     darwinModules = {
-      tsssni = import ./modules/nix-darwin self;
+      tsssni = import ./modules/nix-darwin;
       default = self.darwinModules.tsssni;
     };
     homeManagerModules = {
-      tsssni = import ./modules/home-manager self;
+      tsssni = import ./modules/home-manager;
       default = self.homeManagerModules.tsssni;
     };
     nixosConfigurations = collectConfigs "nixos";

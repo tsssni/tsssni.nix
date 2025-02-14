@@ -1,10 +1,12 @@
 {
-  pkgs
-, tsssni
+  lib
+, config
 , ...
 }:
-{
-  programs.nixvim = {
+let
+  cfg = config.tsssni.nixvim;
+in {
+  programs.nixvim = lib.mkIf cfg.enable {
     plugins = {
       lualine = {
         enable = true;
@@ -27,16 +29,16 @@
               {
                 __unkeyed-1 = "mode";
                 icon = "󱄅";
-                color.fg = "#37f499";
+                color = "LualineMode";
               }
               {
                 __unkeyed-1 = "location";
                 icon = "";
-                color.fg = "#04d1f9";
+                color = "LualineRuler";
               }
               {
                 __unkeyed-1 = "progress";
-                color.fg = "#04d1f9";
+                color = "LualineRuler";
               }
             ];
             lualine_x = [
@@ -59,7 +61,7 @@
                   end
                 '';
                 icon = "⚙ LSP:";
-                color.fg = "#f1fc79";
+                color = "LualineLsp";
               }
               {
                 __unkeyed-1.__raw = ''
@@ -170,14 +172,14 @@
                     end)
                     
                     return lualine_scope_name
-                  end   
+                  end
                 '';
                 icon = "󰊕 ->";
-                color.fg = "#f265b5";
+                color = "LualineScope";
               }
               {
                 __unkeyed-1 = "branch";
-                color.fg = "#a48cf2";
+                color = "LualineBranch";
               }
             ];
             lualine_y = [ "" ];
@@ -195,10 +197,6 @@
       };
       gitsigns.enable = true;
     };
-
-    extraPlugins = []
-      ++ (with pkgs.vimPlugins; [ nvim-web-devicons ]) 
-      ++ (with tsssni.pkgs.vimPlugins; [ incline-nvim ]);
 
     extraConfigLua = ''
       require'incline'.setup {
@@ -220,7 +218,7 @@
             local group_name = { removed = 'Delete', changed = 'Change', added = 'Add' }
             for name, icon in pairs(icons) do
               if tonumber(signs[name]) and signs[name] > 0 then
-                table.insert(labels, { icon .. ' ' .. signs[name] .. ' ', group = 'GitSigns' .. group_name[name] })
+                table.insert(labels, { icon .. ' ' .. signs[name] .. ' ', group = 'Diff' .. group_name[name] })
               end
             end
             if #labels > 0 then

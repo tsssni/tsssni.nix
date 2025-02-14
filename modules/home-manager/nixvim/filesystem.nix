@@ -1,6 +1,12 @@
-{ ... }:
 {
-  programs = {
+  lib
+, config
+, ...
+}:
+let
+  cfg = config.tsssni.nixvim;
+in {
+  programs = lib.mkIf cfg.enable {
     nixvim = {
       plugins = {
         oil = {

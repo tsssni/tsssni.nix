@@ -1,6 +1,12 @@
-{ ... }:
 {
-  programs.nixvim.opts = {
+  lib
+, config
+, ...
+}:
+let
+  cfg = config.tsssni.nixvim;
+in {
+  programs.nixvim.opts = lib.mkIf cfg.enable {
     autoindent = true;
     autoread = true;
     background = "dark";
