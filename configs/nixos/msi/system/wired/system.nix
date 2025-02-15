@@ -5,7 +5,7 @@
 }:
 {
   networking = {
-    hostName = "tsssni-" + tsssni.host;
+    hostName = tsssni.func;
     hostId = "01145140";
     networkmanager.enable = true;
     proxy.default = "127.0.0.1:7890";

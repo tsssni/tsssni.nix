@@ -1,20 +1,22 @@
 {
   inputs
 , tsssni
-, root
-, host
+, distro
+, func
 , system
-, rebuildFunc
+, eval
 , extraSpecialArgs ? {}
-, extraSystemModules ? {}
-, extraHomeManagerModules ? {}
+, extraSystemModules ? []
+, extraHomeManagerModules ? []
 }:
 let
+  lib = inputs.nixpkgs.lib;
+  path = "${distro}/${func}";
   specialArgs = {}
     // {
       tsssni = {
         inherit
-          host
+          func
           system;
         pkgs = tsssni.pkgs { 
           localSystem = system;
@@ -25,16 +27,19 @@ let
       inherit inputs;
     }
     // extraSpecialArgs;
-  checkExtraModules = extraModules:
-    if inputs.nixpkgs.lib.isList extraModules 
-    then extraModules
-    else [ extraModules ];
-in rebuildFunc {
+  homeManagerModules = path: []
+  ++ [
+    ./${path}
+    tsssni.homeManagerModules.tsssni
+  ]
+  ++ extraHomeManagerModules;
+in eval
+(if (distro != "home-manager") then {
   inherit system;
   specialArgs = specialArgs;
   modules = []
     ++ [
-      ./${root}/${host}/system
+      ./${path}/system
       tsssni.systemModule
       inputs.home-manager.systemModule
       {
@@ -42,16 +47,21 @@ in rebuildFunc {
           useGlobalPkgs = true;
           useUserPackages = true;
           extraSpecialArgs = specialArgs;
-          users.tsssni = { ... }:
-          {
-            imports = [
-              ./${root}/${host}/home
-              tsssni.homeManagerModules.tsssni
-            ]
-            ++ (checkExtraModules extraHomeManagerModules);
-          };
+          users = ./${path}
+            |> builtins.readDir
+            |> lib.filterAttrs (dir: type: true
+              && type == "directory"
+              && dir != "system"
+            )
+            |> lib.mapAttrs (dir: _: {
+              imports = homeManagerModules "${path}/${dir}";
+            });
         };
       }
     ]
-  ++ (checkExtraModules extraSystemModules);
-}
+  ++ extraSystemModules;
+} else {
+  pkgs = inputs.nixpkgs.${system};
+  extraSpecialArgs = specialArgs;
+  modules = homeManagerModules "${path}";
+})

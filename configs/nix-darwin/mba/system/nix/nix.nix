@@ -1,5 +1,5 @@
 {
-  lib
+  tsssni
 , ...
 }:
 {
@@ -11,7 +11,7 @@
   };
 
   nixpkgs = {
-    hostPlatform = lib.mkDefault "aarch64-darwin";
+    hostPlatform = tsssni.system;
     config.allowUnfree = true;
   };
 }

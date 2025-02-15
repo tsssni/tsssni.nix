@@ -1,8 +1,8 @@
 args:
 import ../rebuild.nix (args
   // { 
-    root = "nix-darwin";
-    rebuildFunc = args.inputs.nix-darwin.lib.darwinSystem;
+    distro = "nix-darwin";
+    eval = args.inputs.nix-darwin.lib.darwinSystem;
     tsssni = args.tsssni // {
       systemModule = args.tsssni.darwinModules.tsssni;
     };

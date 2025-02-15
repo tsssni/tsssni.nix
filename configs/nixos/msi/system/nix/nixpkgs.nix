@@ -1,10 +1,10 @@
 {
-  lib
+  tsssni
 , ...
 }:
 {
   nixpkgs = {
-    hostPlatform = lib.mkDefault "x86_64-linux";
+    hostPlatform = tsssni.system;
     config.allowUnfree = true;
   };
 }

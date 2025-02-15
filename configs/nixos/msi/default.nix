@@ -1,13 +1,13 @@
 {
   inputs
 , tsssni
-, host
+, func
 }:
 import ../rebuild.nix {
-  inherit inputs tsssni host;
-  system = "aarch64-darwin";
+  inherit inputs tsssni func;
+  system = "x86_64-linux";
   extraSystemModules = with inputs; [
-    agenix.darwinModules.age
+    agenix.nixosModules.age
   ];
   extraHomeManagerModules = with inputs; [
     nixvim.homeManagerModules.nixvim

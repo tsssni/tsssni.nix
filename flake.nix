@@ -48,13 +48,12 @@
         homeManagerModules;
       };
     };
-    mapDir = root: dir: type: lib.nameValuePair 
-      ("tsssni-" + dir)
-      (import ./configs/${root}/${dir} (configArgs // { host = dir; }));
-    collectConfigs = root: ./configs/${root}
+    collectConfigs = distro: ./configs/${distro}
       |> builtins.readDir
       |> lib.filterAttrs (dir: type: type == "directory")
-      |> lib.mapAttrs' (mapDir root);
+      |> lib.mapAttrs (dir: _: (
+        import ./configs/${distro}/${dir} (configArgs // { func = dir; })
+      ));
   in {
     pkgs = import ./pkgs { inherit nixpkgs; };
     lib = import ./lib { inherit lib; };

@@ -1,8 +1,8 @@
 args:
 import ../rebuild.nix (args
   // { 
-    root = "nixos";
-    rebuildFunc = args.inputs.nixpkgs.lib.nixosSystem;
+    distro = "nixos";
+    eval = args.inputs.nixpkgs.lib.nixosSystem;
     tsssni = args.tsssni // {
       systemModule = args.tsssni.nixosModules.tsssni;
     };
