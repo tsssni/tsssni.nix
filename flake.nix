@@ -52,7 +52,7 @@
       |> builtins.readDir
       |> lib.filterAttrs (dir: type: type == "directory")
       |> lib.mapAttrs (dir: _: (
-        import ./configs/${distro}/${dir} (configArgs // { func = dir; })
+        import ./configs/${distro}/${dir}/rebuild.nix (configArgs // { func = dir; })
       ));
   in {
     pkgs = import ./pkgs { inherit nixpkgs; };

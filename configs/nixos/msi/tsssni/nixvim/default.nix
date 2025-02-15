@@ -1,7 +1,6 @@
 { ... }:
 {
-  tsssni.nixvim = {
-    enable = true;
-    colorscheme = "cyyber";
-  };
+  imports = [
+    ./nixvim.nix
+  ];
 }
