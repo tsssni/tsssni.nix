@@ -21,6 +21,10 @@ in {
               left = "";
               right = "";
             };
+            theme = {
+              normal.c = "Lualine";
+              inactive.c = "Lualine";
+            };
           };
           sections = {
             lualine_a = [ "" ];
