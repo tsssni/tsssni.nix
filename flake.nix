@@ -71,5 +71,6 @@
     };
     nixosConfigurations = collectConfigs "nixos";
     darwinConfigurations = collectConfigs "nix-darwin";
+    homeConfigurations = collectConfigs "home-manager";
   };
 }
