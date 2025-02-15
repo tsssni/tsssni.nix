@@ -20,8 +20,8 @@ with pkgs; {
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "eldritch.nvim";
-      rev = "e915020";
-      hash = "sha256-tJEosBj17nr+mvSDq3QwQrfEycK+uHdfSpBB4k4wGwQ=";
+      rev = "58c09bb";
+      hash = "sha256-3pRihyBK+AZD9vLcqMezaeIv47sl9Oxh/+3ZuDv3bv4=";
     };
   };
   sonokai = build {
@@ -36,10 +36,10 @@ with pkgs; {
   incline-nvim = build {
     name = "incline";
     src = fetchFromGitHub {
-      owner = "b0o";
+      owner = "tsssni";
       repo = "incline.nvim";
-      rev = "16fc9c0";
-      hash = "sha256-5DoIvIdAZV7ZgmQO2XmbM3G+nNn4tAumsShoN3rDGrs=";
+      rev = "6cdd1f0";
+      hash = "sha256-LpQ/wE2Xg/Dl3tZuDIKTVyhKd8hxoV6dp+rpz7Pyvo0=";
     };
   };
 }
