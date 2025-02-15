@@ -24,6 +24,15 @@ with pkgs; {
       hash = "sha256-tJEosBj17nr+mvSDq3QwQrfEycK+uHdfSpBB4k4wGwQ=";
     };
   };
+  sonokai = build {
+    name = "sonokai";
+    src = fetchFromGitHub {
+      owner = "tsssni";
+      repo = "sonokai";
+      rev = "07ce670";
+      hash = "sha256-AXpnp30x2T62rIKbosBuyu8j2lwWfCYhE20S6GF72dI=";
+    };
+  };
   incline-nvim = build {
     name = "incline";
     src = fetchFromGitHub {

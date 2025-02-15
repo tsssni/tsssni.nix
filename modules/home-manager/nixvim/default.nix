@@ -38,12 +38,12 @@ in with lib; {
       ++ (with pkgs.vimPlugins; [ 
         nvim-web-devicons
         lush-nvim
-        sonokai
       ]) 
       ++ (with tsssni.pkgs.vimPlugins; [
         incline-nvim
         cyyber-nvim
         eldritch-nvim
+        sonokai
       ]);
     };
   };
