@@ -20,8 +20,8 @@ with pkgs; {
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "eldritch.nvim";
-      rev = "0c09c40";
-      hash = "sha256-t9q8Sjs46cTukfFMPJuMAWhjhAKBNNkbmiDVPBGApgs=";
+      rev = "16cb632";
+      hash = "sha256-UTlKoIiJMj8VDim9vFkPMfv/zLaPxe21Kj8xBNnSeko=";
     };
   };
   incline-nvim = build {

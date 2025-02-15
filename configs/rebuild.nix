@@ -40,8 +40,8 @@ in eval
   modules = []
     ++ [
       ./${path}/system
-      tsssni.systemModule
-      inputs.home-manager.systemModule
+      tsssni.systemModules
+      inputs.home-manager.systemModules
       {
         home-manager = {
           useGlobalPkgs = true;
@@ -59,7 +59,7 @@ in eval
         };
       }
     ]
-  ++ extraSystemModules;
+    ++ extraSystemModules;
 } else {
   pkgs = inputs.nixpkgs.${system};
   extraSpecialArgs = specialArgs;

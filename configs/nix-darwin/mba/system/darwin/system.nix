@@ -5,6 +5,6 @@
     home = "/Users/tsssni";
   };
 
-  system.stateVersion = 6;
+  system.stateVersion = 5;
 }
 
