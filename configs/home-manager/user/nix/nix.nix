@@ -1,15 +1,16 @@
 {
-  tsssni
+  pkgs
+, tsssni
 , ...
 }:
 {
   nix = {
+    package = pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
-    optimise.automatic = true;
   };
 
   nixpkgs = {
-    hostPlatform = tsssni.system;
+    system = tsssni.system;
     config.allowUnfree = true;
   };
 }

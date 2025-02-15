@@ -61,7 +61,7 @@ in eval
     ]
     ++ extraSystemModules;
 } else {
-  pkgs = inputs.nixpkgs.${system};
+  pkgs = import inputs.nixpkgs { inherit system; };
   extraSpecialArgs = specialArgs;
   modules = homeManagerModules "${path}";
 })
