@@ -11,8 +11,8 @@ with pkgs; {
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "cyyber.nvim";
-      rev = "b504b63";
-      hash = "sha256-AkEEVvei9j3PrgAbPmcUrZp8H6mmU/icZ4Py1eqmylc=";
+      rev = "79f9504";
+      hash = "sha256-9srEqlOVRT++KmLComDCjPtgt+CrDxculMSLB0MTh6I=";
     };
   };
   eldritch-nvim = build {
