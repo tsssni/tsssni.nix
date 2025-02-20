@@ -3,7 +3,7 @@
 , ...
 }:
 {
-  home.packages = with pkgs; [ 
-    wireguard-tools
-  ];
+	home.packages = with pkgs; [ 
+		wireguard-tools
+	];
 }

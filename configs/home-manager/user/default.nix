@@ -1,15 +1,15 @@
 { ... }:
 {
-  home = {
-    username = "user";
-    homeDirectory = "/home/user";
-    stateVersion = "24.11";
-  };
+	home = {
+		username = "user";
+		homeDirectory = "/home/user";
+		stateVersion = "24.11";
+	};
 
-  programs.home-manager.enable = true;
+	programs.home-manager.enable = true;
 
-  imports = [
-    ./nixvim
-    ./nix
-  ];
+	imports = [
+		./nixvim
+		./nix
+	];
 }

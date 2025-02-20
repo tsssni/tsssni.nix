@@ -1,6 +1,6 @@
 { ... }:
 {
-  imports = [
-    ./secret.nix
-  ];
+	imports = [
+		./secret.nix
+	];
 }

@@ -3,8 +3,8 @@
 , ...
 }:
 {
-  nixpkgs = {
-    hostPlatform = tsssni.system;
-    config.allowUnfree = true;
-  };
+	nixpkgs = {
+		hostPlatform = tsssni.system;
+		config.allowUnfree = true;
+	};
 }

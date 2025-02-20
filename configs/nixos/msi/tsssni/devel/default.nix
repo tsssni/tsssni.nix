@@ -1,7 +1,7 @@
 { ... }:
 {
-  imports = [
-    ./git.nix
-    ./python.nix
-  ];
+	imports = [
+		./git.nix
+		./python.nix
+	];
 }

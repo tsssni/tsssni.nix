@@ -3,14 +3,14 @@
 , ...
 }:
 {
-  home.packages = with pkgs; [ 
-    wireguard-tools
-    wget
-    curl
-  ];
+	home.packages = with pkgs; [ 
+		wireguard-tools
+		wget
+		curl
+	];
 
-  imports = [
-    ./firefox.nix
-    ./ssh.nix
-  ];
+	imports = [
+		./firefox.nix
+		./ssh.nix
+	];
 }

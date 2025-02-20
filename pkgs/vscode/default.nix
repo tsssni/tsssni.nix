@@ -3,5 +3,5 @@
 , ...
 }:
 with pkgs; {
-  Eldritch.eldritch = callPackage ./eldritch.nix {};
+	Eldritch.eldritch = callPackage ./eldritch.nix {};
 }

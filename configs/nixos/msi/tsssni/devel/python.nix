@@ -3,9 +3,9 @@
 , ...
 }:
 {
-  home.packages = with pkgs; [
-    (python3.withPackages (python-pkgs: [
-      python-pkgs.psutil
-    ]))
-  ];
+	home.packages = with pkgs; [
+		(python3.withPackages (python-pkgs: [
+			python-pkgs.psutil
+		]))
+	];
 }

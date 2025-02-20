@@ -7,7 +7,7 @@ await Utils.execAsync(['sass', scss, css])
 App.applyCss(css)
 
 App.config({
-  windows: [
-    dashboard
-  ],
+	windows: [
+		dashboard
+	],
 })

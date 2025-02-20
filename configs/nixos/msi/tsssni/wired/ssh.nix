@@ -1,9 +1,9 @@
 { ... }:
 {
-  programs.ssh = {
-    enable = true;
-    forwardAgent = true;
-    addKeysToAgent = "yes";
-    hashKnownHosts = true;
-  };
+	programs.ssh = {
+		enable = true;
+		forwardAgent = true;
+		addKeysToAgent = "yes";
+		hashKnownHosts = true;
+	};
 }

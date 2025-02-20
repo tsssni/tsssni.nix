@@ -4,7 +4,7 @@
 , ...
 }:
 {
-  environment.systemPackages = [
-    inputs.agenix.packages.${tsssni.system}.default
-  ];
+	environment.systemPackages = [
+		inputs.agenix.packages.${tsssni.system}.default
+	];
 }

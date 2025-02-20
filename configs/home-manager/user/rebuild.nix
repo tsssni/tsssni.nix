@@ -4,9 +4,9 @@
 , func
 }:
 import ../rebuild.nix {
-  inherit inputs tsssni func;
-  system = "x86_64-linux";
-  extraHomeManagerModules = with inputs; [
-    nixvim.homeManagerModules.nixvim
-  ];
+	inherit inputs tsssni func;
+	system = "x86_64-linux";
+	extraHomeManagerModules = with inputs; [
+		nixvim.homeManagerModules.nixvim
+	];
 }

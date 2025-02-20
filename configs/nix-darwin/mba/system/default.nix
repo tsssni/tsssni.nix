@@ -1,9 +1,9 @@
 { ... }:
 {
-  imports = [
-    ./darwin
-    ./nix
-    ./secret
-    ./wired
-  ];
+	imports = [
+		./darwin
+		./nix
+		./secret
+		./wired
+	];
 }

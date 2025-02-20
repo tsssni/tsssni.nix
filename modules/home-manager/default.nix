@@ -1,6 +1,6 @@
 { ... }:
 {
-  imports = [
-    ./nixvim
-  ];
+	imports = [
+		./nixvim
+	];
 }

@@ -1,9 +1,9 @@
 { ... }:
 {
-  imports = [
-    ./route.nix
-    ./ssh.nix
-    ./system.nix
-    ./v2ray.nix
-  ];
+	imports = [
+		./route.nix
+		./ssh.nix
+		./system.nix
+		./v2ray.nix
+	];
 }

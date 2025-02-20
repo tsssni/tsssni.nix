@@ -1,7 +1,7 @@
 { ... }:
 {
-  tsssni.nixvim = {
-    enable = true;
-    colorscheme = "eldritch";
-  };
+	tsssni.nixvim = {
+		enable = true;
+		colorscheme = "eldritch";
+	};
 }

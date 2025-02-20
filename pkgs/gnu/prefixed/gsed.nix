@@ -2,5 +2,5 @@
   gnused
 }:
 gnused.overrideAttrs { 
-  configureFlags = [ "--program-prefix=g" ]; 
+	configureFlags = [ "--program-prefix=g" ]; 
 }

@@ -1,6 +1,6 @@
 { ... }:
 {
-  imports = [
-    ./v2ray.nix
-  ];
+	imports = [
+		./v2ray.nix
+	];
 }

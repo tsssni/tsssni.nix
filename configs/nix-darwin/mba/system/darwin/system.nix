@@ -1,10 +1,10 @@
 { ... }: 
 {
-  users.users.tsssni = {
-    name = "tsssni";
-    home = "/Users/tsssni";
-  };
+	users.users.tsssni = {
+		name = "tsssni";
+		home = "/Users/tsssni";
+	};
 
-  system.stateVersion = 5;
+	system.stateVersion = 5;
 }
 

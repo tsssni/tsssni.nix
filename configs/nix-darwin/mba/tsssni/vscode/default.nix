@@ -1,7 +1,7 @@
 { ... }:
 {
-  imports = [
-    ./extensions.nix
-    ./settings.nix
-  ];
+	imports = [
+		./extensions.nix
+		./settings.nix
+	];
 }

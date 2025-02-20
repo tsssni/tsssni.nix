@@ -3,10 +3,10 @@
 , ...
 }:
 {
-  environment.systemPackages = with pkgs; [ 
-    neovim 
-    git
-    curl
-    wget
-  ];
+	environment.systemPackages = with pkgs; [ 
+		neovim 
+		git
+		curl
+		wget
+	];
 }

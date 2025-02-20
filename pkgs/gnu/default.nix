@@ -4,6 +4,6 @@
 }:
 with pkgs;
 (
-  {}
-  // (callPackage ./prefixed {})
+	{}
+	// (callPackage ./prefixed {})
 )

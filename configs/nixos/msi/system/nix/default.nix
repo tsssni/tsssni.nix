@@ -1,7 +1,7 @@
 { ... }:
 {
-  imports = [
-    ./nixpkgs.nix
-    ./settings.nix
-  ];
+	imports = [
+		./nixpkgs.nix
+		./settings.nix
+	];
 }
