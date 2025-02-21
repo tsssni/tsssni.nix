@@ -25,7 +25,7 @@ in {
 		incsearch = true;
 		laststatus = 0;
 		list = true;
-		listchars = "tab:··,space:·";
+		listchars = "tab:>·,space:·";
 		mouse = "a";
 		number = true;
 		pumheight = 10;

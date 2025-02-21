@@ -26,7 +26,7 @@ in {
 							node_decremental = "<C-d>";
 						};
 					};
-					indent.enable = true;
+					indent.enable = false;
 				};
 			};
 			lsp = {
