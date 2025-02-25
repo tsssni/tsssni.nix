@@ -1,9 +1,10 @@
 { ... }:
 {
 	imports = [
+		./btop.nix
 		./elvish.nix
 		./fastfetch.nix
 		./kitty.nix
-		./starship.nix
+		./omp.nix
 	];
 }

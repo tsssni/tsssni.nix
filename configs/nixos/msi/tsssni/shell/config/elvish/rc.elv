@@ -33,4 +33,4 @@ if (==s $E:TERM 'xterm-kitty') {
 	set edit:after-readline = [ $set-tab-title ]
 }
 
-eval (starship init elvish)
+eval (oh-my-posh init elvish -c $E:HOME/.config/oh-my-posh/config.json)
