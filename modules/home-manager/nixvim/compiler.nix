@@ -45,7 +45,15 @@ in {
 					};
 				};
 				servers = {
-					clangd.enable = true;
+					clangd = {
+						enable = true;
+						cmd = [
+							"clangd"
+							"--header-insertion=never"
+							"--function-arg-placeholders=false"
+							"--inlay-hints=false"
+						];
+					};
 					slangd = {
 						enable = true;
 						package = tsssni.pkgs.slang;
