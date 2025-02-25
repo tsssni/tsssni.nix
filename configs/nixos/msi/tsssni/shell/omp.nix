@@ -9,36 +9,36 @@
 					newline = true;
 					segments = [
 						{
-							background = "#FEF5ED";
-							foreground = "#011627";
+							background = "#f8f8ff";
+							foreground = "#333333";
 							leading_diamond = "";
 							properties.macos = "󱄅 ";
 							style = "diamond";
 							template = "";
-							trailing_diamond = "<transparent,#FEF5ED></>";
+							trailing_diamond = "<transparent,#f8f8ff></>";
 							type = "os";
 						}
 						{
-							background = "#FEF5ED";
-							foreground = "#011627";
+							background = "#f8f8ff";
+							foreground = "#333333";
 							leading_diamond = "";
 							style = "diamond";
 							template = "  {{ .Name }}";
-							trailing_diamond = "<transparent,#FEF5ED></>";
+							trailing_diamond = "<transparent,#f8f8ff></>";
 							type = "shell";
 						}
 						{
-							background = "#516BEB";
-							foreground = "#ffffff";
+							background = "#4685ea";
+							foreground = "#f8f8ff";
 							leading_diamond = "";
 							style = "diamond";
 							template = "  MEM: {{ round .PhysicalPercentUsed .Precision }}% | {{ (div ((sub .PhysicalTotalMemory .PhysicalAvailableMemory)|float64) 1073741824.0) }}/{{ (div .PhysicalTotalMemory 1073741824.0) }}GB  ";
-							trailing_diamond = "<transparent,#516BEB></>";
+							trailing_diamond = "<transparent,#4685ea></>";
 							type = "sysinfo";
 						}
 						{
-							background = "#575656";
-							foreground = "#d6deeb";
+							background = "#333333";
+							foreground = "#777777";
 							leading_diamond = "";
 							properties = {
 								style = "roundrock";
@@ -56,8 +56,8 @@
 					alignment = "right";
 					segments = [
 						{
-							background = "#17D7A0";
-							foreground = "#011627";
+							background = "#bef743";
+							foreground = "#333333";
 							leading_diamond = "";
 							properties = {
 								branch_icon = " ";
@@ -79,11 +79,13 @@
 					newline = true;
 					segments = [
 						{
+							foreground = "#777777";
 							style = "plain";
 							template = "╭─";
 							type = "text";
 						}
 						{
+							foreground = "#777777";
 							properties = {
 								time_format = "15:04";
 							};
@@ -92,11 +94,13 @@
 							type = "time";
 						}
 						{
+							foreground = "#777777";
 							style = "plain";
 							template = "  ";
 							type = "root";
 						}
 						{
+							foreground = "#777777";
 							properties = {
 								folder_icon = " ";
 								folder_separator_icon = "  ";
@@ -114,6 +118,7 @@
 					newline = true;
 					segments = [
 						{
+							foreground = "#777777";
 							properties.always_enabled = true;
 							style = "plain";
 							template = "╰─ ";
@@ -126,11 +131,10 @@
 			console_title_template = "{{ .Folder }}";
 			transient_prompt = {
 				background = "transparent";
-				foreground = "#FEF5ED";
+				foreground = "#f8f8ff";
 				template = " ";
 			};
 			version = 2;
 		};
-		enableZshIntegration = true;
 	};
 }
