@@ -25,6 +25,10 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 			inputs.darwin.follows = "nix-darwin";
 		};
+		disko = {
+			url = "github:nix-community/disko/v1.9.0";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 	};
 
 	outputs = {
@@ -34,6 +38,7 @@
 		, nixvim
 		, ags
 		, agenix
+		, disko
 		, self
 	}@inputs: 
 	let
