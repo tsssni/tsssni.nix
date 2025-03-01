@@ -5,5 +5,8 @@
 		forwardAgent = true;
 		addKeysToAgent = "yes";
 		hashKnownHosts = true;
+		includes = [
+			"~/.ssh/config.d/*"
+		];
 	};
 }

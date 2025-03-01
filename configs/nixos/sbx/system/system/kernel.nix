@@ -10,11 +10,6 @@
 			"net.ifnames=0"
 		];
 		initrd = {
-			compressor = "zstd";
-			compressorArgs = [
-				"-19"
-				"-T0"
-			];
 			systemd.enable = true;
 			postDeviceCommands = lib.mkIf (!config.boot.initrd.systemd.enable) ''
 				# Set the system time from the hardware clock to work around a
@@ -22,7 +17,6 @@
 				# to the *boot time* of the host).
 				hwclock -s
 			'';
-
 			availableKernelModules = [
 				"virtio_net"
 				"virtio_pci"

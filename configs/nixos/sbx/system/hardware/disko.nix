@@ -4,7 +4,7 @@
 
 		devices = {
 			disk.main = {
-				imageSize = "2G";
+				imageSize = "5G";
 				device = "/dev/vda";
 				type = "disk";
 				content = {
@@ -33,7 +33,7 @@
 								type = "filesystem";
 								format = "ext4";
 								mountpoint = "/";
-								mountOptions = ["compress-force=zstd" "nosuid" "nodev"];
+								mountOptions = ["nosuid" "nodev"];
 							};
 						};
 					};
@@ -46,7 +46,7 @@
 		"/" = {
 			device = "/dev/vda3";
 			fsType = "ext4";
-			options = ["compress-force=zstd" "nosuid" "nodev"];
+			options = ["nosuid" "nodev"];
 		};
 
 		"/boot" = {

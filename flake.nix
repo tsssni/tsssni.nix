@@ -2,9 +2,7 @@
 	description = "tsssni flake";
 
 	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-		nix-darwin = {
-			url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; nix-darwin = { url = "github:LnL7/nix-darwin/nix-darwin-24.11";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 		home-manager = {
@@ -26,7 +24,7 @@
 			inputs.darwin.follows = "nix-darwin";
 		};
 		disko = {
-			url = "github:nix-community/disko/v1.9.0";
+			url = "github:nix-community/disko/v1.10.0";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
