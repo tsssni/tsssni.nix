@@ -2,5 +2,7 @@
 	...
 }:
 {
-	imports = [];
+	imports = [
+		../system
+	];
 }
