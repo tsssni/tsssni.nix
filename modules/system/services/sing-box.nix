@@ -90,7 +90,6 @@ in
 						tls = {
 							enabled = true;
 							server_name._secret = config.age.secrets."sbx-server".path;
-							utls.enabled = true;
 						};
 					}
 					{
@@ -110,14 +109,6 @@ in
 						}
 						{
 							ip_is_private = true;
-							outbound = "direct";
-						}
-						{
-							port = 22;
-							outbound = "direct";
-						}
-						{
-							port = 2222;
 							outbound = "direct";
 						}
 						{

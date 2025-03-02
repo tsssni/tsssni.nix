@@ -27,7 +27,7 @@ in
 	config = mkIf cfg.enable {
 		environment.systemPackages = [ cfg.package ];
 
-		launchd.user.agents.v2raya = {
+		launchd.agents.v2raya = {
 			serviceConfig = {
 				EnvironmentVariables = {
 					V2RAYA_LOG_FILE = "/tmp/v2raya.log";

@@ -80,7 +80,7 @@ with lib;
 			}
 		];
 
-		launchd.user.agents.v2ray = {
+		launchd.agents.v2ray = {
 			serviceConfig = {
 				ProgramArguments = [ "${cfg.package}/bin/v2ray" "run" "-c" "${configFile}" ];
 				KeepAlive = true;
