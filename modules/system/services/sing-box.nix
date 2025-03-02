@@ -62,7 +62,6 @@ in
 				inbounds = [
 					{
 						type = "tun";
-						interface_name = "tun0";
 						address = [
 							"172.19.0.1/30"
 							"fdfe:dcba:9876::1/126"
