@@ -61,24 +61,17 @@ in
 				};
 				inbounds = [
 					{
-						type = "mixed";
-						tag = "mixed-in";
-						listen = "127.0.0.1";
-						listen_port = 7890;
-						sniff = true;
+						type = "tun";
+						interface_name = "tun0";
+						address = [
+							"172.19.0.1/30"
+							"fdfe:dcba:9876::1/126"
+						];
+						auto_route = true;
+						strict_route = false;
 					}
 				];
 				outbounds = [
-					{
-						type = "selector";
-						tag = "select";
-						outbounds = [
-							"wired"
-							"direct"
-						];
-						default = "wired";
-						interrupt_exist_connections = false;
-					}
 					{
 						type = "hysteria2";
 						tag = "wired";
@@ -98,14 +91,18 @@ in
 					}
 					{
 						type = "dns";
-						tag = "dns";
+						tag = "dns-out";
 					}
 				];
 				route = {
 					rules = [
 						{
+							port = [ 53 ];
+							outbound = "dns-out";
+						}
+						{
 							protocol = "dns";
-							outbound = "dns";
+							outbound = "dns-out";
 						}
 						{
 							ip_is_private = true;

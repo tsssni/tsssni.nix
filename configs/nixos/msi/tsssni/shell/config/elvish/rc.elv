@@ -25,8 +25,6 @@ var set-tab-title = {|@args|
 }
 
 set-env EDITOR nvim
-set-env http_proxy 'http://127.0.0.1:7890'
-set-env https_proxy 'http://127.0.0.1:7890'
 
 if (==s $E:TERM 'xterm-kitty') {
 	set edit:before-readline = [ $set-base-name ]
