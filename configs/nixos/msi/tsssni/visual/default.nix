@@ -1,16 +1,10 @@
+{ ... }:
 {
-  pkgs
-, ...
-}:
-{
-	home.packages = with pkgs; [ 
-		wl-clipboard
-	];
-
 	imports = [
-		./fcitx.nix
-		./hyprland.nix
 		./ags.nix
+		./fcitx.nix
+		./film.nix
+		./hyprland.nix
 		./theme.nix
 		./yoasobi.nix
 	];

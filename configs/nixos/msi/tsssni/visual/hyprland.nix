@@ -135,17 +135,6 @@
 				"SUPERSHIFT, 4, movetoworkspace, 4"
 				"SUPERSHIFT, 5, movetoworkspace, 5"
 			];
-			env = [
-				"XCURSOR_SIZE,24"
-				"XCURSOR_THEME,macOS"
-				"QT_QPA_PLATFORMTHEME,qt5ct"
-
-				# gpu
-				"LIBVA_DRIVER_NAME,nvidia"
-				"XDG_SESSION_TYPE,wayland"
-				"GBM_BACKEND,nvidia-drm"
-				"__GLX_VENDOR_LIBRARY_NAME,nvidia"
-			];
 			exec-once = [
 				# wallpaper
 				"swww init; swww img ~/.config/hypr/wallpaper/plana.jpeg --transition-type none"
@@ -161,6 +150,7 @@
 			grim
 			slurp
 			hyprsunset
+			wl-clipboard
 		];
 
 		file.".config/hypr/wallpaper" = {
@@ -168,7 +158,7 @@
 			recursive = true;
 		};
 	};
-	
+
 	xdg.portal = {
 		enable = true;
 		xdgOpenUsePortal = true;
