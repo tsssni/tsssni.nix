@@ -8,7 +8,6 @@
 		./kernel.nix
 		./loader.nix
 		./loctime.nix
-		./packages.nix
 		./state-version.nix
 		./users.nix
 	];

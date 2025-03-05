@@ -33,6 +33,24 @@
 						key_path._secret = config.age.secrets."sbx-key".path;
 					};
 				}
+				{
+					type = "trojan";
+					listen = "::";
+					listen_port = 443;
+					users = [
+						{
+							name._secret = config.age.secrets."sbx-name".path;
+							password._secret = config.age.secrets."sbx-passwd".path;
+						}
+					];
+					tls = {
+						enabled = true;
+						server_name._secret = config.age.secrets."sbx-server".path;
+						certificate_path._secret = config.age.secrets."sbx-cert".path;
+						key_path._secret = config.age.secrets."sbx-key".path;
+					};
+					multiplex.enabled = true;
+				}
 			];
 		};
 	};
