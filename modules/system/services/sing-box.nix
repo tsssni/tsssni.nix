@@ -88,20 +88,15 @@ in
 						type = "direct";
 						tag = "direct";
 					}
-					{
-						type = "dns";
-						tag = "dns-out";
-					}
 				];
 				route = {
 					rules = [
 						{
-							port = [ 53 ];
-							outbound = "dns-out";
+							action = "sniff";
 						}
 						{
 							protocol = "dns";
-							outbound = "dns-out";
+							action = "hijack-dns";
 						}
 						{
 							ip_is_private = true;

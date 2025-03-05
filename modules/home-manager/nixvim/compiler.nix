@@ -1,8 +1,8 @@
 {
   pkgs
-, tsssni
 , lib
 , config
+, tsssni
 , ...
 }:
 let

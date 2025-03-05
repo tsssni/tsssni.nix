@@ -33,6 +33,7 @@ in with lib; {
 		programs.nixvim = {
 			enable = true;
 			defaultEditor = true;
+			nixpkgs.useGlobalPackages = true;
 			colorscheme = cfg.colorscheme;
 			extraPlugins = []
 			++ (with pkgs.vimPlugins; [ 

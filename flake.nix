@@ -2,42 +2,38 @@
 	description = "tsssni flake";
 
 	inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11"; nix-darwin = { url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+		nix-darwin = {
+			url = "github:LnL7/nix-darwin";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 		home-manager = {
-			url = "github:nix-community/home-manager/release-24.11";
+			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 		nixvim = {
-			url = "github:nix-community/nixvim/nixos-24.11";
+			url = "github:nix-community/nixvim";
 			inputs.nixpkgs.follows = "nixpkgs";
-			inputs.nix-darwin.follows = "nix-darwin";
 		};
 		ags = {
 			url = "github:Aylur/ags/v1";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 		agenix = {
-			url = "github:ryantm/agenix/e600439";
+			url = "github:ryantm/agenix";
 			inputs.nixpkgs.follows = "nixpkgs";
 			inputs.darwin.follows = "nix-darwin";
 		};
 		disko = {
-			url = "github:nix-community/disko/v1.10.0";
+			url = "github:nix-community/disko";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
 
 	outputs = {
-		nixpkgs
-		, nix-darwin
-		, home-manager
-		, nixvim
-		, ags
-		, agenix
-		, disko
-		, self
+		self
+		, nixpkgs
+		, ...
 	}@inputs: 
 	let
 		lib = inputs.nixpkgs.lib;

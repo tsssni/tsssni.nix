@@ -6,7 +6,7 @@
 	home = {
 		packages = with pkgs; [
 			# fonts
-			(nerdfonts.override { fonts = [ "Monaspace" ]; })
+			nerd-fonts.monaspace
 			noto-fonts
 			noto-fonts-cjk-sans
 			noto-fonts-color-emoji

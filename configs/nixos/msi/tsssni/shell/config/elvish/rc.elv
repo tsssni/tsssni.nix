@@ -40,4 +40,5 @@ if (==s $E:TERM 'xterm-kitty') {
 	set edit:after-readline = [ $set-tab-title ]
 }
 
-eval (oh-my-posh init elvish -c $E:HOME/.config/oh-my-posh/config.json)
+eval (oh-my-posh init elvish)
+echo " " # fix omp newline
