@@ -2,7 +2,7 @@
 
 ![md0](./configs/nixos/msi/tsssni/visual/md0.png)
 
-![md1](./configs/nixos/mis/tsssni/visual/md1.png)
+![md1](./configs/nixos/msi/tsssni/visual/md1.png)
 
 ## Intro
 
