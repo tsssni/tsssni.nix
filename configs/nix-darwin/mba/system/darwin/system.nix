@@ -5,6 +5,8 @@
 		home = "/Users/tsssni";
 	};
 
-	system.stateVersion = 5;
+	ids.gids.nixbld = 30000;
+
+	system.stateVersion = 6;
 }
 

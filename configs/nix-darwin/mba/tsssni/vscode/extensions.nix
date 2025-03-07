@@ -6,9 +6,9 @@
 {
 	programs.vscode = {
 		enable = true;
-		extensions = []
+		profiles.default.extensions = []
 			++ (with pkgs.vscode-extensions; [
-				ms-python.python
+				# ms-python.python
 				ms-vscode.cpptools-extension-pack
 				ms-vscode-remote.remote-ssh
 				asvetliakov.vscode-neovim

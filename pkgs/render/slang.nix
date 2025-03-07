@@ -5,6 +5,7 @@
 , cmake
 , ninja
 , python3
+, libllvm
 }:
 stdenv.mkDerivation rec {
 	pname = "slang";
@@ -18,10 +19,14 @@ stdenv.mkDerivation rec {
 		hash = "sha256-yNPAJX7OxxQLXDm3s7Hx5QA9fxy1qbAMp4LKYVqxMVM=";
 	};
 
-	nativeBuildInputs = [ 
+	nativeBuildInputs = []
+	++ [ 
 		cmake
 		ninja
 		python3
+	]
+	++ lib.optionals stdenv.hostPlatform.isDarwin [
+		libllvm
 	];
 
 	cmakeFlags = [
@@ -38,12 +43,12 @@ stdenv.mkDerivation rec {
 
 	buildPhase = ''
 		cd ..
-		cmake --build --preset releaseWithDebugInfo
+		cmake --build --preset release
 	'';
 
 	installPhase = ''
 		mkdir -p $out
-		cp -r build/RelWithDebInfo/* $out/
+		cp -r build/release/* $out/
 	'';
 
 	meta = with lib; {

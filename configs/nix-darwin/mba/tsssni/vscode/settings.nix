@@ -1,6 +1,6 @@
 { ... }:
 {
-	programs.vscode = {
+	programs.vscode.profiles.default = {
 		enableUpdateCheck = false;
 		enableExtensionUpdateCheck = false;
 		userSettings = {
