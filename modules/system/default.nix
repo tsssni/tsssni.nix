@@ -2,5 +2,6 @@
 {
 	imports = [
 		./services
+		./nix
 	];
 }

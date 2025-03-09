@@ -17,6 +17,7 @@ let
 			tsssni = {
 				inherit
 					func
+					distro
 					system;
 				pkgs = tsssni.pkgs { 
 					localSystem = system;

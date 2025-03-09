@@ -10,6 +10,5 @@
 
 	imports = [
 		./nixvim
-		./nix
 	];
 }
