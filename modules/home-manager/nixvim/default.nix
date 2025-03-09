@@ -29,7 +29,7 @@ in with lib; {
 		};
 	};
 
-	config = lib.mkIf cfg.enable {
+	config = mkIf cfg.enable {
 		programs.nixvim = {
 			enable = true;
 			defaultEditor = true;
@@ -39,12 +39,13 @@ in with lib; {
 			++ (with pkgs.vimPlugins; [ 
 				nvim-web-devicons
 				lush-nvim
+				tokyonight-nvim
+				sonokai
 			]) 
 			++ (with tsssni.pkgs.vimPlugins; [
-				incline-nvim
 				cyyber-nvim
 				eldritch-nvim
-				sonokai
+				incline-nvim
 			]);
 		};
 	};

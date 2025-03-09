@@ -11,36 +11,27 @@ with pkgs; {
 		src = fetchFromGitHub {
 			owner = "tsssni";
 			repo = "cyyber.nvim";
-			rev = "2e3a220";
-			hash = "sha256-icgsISur8zORLNckg5FWzr4WNbasg1M7Mcxra3bU4Vg=";
+			rev = "b5006ce";
+			hash = "sha256-lIhl6Laba+Z6yzfId020glShs2FxR3A4VuMtS86WGeE=";
 		};
 		dependencies = [ pkgs.vimPlugins.lush-nvim ];
 	};
 	eldritch-nvim = build {
 		name = "eldritch.nvim";
 		src = fetchFromGitHub {
-			owner = "tsssni";
+			owner = "eldritch-theme";
 			repo = "eldritch.nvim";
-			rev = "2e44fc2";
-			hash = "sha256-cCyH/0lXkfvS0Cob5npiI2HCC902p7aYXi06jvOLY34=";
-		};
-	};
-	sonokai = build {
-		name = "sonokai";
-		src = fetchFromGitHub {
-			owner = "tsssni";
-			repo = "sonokai";
-			rev = "4d459c1";
-			hash = "sha256-Ic3QLJQ2n5PAFEe0BioGqYga1PW6S0W0OCGZ5eM0GjE=";
+			rev = "adedead";
+			hash = "sha256-i0TG8yVRi1AZQS8ZOEXchYRxgU8UCNoHCmhOV8rBmX4=";
 		};
 	};
 	incline-nvim = build {
 		name = "incline";
 		src = fetchFromGitHub {
-			owner = "tsssni";
+			owner = "b0o";
 			repo = "incline.nvim";
-			rev = "87e6b4d";
-			hash = "sha256-Cqq7l7wJXLZl42EnDWoVz3Mc9NHY1B35gg/7XtrDdCo=";
+			rev = "0eb5b7f";
+			hash = "sha256-EeNvFa+Zrqgnp3Wtcwi4EdOgtnlZf9a68xPcYrH545k=";
 		};
 	};
 }

@@ -21,29 +21,23 @@ in {
 							left = "";
 							right = "";
 						};
-						theme = {
-							normal.c = "Lualine";
-							inactive.c = "Lualine";
-						};
 					};
 					sections = {
-						lualine_a = [ "" ];
-						lualine_b = [ "" ];
-						lualine_c = [
+						lualine_a = [
 							{
 								__unkeyed-1 = "mode";
 								icon = "󱄅";
-								color = "LualineMode";
 							}
+						];
+						lualine_b = [
 							{
 								__unkeyed-1 = "location";
 								icon = "";
-								color = "LualineRuler";
 							}
-							{
-								__unkeyed-1 = "progress";
-								color = "LualineRuler";
-							}
+							"progress"
+						];
+						lualine_c = [
+							"encoding"
 						];
 						lualine_x = [
 							{
@@ -65,8 +59,9 @@ in {
 									end
 								'';
 								icon = "⚙ LSP:";
-								color = "LualineLsp";
 							}
+						];
+						lualine_y = [
 							{
 								__unkeyed-1.__raw = ''
 									function()
@@ -179,15 +174,11 @@ in {
 									end
 								'';
 								icon = "󰊕 ->";
-								color = "LualineScope";
-							}
-							{
-								__unkeyed-1 = "branch";
-								color = "LualineBranch";
 							}
 						];
-						lualine_y = [ "" ];
-						lualine_z = [ "" ];
+						lualine_z = [
+							"branch"
+						];
 					};
 					inactiveSections = {
 						lualine_a = [ "" ];
