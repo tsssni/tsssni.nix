@@ -1,6 +1,7 @@
 { ... }:
 {
 	imports = [
-		./theme.nix
+		./deck.nix
+		./steam.nix
 	];
 }

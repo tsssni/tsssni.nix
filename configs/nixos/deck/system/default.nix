@@ -1,6 +1,8 @@
 { ... }:
 {
 	imports = [
-
+		./hardware
+		./system
+		./wired
 	];
 }

@@ -12,7 +12,6 @@
 		./devel
 		./nixvim
 		./shell
-		./visual
 		./wired
 	];
 }
