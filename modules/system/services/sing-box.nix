@@ -11,8 +11,14 @@ in with lib; {
 
 	config = mkIf cfg.enable {
 		age.secrets = {
-			"sbx-passwd".file = ./config/sbx-passwd.age;
-			"sbx-server".file = ./config/sbx-server.age;
+			"sbx-passwd" = {
+				file = ./config/sbx-passwd.age;
+				mode = "440";
+			};
+			"sbx-server" = {
+				file = ./config/sbx-server.age;
+				mode = "440";
+			};
 		};
 		services.sing-box = {
 			enable = true;
