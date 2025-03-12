@@ -6,10 +6,12 @@
 let
 	cfg = config.tsssni.kitty;
 	settingsValueType = with lib.types; oneOf [ str bool int float ];
+	file = "${cfg.theme}.nix";
 	themes = ./kitty-themes
 		|> builtins.readDir
 		|> lib.filterAttrs (file: type: type == "regular")
 		|> lib.attrNames;
+	customTheme = builtins.elem file themes;
 in with lib; {
 	options.tsssni.kitty = {
 		enable = mkEnableOption "tsssni.kitty";
@@ -52,6 +54,7 @@ in with lib; {
 			"ctrl+j" = "previous_tab";
 			"ctrl+k" = "next_tab";
 		};
+		themeFile = lib.optionalString (!customTheme) cfg.theme;
 		settings = {}
 		// {
 			# font
@@ -67,15 +70,7 @@ in with lib; {
 			confirm_os_window_close = 0;
 			macos_option_as_alt = "left";
 		}
-		// (
-			let 
-				file = "${cfg.theme}.nix";
-			in if (builtins.elem file themes) then
-				(import ./kitty-themes/${file})
-			else {
-				themeFile = "${cfg.theme}";
-			}
-		)
+		// (lib.optionalAttrs customTheme (import ./kitty-themes/${file}))
 		// cfg.extraSettings;
 	};
 }
