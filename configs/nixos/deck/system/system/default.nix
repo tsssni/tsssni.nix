@@ -5,6 +5,7 @@
 {
 	imports = [
 		(modulesPath + "/installer/scan/not-detected.nix")
+		./cpu.nix
 		./kernel.nix
 		./loader.nix
 		./loctime.nix
