@@ -41,11 +41,19 @@ in with lib; {
 					];
 					rules = [
 						{
+							rule_set = "geosite-cn";
+							server = "local";
+						}
+						{
+							rule_set = "geosite-geolocation-cn";
+							server = "local";
+						}
+						{
 							rule_set = "geosite-steam@cn";
 							server = "local";
 						}
 						{
-							rule_set = "geosite-cn";
+							rule_set = "geosite-category-games@cn";
 							server = "local";
 						}
 						{
@@ -113,14 +121,17 @@ in with lib; {
 						}
 						{
 							rule_set = [
-								"geosite-steam@cn"
 								"geoip-cn"
 								"geosite-cn"
+								"geosite-geolocation-cn"
+								"geosite-steam@cn"
+								"geosite-category-games@cn"
 							];
 							outbound = "direct";
 						}
 						{
 							domain_keyword = [
+								"steamserver"
 								"bilibili"
 								"zju"
 								"cc98"
@@ -131,9 +142,9 @@ in with lib; {
 					rule_set = [
 						{
 							type = "local";
-							tag = "geosite-steam@cn";
+							tag = "geoip-cn";
 							format = "binary";
-							path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-steam@cn.srs";
+							path = "${pkgs.sing-geoip}/share/sing-box/rule-set/geoip-cn.srs";
 						}
 						{
 							type = "local";
@@ -143,9 +154,21 @@ in with lib; {
 						}
 						{
 							type = "local";
-							tag = "geoip-cn";
+							tag = "geosite-geolocation-cn";
 							format = "binary";
-							path = "${pkgs.sing-geoip}/share/sing-box/rule-set/geoip-cn.srs";
+							path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-geolocation-cn.srs";
+						}
+						{
+							type = "local";
+							tag = "geosite-category-games@cn";
+							format = "binary";
+							path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-category-games@cn.srs";
+						}
+						{
+							type = "local";
+							tag = "geosite-steam@cn";
+							format = "binary";
+							path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-steam@cn.srs";
 						}
 					];
 					auto_detect_interface = true;
