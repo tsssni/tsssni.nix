@@ -54,7 +54,7 @@ in with lib; {
 			"ctrl+j" = "previous_tab";
 			"ctrl+k" = "next_tab";
 		};
-		themeFile = lib.optionalString (!customTheme) cfg.theme;
+		themeFile = if customTheme then null else cfg.theme;
 		settings = {}
 		// {
 			# font

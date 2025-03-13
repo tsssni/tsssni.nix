@@ -41,6 +41,10 @@ in with lib; {
 					];
 					rules = [
 						{
+							rule_set = "geosite-steam@cn";
+							server = "local";
+						}
+						{
 							rule_set = "geosite-cn";
 							server = "local";
 						}
@@ -109,6 +113,7 @@ in with lib; {
 						}
 						{
 							rule_set = [
+								"geosite-steam@cn"
 								"geoip-cn"
 								"geosite-cn"
 							];
@@ -124,6 +129,12 @@ in with lib; {
 						}
 					];
 					rule_set = [
+						{
+							type = "local";
+							tag = "geosite-steam@cn";
+							format = "binary";
+							path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-steam@cn.srs";
+						}
 						{
 							type = "local";
 							tag = "geosite-cn";
