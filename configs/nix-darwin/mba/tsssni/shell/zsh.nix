@@ -13,7 +13,7 @@
 			save = 114514;
 		};
 		shellAliases = {
-			fastfetch = "fastfetch --lib-vulkan ${pkgs.darwin.moltenvk}/lib/libMoltenVK.dylib --lib-imagemagick ${pkgs.imagemagick}/lib/libMagickCore-7.Q16HDRI.dylib";
+			fastfetch = "DYLD_LIBRARY_PATH=${pkgs.darwin.moltenvk}/lib fastfetch";
 		};
 		initExtra = ''
 			export EDITOR="nvim"

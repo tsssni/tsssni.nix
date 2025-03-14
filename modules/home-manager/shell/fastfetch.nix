@@ -1,11 +1,12 @@
 {
-  pkgs
-, lib
+  lib
 , config
 , ...
 }:
 let
 	cfg = config.tsssni.fastfetch;
+	isNixOS = cfg.logo == "tsssni-nixos";
+	isDarwin = cfg.logo == "tsssni-nix-darwin";
 in with lib; {
 	options.tsssni.fastfetch = {
 		enable = mkEnableOption "tsssni.fastfetch";
@@ -22,7 +23,7 @@ in with lib; {
 			enable = true;
 			settings = {
 				logo = if false then ""
-				else if (cfg.logo == "tsssni-nixos") then {
+				else if isNixOS then {
 					type = "file";
 					source = "${config.home.homeDirectory}/.config/fastfetch/nix-small.txt";
 					color = {
@@ -30,7 +31,7 @@ in with lib; {
 						"2" = "light_cyan";
 					};
 				}
-				else if (cfg.logo == "tsssni-nix-darwin") then {
+				else if isDarwin then {
 					type = "kitty";
 					source = "${config.home.homeDirectory}/.config/fastfetch/nix-darwin.png";
 					width = 16;
@@ -42,7 +43,13 @@ in with lib; {
 					type = "small";
 				};
 
-				modules = [
+				modules = []
+				++ lib.optionals isDarwin [
+					{
+						type = "break";
+					}
+				]
+				++ [
 					{
 						type = "os";
 						format = "{2} {9}";
@@ -94,10 +101,6 @@ in with lib; {
 				source = ./config/fastfetch;
 				recursive = true;
 			};
-			packages = with pkgs; [ 
-				vulkan-tools 
-				imagemagick 
-			];
 		};
 	};
 }
