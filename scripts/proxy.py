@@ -21,6 +21,8 @@ pl = plistlib.loads(NIX_DAEMON_PLIST.read_bytes())
 # set http/https proxy
 # NOTE: curl only accept the lowercase of `http_proxy`!
 # NOTE: https://curl.se/libcurl/c/libcurl-env.html
+if "EnvironmentVariables" not in pl:
+    pl["EnvironmentVariables"] = {}
 pl["EnvironmentVariables"]["http_proxy"] = HTTP_PROXY
 pl["EnvironmentVariables"]["https_proxy"] = HTTP_PROXY
 
