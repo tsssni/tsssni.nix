@@ -9,14 +9,14 @@
 }:
 stdenv.mkDerivation rec {
 	pname = "slang";
-	version = "2025.6.1";
+	version = "2025.6.2";
 
 	src = fetchFromGitHub {
 		owner = "shader-slang";
 		repo = "slang";
 		tag = "v${version}";
 		fetchSubmodules = true;
-		hash = "sha256-yNPAJX7OxxQLXDm3s7Hx5QA9fxy1qbAMp4LKYVqxMVM=";
+		hash = "sha256-C5kfoybaEL2JpOTsyeb4c8k8WLhr99N8ssiewO05af8=";
 	};
 
 	nativeBuildInputs = []
@@ -54,7 +54,10 @@ stdenv.mkDerivation rec {
 	meta = with lib; {
 		description = "Making it easier to work with shaders";
 		homepage = "shader-slang.com";
-		license = licenses.asl20-llvm;
+		license = with licenses; [
+			asl20
+			llvm-exception
+		];
 		platforms = platforms.linux ++ platforms.darwin ++ platforms.windows;
 	};
 }
