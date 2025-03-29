@@ -59,17 +59,15 @@ in {
 						package = tsssni.pkgs.slang;
 					};
 					cmake.enable = true;
-					lua_ls.enable = true;
 					nixd.enable = true;
-					pylyzer.enable = true;
+					lua_ls.enable = true;
 				};
 			};
-			dap.enable = true;
 			blink-cmp = {
 				enable = true;
 				settings = {
 					keymap = {
-						"<Enter>" = ["select_and_accept"];
+						"<Enter>" = ["select_and_accept" "fallback"];
 						"<C-u>" = ["scroll_documentation_up"];
 						"<C-d>" = ["scroll_documentation_down"];
 						"<C-n>" = ["select_next"];
@@ -114,41 +112,11 @@ in {
 			hlsl = "hlsl";
 		};
 
-		keymaps = [
-			{
-				mode = [ "n" ];
-				key = "<leader>c";
-				action.__raw = "require('dap').continue";
-			}
-			{
-				mode = [ "n" ];
-				key = "<leader>ov";
-				action.__raw = "require('dap').step_over";
-			}
-			{
-				mode = [ "n" ];
-				key = "<leader>i";
-				action.__raw = "require('dap').step_into";
-			}
-			{
-				mode = [ "n" ];
-				key = "<leader>ot";
-				action.__raw = "require('dap').step_out";
-			}
-			{
-				mode = [ "n" ];
-				key = "<leader>b";
-				action.__raw = "require('dap').toggle_breakpoint";
-			}
-		];
-
-		extraConfigLua = ''
-			vim.fn.sign_define('DapBreakpoint', { text='', texthl='DiagnosticError' })
-			vim.fn.sign_define('DiagnosticSignError', { text='', texthl='DiagnosticError' })
-			vim.fn.sign_define('DiagnosticSignWarn', { text='', texthl='DiagnosticWarn' })
-			vim.fn.sign_define('DiagnosticSignInfo', { text='', texthl='DiagnosticInfo' })
-			vim.fn.sign_define('DiagnosticSignHint', { text='', texthl='DiagnosticHint' })
-		'';
+		diagnostics = {
+			virtual_lines = true;
+			virtual_text = false;
+			signs.text = ["" "" "" ""];
+		};
 	};
 
 	home.packages = with pkgs; [
