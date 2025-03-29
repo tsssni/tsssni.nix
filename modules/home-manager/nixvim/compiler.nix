@@ -22,7 +22,7 @@ in {
 						enable = true;
 						keymaps = {
 							init_selection = "<C-s>";
-							node_incremental = "<C-n>";
+							node_incremental = "<C-u>";
 							node_decremental = "<C-d>";
 						};
 					};
@@ -62,61 +62,55 @@ in {
 					lua_ls.enable = true;
 					nixd.enable = true;
 					pylyzer.enable = true;
-					ts_ls.enable = true;
-					rust_analyzer = {
-						enable = true;
-						installRustc = true;
-						installCargo = true;
-					};
 				};
 			};
 			dap.enable = true;
-			cmp = {
+			blink-cmp = {
 				enable = true;
-				autoEnableSources = true;
-				cmdline = {
-					"/" = {
-						mapping.__raw = "cmp.mapping.preset.cmdline()";
-						sources = [ { name = "buffer"; } ];
-					};
-					":" = {
-						mapping.__raw = "cmp.mapping.preset.cmdline()";
-						sources = [
-							{ name = "path"; }
-							{ name = "cmdline"; }
+				settings = {
+					keymap = {
+						"<Enter>" = ["select_and_accept"];
+						"<C-u>" = ["scroll_documentation_up"];
+						"<C-d>" = ["scroll_documentation_down"];
+						"<C-n>" = ["select_next"];
+						"<C-p>" = ["select_prev"];
+						"<C-space>" = [
+							"show"
+							"show_documentation"
+							"hide_documentation"
 						];
 					};
-				};
-				settings = {
-					snippet.expand.__raw = ''
-						function(args)
-							require'luasnip'.lsp_expand(args.body)
-						end
-					'';
-					sources = [
-							{ name = "nvim_lsp"; }
-							{ name = "nvim_lsp_signature_help"; }
-							{ name = "nvim_lsp_document_symbol"; }
-							{ name = "luasnip"; }
-							{ name = "buffer"; }
-							{ name = "path"; }
-					];
-					mapping = {
-						"<C-n>".__raw = "cmp.mapping.select_next_item()";
-						"<C-p>".__raw = "cmp.mapping.select_prev_item()";
-						"<C-d>".__raw = "cmp.mapping.scroll_docs(4)";
-						"<C-u>".__raw = "cmp.mapping.scroll_docs(-4)";
-						"<C-e>".__raw = "cmp.mapping.abort()";
-						"<CR>".__raw = "cmp.mapping.confirm{ select = true }";
+					cmdline.enabled = true;
+					sources = {
+						default = [
+							"lsp"
+							"buffer"
+							"path"
+							# "copilot"
+						];
+						# providers.copilot = {
+						# 	async = true;
+						# 	module = "blink-copilot";
+						# 	name = "copilot";
+						# 	score_offset = 100;
+						# };
 					};
 				};
 			};
-			luasnip.enable = true;
+			# blink-copilot.enable = true;
+			# copilot-lua = {
+			# 	enable = true;
+			# 	settings = {
+			# 		panel.enabled = false;
+			# 		suggestion.enabled = false;
+			# 	};
+			# };
 			nvim-autopairs.enable = true;
 		};
 
 		filetype.extension = {
 			slang = "shaderslang";
+			glsl = "glsl";
 			hlsl = "hlsl";
 		};
 
@@ -156,9 +150,8 @@ in {
 			vim.fn.sign_define('DiagnosticSignHint', { text='', texthl='DiagnosticHint' })
 		'';
 	};
-	home = {
-		packages = with pkgs; [
-			lldb
-		];
-	};
+
+	home.packages = with pkgs; [
+		copilot-language-server
+	];
 }
