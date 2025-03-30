@@ -117,6 +117,14 @@ in {
 			virtual_text = false;
 			signs.text = ["" "" "" ""];
 		};
+
+		keymaps = [
+			{
+				mode = "n";
+				key = "<A-d>";
+				action = ":lua vim.diagnostic.setloclist()<CR>";
+			}
+		];
 	};
 
 	home.packages = with pkgs; [
