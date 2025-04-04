@@ -4,6 +4,6 @@
 }:
 {
 	home.packages = with pkgs; [ 
-		wireguard-tools
+		# wireguard-tools
 	];
 }
