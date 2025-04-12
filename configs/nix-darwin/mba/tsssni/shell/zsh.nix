@@ -20,6 +20,7 @@
 		};
 		shellAliases = {
 			fastfetch = "DYLD_LIBRARY_PATH=${pkgs.darwin.moltenvk}/lib fastfetch";
+			ls = "ls --color";
 		};
 		sessionVariables = {
 			EDITOR = "nvim";
