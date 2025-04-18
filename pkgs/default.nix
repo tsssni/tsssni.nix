@@ -1,8 +1,8 @@
 { 
-	nixpkgs
+  nixpkgs
 }:
 {
-	localSystem
+  localSystem
 , crossSystem ? localSystem
 , config ? {}
 }:
