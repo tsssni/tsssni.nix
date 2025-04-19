@@ -84,25 +84,25 @@ in {
 							"lsp"
 							"buffer"
 							"path"
-							# "copilot"
+							"copilot"
 						];
-						# providers.copilot = {
-						# 	async = true;
-						# 	module = "blink-copilot";
-						# 	name = "copilot";
-						# 	score_offset = 100;
-						# };
+						providers.copilot = {
+							async = true;
+							module = "blink-copilot";
+							name = "copilot";
+							score_offset = 100;
+						};
 					};
 				};
 			};
-			# blink-copilot.enable = true;
-			# copilot-lua = {
-			# 	enable = true;
-			# 	settings = {
-			# 		panel.enabled = false;
-			# 		suggestion.enabled = false;
-			# 	};
-			# };
+			blink-copilot.enable = true;
+			copilot-lua = {
+				enable = true;
+				settings = {
+					panel.enabled = false;
+					suggestion.enabled = false;
+				};
+			};
 			nvim-autopairs.enable = true;
 		};
 
@@ -129,5 +129,6 @@ in {
 
 	home.packages = with pkgs; [
 		copilot-language-server
+		lldb
 	];
 }
