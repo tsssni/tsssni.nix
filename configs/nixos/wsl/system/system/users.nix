@@ -3,8 +3,6 @@
 , ...
 }:
 {
-	programs.nushell.enable = true;
-
 	users.users.wsl = {
 		name = "wsl";
 		home = "/home/wsl";
