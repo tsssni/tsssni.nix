@@ -8,7 +8,7 @@
 
 	programs.home-manager.enable = true;
 
-	imports = [ 
+	imports = [
 		./aesth
 		./devel
 		./nixvim

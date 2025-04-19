@@ -1,0 +1,4 @@
+{ ... }:
+{
+	tsssni.omp.enable = true;
+}

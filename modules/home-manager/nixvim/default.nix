@@ -40,6 +40,7 @@ in with lib; {
 				nvim-web-devicons
 				lush-nvim
 				tokyonight-nvim
+				bluloco-nvim
 				sonokai
 			]) 
 			++ (with tsssni.pkgs.vimPlugins; [

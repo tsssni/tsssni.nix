@@ -7,6 +7,10 @@
 			url = "github:LnL7/nix-darwin";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+		nixos-wsl = {
+			url = "github:nix-community/NixOS-WSL";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 		home-manager = {
 			url = "github:nix-community/home-manager";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -57,7 +61,7 @@
 			|> lib.mapAttrs (dir: _: (
 				import ./configs/${distro}/${dir}/rebuild.nix (configArgs // { func = dir; })
 			));
-	in {
+	in rec {
 		pkgs = import ./pkgs { inherit nixpkgs; };
 		lib = import ./lib { inherit lib; };
 		nixosModules = {
@@ -75,5 +79,6 @@
 		nixosConfigurations = collectConfigs "nixos";
 		darwinConfigurations = collectConfigs "nix-darwin";
 		homeConfigurations = collectConfigs "home-manager";
+		packages."x86_64-linuxe".default = nixosConfigurations.wsl;
 	};
 }

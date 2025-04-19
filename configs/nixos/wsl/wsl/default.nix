@@ -1,8 +1,8 @@
 { ... }:
 {
 	home = {
-		username = "deck";
-		homeDirectory = "/home/deck";
+		username = "wsl";
+		homeDirectory = "/home/wsl";
 		stateVersion = "24.11";
 	};
 

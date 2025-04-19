@@ -1,0 +1,7 @@
+{ ... }:
+{
+	imports = [
+		./system
+		./wired
+	];
+}
