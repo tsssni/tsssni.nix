@@ -8,7 +8,7 @@
 
 let
 	cfg = config.services.sing-box;
-	settingsFormat = pkgs.formats.json { };
+	settingsFormat = pkgs.formats.json {};
 	inherit (tsssni.lib.utils pkgs) genJqSecretsReplacementSnippet;
 in {
 	options.services.sing-box = {
@@ -18,7 +18,7 @@ in {
 			type = lib.types.submodule {
 				freeformType = settingsFormat.type;
 			};
-			default = { };
+			default = {};
 			description = ''
 				The sing-box configuration, see https://sing-box.sagernet.org/configuration/ for documentation.
 

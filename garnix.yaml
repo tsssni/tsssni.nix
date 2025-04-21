@@ -1,4 +1,5 @@
 builds:
   include:
     - nixosConfigurations.*
+    - darwinConfigurations.*
     - homeConfigurations.*

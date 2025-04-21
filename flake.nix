@@ -61,7 +61,7 @@
 			|> lib.mapAttrs (dir: _: (
 				import ./configs/${distro}/${dir}/rebuild.nix (configArgs // { func = dir; })
 			));
-	in rec {
+	in {
 		pkgs = import ./pkgs { inherit nixpkgs; };
 		lib = import ./lib { inherit lib; };
 		nixosModules = {
@@ -79,6 +79,5 @@
 		nixosConfigurations = collectConfigs "nixos";
 		darwinConfigurations = collectConfigs "nix-darwin";
 		homeConfigurations = collectConfigs "home-manager";
-		packages."x86_64-linuxe".default = nixosConfigurations.wsl;
 	};
 }
