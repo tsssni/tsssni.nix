@@ -127,8 +127,14 @@ in {
 		];
 	};
 
-	home.packages = with pkgs; [
-		copilot-language-server
-		lldb
-	];
+	home = {
+		file.".config/clangd" = {
+			source = ./config/clangd;
+			recursive = true;
+		};
+		packages = with pkgs; [
+			copilot-language-server
+			lldb
+		];
+	};
 }
