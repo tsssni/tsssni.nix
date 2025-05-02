@@ -5,6 +5,7 @@
 		./nix
 		./nixvim
 		./shell
+		./visual
 		./wired
 	];
 }

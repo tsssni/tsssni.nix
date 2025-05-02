@@ -1,16 +1,11 @@
 {
   pkgs
+, config
 , ...
 }:
 {
 	home = {
 		packages = with pkgs; [
-			# fonts
-			nerd-fonts.monaspace
-			noto-fonts
-			noto-fonts-cjk-sans
-			noto-fonts-color-emoji
-			# for gtk
 			dconf
 		];
 
@@ -35,7 +30,7 @@
 			package = pkgs.fluent-icon-theme;
 		};
 
-		font.name = "MonaspiceNe Nerd Font Medium 12";
+		font = config.tsssni.visual.font.latinFont;
 
 		gtk2.extraConfig = "gtk-application-prefer-dark-theme = 1";
 		gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;

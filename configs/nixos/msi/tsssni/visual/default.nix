@@ -6,6 +6,7 @@
 		./film.nix
 		./hyprland.nix
 		./theme.nix
+		./visual.nix
 		./yoasobi.nix
 	];
 }

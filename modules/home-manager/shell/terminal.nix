@@ -21,12 +21,6 @@ in with lib; {
 			example = "cyyber";
 			description = "theme used by kitty";
 		};
-		font = mkOption {
-			type = types.str;
-			default = "";
-			example = "";
-			description = "font used by kitty";
-		};
 		extraSettings = mkOption {
 			type = types.attrsOf settingsValueType;
 			default = { };
@@ -58,7 +52,7 @@ in with lib; {
 		settings = {}
 		// {
 			# font
-			font_family = cfg.font;
+			font_family = config.tsssni.visual.font.latinFont.name;
 			bold_font = "auto";
 			italic_font = "auto";
 			bold_italic_font = "auto";
