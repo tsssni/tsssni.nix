@@ -4,10 +4,10 @@
 , ...
 }:
 let
-	cfg = config.tsssni.omp;
+	cfg = config.tsssni.prompt;
 in with lib; {
-	options.tsssni.omp = {
-		enable = mkEnableOption "tsssni.omp";
+	options.tsssni.prompt = {
+		enable = mkEnableOption "tsssni.prompt";
 	};
 
 	config = mkIf cfg.enable {

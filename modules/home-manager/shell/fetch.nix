@@ -4,12 +4,12 @@
 , ...
 }:
 let
-	cfg = config.tsssni.fastfetch;
+	cfg = config.tsssni.fetch;
 	isNixOS = cfg.logo == "tsssni-nixos";
 	isDarwin = cfg.logo == "tsssni-nix-darwin";
 in with lib; {
-	options.tsssni.fastfetch = {
-		enable = mkEnableOption "tsssni.fastfetch";
+	options.tsssni.fetch = {
+		enable = mkEnableOption "tsssni.fetch";
 		logo = mkOption {
 			type = types.str;
 			default = "tsssni-nixos";

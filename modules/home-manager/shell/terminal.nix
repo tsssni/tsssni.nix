@@ -4,7 +4,7 @@
 , ...
 }:
 let
-	cfg = config.tsssni.kitty;
+	cfg = config.tsssni.terminal;
 	settingsValueType = with lib.types; oneOf [ str bool int float ];
 	file = "${cfg.theme}.nix";
 	themes = ./kitty-themes
@@ -13,8 +13,8 @@ let
 		|> lib.attrNames;
 	customTheme = builtins.elem file themes;
 in with lib; {
-	options.tsssni.kitty = {
-		enable = mkEnableOption "tsssni.kitty";
+	options.tsssni.terminal = {
+		enable = mkEnableOption "tsssni.terminal";
 		theme = mkOption {
 			type = types.str;
 			default = "cyyber";

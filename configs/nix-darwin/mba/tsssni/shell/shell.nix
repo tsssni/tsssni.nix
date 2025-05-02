@@ -1,6 +1,6 @@
 { ... }:
 {
-	tsssni.kitty = {
+	tsssni.terminal = {
 		enable = true;
 		theme = "Eldritch";
 		extraSettings = {
@@ -8,5 +8,10 @@
 			background_opacity = "0.8";
 			background_blur = 16;
 		};
+	};
+	tsssni.prompt.enable = true;
+	tsssni.fetch = {
+		enable = true;
+		logo = "tsssni-nix-darwin";
 	};
 }
