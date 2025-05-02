@@ -1,13 +1,12 @@
 { ... }:
 {
-	tsssni.terminal = {
-		enable = true;
-		theme = "cyyber";
-		font = "MonaspiceNe Nerd Font";
-	};
-	tsssni.prompt.enable = true;
-	tsssni.fetch = {
-		enable = true;
-		logo = "tsssni-nixos";
+	tsssni.shell = {
+		terminal = {
+			enable = true;
+			theme = "cyyber";
+			font = "MonaspiceNe Nerd Font";
+		};
+		prompt.enable = true;
+		fetch.enable = true;
 	};
 }

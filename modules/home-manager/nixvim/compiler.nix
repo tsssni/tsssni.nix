@@ -112,7 +112,7 @@ in {
 			hlsl = "hlsl";
 		};
 
-		diagnostics = {
+		diagnostics.settings = {
 			virtual_lines = true;
 			virtual_text = false;
 			signs.text = ["" "" "" ""];

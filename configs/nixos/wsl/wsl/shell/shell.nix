@@ -1,8 +1,7 @@
 { ... }:
 {
-	tsssni.prompt.enable = true;
-	tsssni.fetch = {
-		enable = true;
-		logo = "tsssni-nixos";
+	tsssni.shell = {
+		prompt.enable = true;
+		fetch.enable = true;
 	};
 }

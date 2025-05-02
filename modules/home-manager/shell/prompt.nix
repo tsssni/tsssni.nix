@@ -4,10 +4,10 @@
 , ...
 }:
 let
-	cfg = config.tsssni.prompt;
+	cfg = config.tsssni.shell.prompt;
 in with lib; {
-	options.tsssni.prompt = {
-		enable = mkEnableOption "tsssni.prompt";
+	options.tsssni.shell.prompt = {
+		enable = mkEnableOption "tsssni.shell.prompt";
 	};
 
 	config = mkIf cfg.enable {

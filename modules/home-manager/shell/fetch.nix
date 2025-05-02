@@ -1,18 +1,17 @@
 {
-  lib
+pkgs
+, lib
 , config
 , ...
 }:
 let
-	cfg = config.tsssni.fetch;
-	isNixOS = cfg.logo == "tsssni-nixos";
-	isDarwin = cfg.logo == "tsssni-nix-darwin";
+	cfg = config.tsssni.shell.fetch;
 in with lib; {
-	options.tsssni.fetch = {
-		enable = mkEnableOption "tsssni.fetch";
+	options.tsssni.shell.fetch = {
+		enable = mkEnableOption "tsssni.shell.fetch";
 		logo = mkOption {
 			type = types.str;
-			default = "tsssni-nixos";
+			default = "";
 			example = "tsssni-nixos";
 			description = "logo used by fastfetch";
 		};
@@ -22,8 +21,8 @@ in with lib; {
 		programs.fastfetch = {
 			enable = true;
 			settings = {
-				logo = if false then ""
-				else if isNixOS then {
+				logo = if cfg.logo != "" then cfg.logo
+				else if pkgs.stdenv.isLinux then {
 					type = "file";
 					source = "${config.home.homeDirectory}/.config/fastfetch/nix-small.txt";
 					color = {
@@ -31,20 +30,17 @@ in with lib; {
 						"2" = "light_cyan";
 					};
 				}
-				else if isDarwin then {
+				else if pkgs.stdenv.isDarwin then {
 					type = "kitty";
 					source = "${config.home.homeDirectory}/.config/fastfetch/nix-darwin.png";
 					width = 16;
-				}
-				else if (cfg.logo != "") then {
-					type = cfg.logo;
 				}
 				else {
 					type = "small";
 				};
 
 				modules = []
-				++ lib.optionals isDarwin [
+				++ lib.optionals pkgs.stdenv.isDarwin [
 					{
 						type = "break";
 					}
