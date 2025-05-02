@@ -1,27 +1,27 @@
 { lib }:
-pkgs: with lib; rec {
+pkgs: rec {
 	recursiveGetAttrWithJqPrefix =
 		item: attr:
 		let
 			recurse =
 				prefix: item:
 				if item ? ${attr} then
-				nameValuePair prefix item.${attr}
-				else if isDerivation item then
+				lib.nameValuePair prefix item.${attr}
+				else if lib.isDerivation item then
 				[ ]
-				else if isAttrs item then
+				else if lib.isAttrs item then
 				map (
 					name:
 					let
-					escapedName = ''"${replaceStrings [ ''"'' "\\" ] [ ''\"'' "\\\\" ] name}"'';
+					escapedName = ''"${lib.replaceStrings [ ''"'' "\\" ] [ ''\"'' "\\\\" ] name}"'';
 					in
 					recurse (prefix + "." + escapedName) item.${name}
-				) (attrNames item)
-				else if isList item then
-				imap0 (index: item: recurse (prefix + "[${toString index}]") item) item
+				) (lib.attrNames item)
+				else if lib.isList item then
+				lib.imap0 (index: item: recurse (prefix + "[${toString index}]") item) item
 				else
 				[ ];
-		in listToAttrs (flatten (recurse "" item));
+		in lib.listToAttrs (lib.flatten (recurse "" item));
 
 	genJqSecretsReplacementSnippet = genJqSecretsReplacementSnippet' "_secret";
 
@@ -39,17 +39,17 @@ pkgs: with lib; rec {
 			shopt -pq inherit_errexit && inherit_errexit_enabled=1
 			shopt -s inherit_errexit
 		''
-		+ concatStringsSep "\n" (
-		imap1 (index: name: ''
+		+ lib.concatStringsSep "\n" (
+		lib.imap1 (index: name: ''
 			secret${toString index}=$(<'${secrets.${name}}')
 			export secret${toString index}
-		'') (attrNames secrets)
+		'') (lib.attrNames secrets)
 		)
 		+ "\n"
 		+ "${pkgs.jq}/bin/jq >'${output}' "
 		+ lib.escapeShellArg (
-		stringOrDefault (concatStringsSep " | " (
-			imap1 (index: name: ''${name} = $ENV.secret${toString index}'') (attrNames secrets)
+		stringOrDefault (lib.concatStringsSep " | " (
+			lib.imap1 (index: name: ''${name} = $ENV.secret${toString index}'') (lib.attrNames secrets)
 		)) "."
 		)
 		+ ''

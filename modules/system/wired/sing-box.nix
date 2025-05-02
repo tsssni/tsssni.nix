@@ -5,11 +5,13 @@
 , ...
 }:
 let
-	cfg = config.tsssni.services.sing-box;
-in with lib; {
-	options.tsssni.services.sing-box.enable = mkEnableOption "tsssni.sing-box";
+	cfg = config.tsssni.wired.sing-box;
+in {
+	options.tsssni.wired.sing-box = {
+		enable = lib.mkEnableOption "tsssni.wired.sing-box";
+	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		age.secrets = {
 			"sbx-passwd" = {
 				file = ./config/sbx-passwd.age;
