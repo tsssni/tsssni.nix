@@ -61,8 +61,6 @@
 				import ./configs/${distro}/${dir}/rebuild.nix (configArgs // { func = dir; })
 			));
 	in {
-		pkgs = import ./pkgs;
-		lib = import ./lib { inherit lib; };
 		nixosModules = {
 			tsssni = import ./modules/nixos;
 			default = self.nixosModules.tsssni;
