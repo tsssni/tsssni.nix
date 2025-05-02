@@ -1,6 +1,5 @@
 {
   pkgs
-, tsssni
 , lib
 , config
 , ...
@@ -42,8 +41,8 @@ in with lib; {
 				tokyonight-nvim
 				bluloco-nvim
 				sonokai
-			]) 
-			++ (with tsssni.pkgs.vimPlugins; [
+			])
+			++ (with pkgs.tsssni.vimPlugins; [
 				cyyber-nvim
 				eldritch-nvim
 				incline-nvim

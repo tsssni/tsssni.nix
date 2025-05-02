@@ -19,10 +19,6 @@ let
 					func
 					distro
 					system;
-				pkgs = tsssni.pkgs { 
-					localSystem = system;
-					config.allowUnfree = true;
-				};
 				lib = tsssni.lib;
 			};
 			inherit inputs;
@@ -62,7 +58,10 @@ in eval
 		]
 		++ extraSystemModules;
 } else {
-	pkgs = import inputs.nixpkgs { inherit system; };
+	pkgs = import inputs.nixpkgs {
+		inherit system;
+		overlays = [ tsssni.pkgs ];
+	};
 	extraSpecialArgs = specialArgs;
 	modules = homeManagerModules "${path}";
 })

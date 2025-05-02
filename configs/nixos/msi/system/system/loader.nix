@@ -1,5 +1,5 @@
 {
-  tsssni
+  pkgs
 , ...
 }:
 {
@@ -15,7 +15,7 @@
 					path = "/efi";
 				}
 			];
-			theme = tsssni.pkgs.plana-grub;
+			theme = pkgs.tsssni.plana-grub;
 			configurationLimit = 5;
 		};
 		efi = {

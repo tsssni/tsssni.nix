@@ -13,7 +13,6 @@
 		./devel
 		./nixvim
 		./shell
-		./vscode
 		./wired
 	];
 }
