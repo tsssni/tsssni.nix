@@ -52,6 +52,19 @@
 				nixosModules
 				darwinModules
 				homeManagerModules;
+				extraNixosModules = with inputs; [
+					agenix.nixosModules.age
+					disko.nixosModules.disko
+					nixos-wsl.nixosModules.wsl
+					jovian.nixosModules.jovian
+				];
+				extraDarwinModules = with inputs; [
+					agenix.darwinModules.age
+				];
+				extraHomeManagerModules = with inputs; [
+					ags.homeManagerModules.ags
+					nixvim.homeManagerModules.nixvim
+				];
 			};
 		};
 		collectConfigs = distro: ./configs/${distro}

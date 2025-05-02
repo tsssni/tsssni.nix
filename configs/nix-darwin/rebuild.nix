@@ -5,6 +5,7 @@ import ../rebuild.nix (args
 	eval = args.inputs.nix-darwin.lib.darwinSystem;
 	tsssni = args.tsssni // {
 		systemModules = args.tsssni.darwinModules.tsssni;
+		extraSystemModules = args.tsssni.extraDarwinModules;
 	};
 	inputs = args.inputs // {
 		home-manager = args.inputs.home-manager  // {
