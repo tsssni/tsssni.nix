@@ -11,6 +11,6 @@
 
 	imports = [
 		./firefox.nix
-		./ssh.nix
+		./wired.nix
 	];
 }

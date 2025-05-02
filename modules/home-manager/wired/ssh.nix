@@ -4,10 +4,10 @@
 , ...
 }:
 let
-	cfg = config.tsssni.ssh;
+	cfg = config.tsssni.wired.ssh;
 in with lib; {
-	options.tsssni.ssh = {
-		enable = mkEnableOption "tsssni.ssh";
+	options.tsssni.wired.ssh = {
+		enable = mkEnableOption "tsssni.wired.ssh";
 	};
 
 	config = mkIf cfg.enable {
