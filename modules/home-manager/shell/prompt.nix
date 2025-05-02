@@ -5,12 +5,12 @@
 }:
 let
 	cfg = config.tsssni.shell.prompt;
-in with lib; {
+in {
 	options.tsssni.shell.prompt = {
-		enable = mkEnableOption "tsssni.shell.prompt";
+		enable = lib.mkEnableOption "tsssni.shell.prompt";
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.oh-my-posh = {
 			enable = true;
 			settings = {

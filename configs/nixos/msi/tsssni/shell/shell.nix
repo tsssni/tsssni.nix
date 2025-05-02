@@ -1,11 +1,9 @@
 { ... }:
 {
 	tsssni.shell = {
-		terminal = {
-			enable = true;
-			theme = "cyyber";
-		};
-		prompt.enable = true;
 		fetch.enable = true;
+		prompt.enable = true;
+		shell.enable = true;
+		terminal.enable = true;
 	};
 }

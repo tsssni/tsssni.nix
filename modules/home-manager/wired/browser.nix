@@ -5,12 +5,12 @@
 }:
 let
 	cfg = config.tsssni.wired.browser;
-in with lib; {
+in {
 	options.tsssni.wired.browser = {
-		enable = mkEnableOption "tsssni.wired.browser";
+		enable = lib.mkEnableOption "tsssni.wired.browser";
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.firefox.enable = true;
 	};
 }

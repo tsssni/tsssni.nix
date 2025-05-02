@@ -217,13 +217,19 @@ in  {
 			} // cfg.extraSettings;
 		};
 
-		home.packages = with pkgs; [ 
-			swww
-			grim
-			slurp
-			hyprsunset
-			wl-clipboard
-		];
+		home = {
+			file.".tsssnirc" = {
+				source = ./config/.tsssnirc;
+				executable = true;
+			};
+			packages = with pkgs; [ 
+				swww
+				grim
+				slurp
+				hyprsunset
+				wl-clipboard
+			];
+		};
 
 		xdg.portal = {
 			enable = true;

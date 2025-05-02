@@ -6,18 +6,18 @@
 }:
 let
 	cfg = config.tsssni.shell.fetch;
-in with lib; {
+in {
 	options.tsssni.shell.fetch = {
-		enable = mkEnableOption "tsssni.shell.fetch";
-		logo = mkOption {
-			type = types.str;
+		enable = lib.mkEnableOption "tsssni.shell.fetch";
+		logo = lib.mkOption {
+			type = lib.types.str;
 			default = "";
 			example = "tsssni-nixos";
 			description = "logo used by fastfetch";
 		};
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.fastfetch = {
 			enable = true;
 			settings = {

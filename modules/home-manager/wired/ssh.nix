@@ -5,12 +5,12 @@
 }:
 let
 	cfg = config.tsssni.wired.ssh;
-in with lib; {
+in {
 	options.tsssni.wired.ssh = {
-		enable = mkEnableOption "tsssni.wired.ssh";
+		enable = lib.mkEnableOption "tsssni.wired.ssh";
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.ssh = {
 			enable = true;
 			forwardAgent = true;

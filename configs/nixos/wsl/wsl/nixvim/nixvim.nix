@@ -1,7 +1,4 @@
 { ... }:
 {
-	tsssni.nixvim = {
-		enable = true;
-		colorscheme = "bluloco";
-	};
+	tsssni.nixvim.enable = true;
 }

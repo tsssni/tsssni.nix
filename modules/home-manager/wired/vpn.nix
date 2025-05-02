@@ -6,12 +6,12 @@
 }:
 let
 	cfg = config.tsssni.wired.vpn;
-in with lib; {
+in {
 	options.tsssni.wired.vpn = {
-		enable = mkEnableOption "tsssni.wired.vpn";
+		enable = lib.mkEnableOption "tsssni.wired.vpn";
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		home.packages = with pkgs; [
 			wireguard-tools
 		];
