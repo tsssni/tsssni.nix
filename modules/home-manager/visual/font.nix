@@ -6,24 +6,24 @@
 }:
 let
 	cfg = config.tsssni.visual.font;
-in with lib; {
+in {
 	options.tsssni.visual.font = {
-		enable = mkEnableOption "tsssni.visual.font";
-		packages = mkOption {
-			type = types.listOf types.package;
+		enable = lib.mkEnableOption "tsssni.visual.font";
+		packages = lib.mkOption {
+			type = lib.types.listOf lib.types.package;
 			default = with pkgs; [
 				nerd-fonts.blex-mono
 				noto-fonts
 				noto-fonts-cjk-sans
 				noto-fonts-color-emoji
 			];
-			example = literalExpression "[ pkgs.nerd-fonts.blex-mono ]";
+			example = lib.literalExpression "[ pkgs.nerd-fonts.blex-mono ]";
 			description = ''
 				font packages used by system
 			'';
 		};
-		latinFont = mkOption {
-			type = hm.types.fontType;
+		latinFont = lib.mkOption {
+			type = lib.hm.types.fontType;
 			default = {
 				package = pkgs.nerd-fonts.blex-mono;
 				name = "BlexMono Nerd Font";
@@ -35,7 +35,7 @@ in with lib; {
 		};
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		home.packages = cfg.packages;
 	};
 }

@@ -12,24 +12,24 @@ let
 		|> lib.filterAttrs (file: type: type == "regular")
 		|> lib.attrNames;
 	customTheme = builtins.elem file themes;
-in with lib; {
+in {
 	options.tsssni.shell.terminal = {
-		enable = mkEnableOption "tsssni.shell.terminal";
-		theme = mkOption {
-			type = types.str;
+		enable = lib.mkEnableOption "tsssni.shell.terminal";
+		theme = lib.mkOption {
+			type = lib.types.str;
 			default = "cyyber";
 			example = "cyyber";
 			description = "theme used by kitty";
 		};
-		extraSettings = mkOption {
-			type = types.attrsOf settingsValueType;
-			default = { };
-			example = literalExpression ''
-				{
+		extraSettings = lib.mkOption {
+			type = lib.types.attrsOf settingsValueType;
+			default = {};
+			example = lib.literalExpression ''
+			{
 				scrollback_lines = 10000;
 				enable_audio_bell = false;
 				update_check_interval = 0;
-				}
+			}
 			'';
 			description = ''
 				Configuration written to
@@ -40,7 +40,7 @@ in with lib; {
 		};
 	};
 
-	config.programs.kitty = mkIf cfg.enable {
+	config.programs.kitty = lib.mkIf cfg.enable {
 		enable = true;
 		keybindings = {
 			"ctrl+t" = "new_tab";
