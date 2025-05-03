@@ -78,6 +78,11 @@ in {
 					strategy = "ipv4_only";
 					independent_cache = true;
 				};
+				ntp = {
+					enabled = true;
+					server = "time.apple.com";
+					detour = "direct";
+				};
 				inbounds = [
 					{
 						type = "tun";
