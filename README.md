@@ -59,7 +59,7 @@ environment.systemPackages = with pkgs.tsssni; [
 
 Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-manager configs under `./configs/home-manager/${user-name}`. Write system configs under `${config-path}/system/` and home-manager configs under `${config-path}/${user-name}/`, should have `rebuild.nix` under above directories. Build system with `(nixos|darwin)-rebuild switch --flake .` or build home with `home-manager switch --flake .`.
 
-`rebuild.nix` should follow this format. `system` is required since it could not be detected, and `extra*` configs could be added.
+`rebuild.nix` should follow this format. `system` is required since it could not be detected.
 
 ```nix
 {
@@ -70,13 +70,6 @@ Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-ma
 import ../rebuild.nix {
 	inherit inputs tsssni func;
 	system = "x86_64-linux";
-	extraSystemModules = with inputs; [
-		agenix.nixosModules.age
-	];
-	extraHomeManagerModules = with inputs; [
-		nixvim.homeManagerModules.nixvim
-		ags.homeManagerModules.ags
-	];
 }
 ```
 
