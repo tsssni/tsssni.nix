@@ -1,4 +1,0 @@
-{ ... }:
-{
-	tsssni.ssh.enable = true;
-}

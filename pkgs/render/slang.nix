@@ -51,13 +51,13 @@ stdenv.mkDerivation rec {
 		cp -r build/Release/* $out/
 	'';
 
-	meta = with lib; {
+	meta = {
 		description = "Making it easier to work with shaders";
 		homepage = "shader-slang.com";
-		license = with licenses; [
+		license = with lib.licenses; [
 			asl20
 			llvm-exception
 		];
-		platforms = platforms.linux ++ platforms.darwin ++ platforms.windows;
+		platforms = with lib.platforms; (linux ++ darwin ++ windows);
 	};
 }

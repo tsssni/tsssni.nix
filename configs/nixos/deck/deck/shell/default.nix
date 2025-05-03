@@ -1,8 +1,6 @@
 { ... }:
 {
 	imports = [
-		./fastfetch.nix
-		./fish.nix
-		./omp.nix
+		./shell.nix
 	];
 }

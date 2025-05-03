@@ -4,27 +4,22 @@
 , pkgs
 , ...
 }:
-
-with lib;
-
 let
 	cfg = config.services.v2raya;
 	assetsDir = with pkgs; symlinkJoin {
 		name = "assets";
 		paths = [ v2ray-geoip v2ray-domain-list-community ];
 	};
-
 in
-
 {
-	options = with types; {
+	options = {
 		services.v2raya = {
-			enable = mkEnableOption "v2raya"; 
-			package = mkPackageOption pkgs "v2raya" {};
+			enable = lib.mkEnableOption "v2raya"; 
+			package = lib.mkPackageOption pkgs "v2raya" {};
 		};
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		environment.systemPackages = [ cfg.package ];
 
 		launchd.agents.v2raya = {

@@ -1,7 +1,8 @@
 { ... }:
 {
 	imports = [
-		./services
 		./nix
+		./shell
+		./wired
 	];
 }

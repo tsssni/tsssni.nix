@@ -1,14 +1,16 @@
 {
-  pkgs
+  config
 , ...
 }: 
 {
-	programs.zsh.enable = true;
-
-	users.users.tsssni = {
-		name = "tsssni";
-		home = "/Users/tsssni";
-		shell = pkgs.zsh;
+	users = {
+		knownUsers = [ "tsssni" ];
+		users.tsssni = {
+			name = "tsssni";
+			home = "/Users/tsssni";
+			shell = config.tsssni.shell.shell.package;
+			uid = 501;
+		};
 	};
 
 	system.stateVersion = 6;

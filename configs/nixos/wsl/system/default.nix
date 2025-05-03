@@ -1,6 +1,7 @@
 { ... }:
 {
 	imports = [
+		./nix
 		./system
 		./wired
 	];

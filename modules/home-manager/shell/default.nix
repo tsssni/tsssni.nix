@@ -1,8 +1,9 @@
 { ... }:
 {
 	imports = [
-		./fastfetch.nix
-		./kitty.nix
-		./omp.nix
+		./fetch.nix
+		./prompt.nix
+		./shell.nix
+		./terminal.nix
 	];
 }

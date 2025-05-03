@@ -5,6 +5,7 @@ import ../rebuild.nix (args
 	eval = args.inputs.nixpkgs.lib.nixosSystem;
 	tsssni = args.tsssni // {
 		systemModules = args.tsssni.nixosModules.tsssni;
+		extraSystemModules = args.tsssni.extraNixosModules;
 	};
 	inputs = args.inputs // {
 		home-manager = args.inputs.home-manager  // {

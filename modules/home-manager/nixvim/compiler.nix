@@ -2,7 +2,6 @@
   pkgs
 , lib
 , config
-, tsssni
 , ...
 }:
 let
@@ -56,7 +55,7 @@ in {
 					};
 					slangd = {
 						enable = true;
-						package = tsssni.pkgs.slang;
+						package = pkgs.tsssni.slang;
 					};
 					cmake.enable = true;
 					nixd.enable = true;
@@ -112,7 +111,7 @@ in {
 			hlsl = "hlsl";
 		};
 
-		diagnostics = {
+		diagnostic.settings = {
 			virtual_lines = true;
 			virtual_text = false;
 			signs.text = ["" "" "" ""];

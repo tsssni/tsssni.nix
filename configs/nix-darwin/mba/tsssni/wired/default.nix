@@ -1,7 +1,6 @@
 { ... }:
 {
 	imports = [
-		./ssh.nix
-		./vpn.nix
+		./wired.nix
 	];
 }

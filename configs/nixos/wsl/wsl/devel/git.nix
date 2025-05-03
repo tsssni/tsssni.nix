@@ -1,4 +1,0 @@
-{ ... }:
-{
-	tsssni.git.enable = true;
-}

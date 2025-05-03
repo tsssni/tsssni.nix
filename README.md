@@ -6,14 +6,16 @@
 
 ## Intro
 
-- Modules & Functions & Packages shared via flake outputs
-- Framework for building system configs used on tssssni's NixOS PC & Nix-Darwin Macbook Air
+- Modules & Packages shared via flakes
+- Framework for building reproducible system and desktop configurations
 - Nixvim with friendly shortcuts and powerful plugins
 
 ## Usage
 
 ### flake
+
 Put tsssni.nix in your flake inputs. Only support unstable.
+
 ```nix
 inputs = {
   nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -26,7 +28,8 @@ inputs = {
 
 ### modules
 
-Provide modules in `tsssni.${platform}Modules.tsssni`. You include them in corresponiding options.
+Provide modules in `tsssni.${platform}Modules.tsssni`. Include in corresponiding options.
+
 ```nix
 nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
   modules = [ tsssni.nixosModules.tsssni ];
@@ -41,20 +44,15 @@ darwinConfigurations.tsssni = nix-darwin.lib.darwinSystem {
 }
 ```
 
-### lib
-Provide lib with `tsssni.lib`. You could include it in module special args.
-```nix
-specialArgs = { tsssni.lib = tsssni.lib; };
-```
-
 ### pkgs
-Provide pkgs with `tsssni.pkg`. You could call it with desired args and include it in module special args.
+
+Provide pkgs via overlays under `pkgs.tsssni`. Require turning on `tsssni.nixpkgs.enable`.
+
 ```nix
-specialArgs = { tsssni.pkgs = tsssni.pkgs {
-  localSystem = "aarch64-darwin";
-  crossSystem = "aarch64-embedded";
-  config.allowUnfree = true;
-};
+tsssni.nixpkgs.enable = true;
+environment.systemPackages = with pkgs.tsssni; [
+    slang
+]
 ```
 
 ## Config

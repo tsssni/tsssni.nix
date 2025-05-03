@@ -1,6 +1,6 @@
 { ... }:
 {
 	imports = [
-		./git.nix
+		./devel.nix
 	];
 }

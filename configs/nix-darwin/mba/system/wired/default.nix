@@ -1,6 +1,6 @@
 { ... }:
 {
 	imports = [
-		./sing-box.nix
+		./wired.nix
 	];
 }

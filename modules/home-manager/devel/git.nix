@@ -4,13 +4,13 @@
 , ...
 }:
 let
-	cfg = config.tsssni.git;
-in with lib; {
-	options.tsssni.git = {
-		enable = mkEnableOption "tsssni.git";
+	cfg = config.tsssni.devel.git;
+in {
+	options.tsssni.devel.git = {
+		enable = lib.mkEnableOption "tsssni.devel.git";
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.git = {
 			enable = true;
 			userName = "tsssni";

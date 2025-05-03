@@ -1,11 +1,17 @@
 {
   pkgs
 , lib
-, tsssni
+, config
 , ...
 }:
-{
-	config = lib.optionalAttrs (tsssni.distro == "home-manager") {
+let
+	cfg = config.tsssni.nix.nix;
+in {
+	options.tsssni.nix.nix = {
+		enable = lib.mkEnableOption "tsssni.nix.nix";
+	};
+
+	config = lib.mkIf cfg.enable {
 		nix = {
 			package = pkgs.nix;
 			settings = {
@@ -22,10 +28,6 @@
 					"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
 				];
 			};
-		};
-		nixpkgs = {
-			system = tsssni.system;
-			config.allowUnfree = true;
 		};
 	};
 }

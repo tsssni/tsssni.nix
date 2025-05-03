@@ -4,13 +4,13 @@
 , ...
 }:
 let
-	cfg = config.tsssni.ssh;
-in with lib; {
-	options.tsssni.ssh = {
-		enable = mkEnableOption "tsssni.ssh";
+	cfg = config.tsssni.wired.ssh;
+in {
+	options.tsssni.wired.ssh = {
+		enable = lib.mkEnableOption "tsssni.wired.ssh";
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.ssh = {
 			enable = true;
 			forwardAgent = true;

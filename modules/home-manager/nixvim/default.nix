@@ -1,13 +1,12 @@
 {
   pkgs
-, tsssni
 , lib
 , config
 , ...
 }:
 let
 	cfg = config.tsssni.nixvim;
-in with lib; {
+in {
 	imports = [
 		./compiler.nix
 		./filesystem.nix
@@ -20,16 +19,16 @@ in with lib; {
 	];
 
 	options.tsssni.nixvim = {
-		enable = mkEnableOption "tsssni.nixvim"; 
-		colorscheme = mkOption {
-			type = types.str;
-			default = "default";
+		enable = lib.mkEnableOption "tsssni.nixvim"; 
+		colorscheme = lib.mkOption {
+			type = lib.types.str;
+			default = "cyyber";
 			example = "cyyber";
 			description = "colorscheme used in current installation";
 		};
 	};
 
-	config = mkIf cfg.enable {
+	config = lib.mkIf cfg.enable {
 		programs.nixvim = {
 			enable = true;
 			defaultEditor = true;
@@ -42,8 +41,8 @@ in with lib; {
 				tokyonight-nvim
 				bluloco-nvim
 				sonokai
-			]) 
-			++ (with tsssni.pkgs.vimPlugins; [
+			])
+			++ (with pkgs.tsssni.vimPlugins; [
 				cyyber-nvim
 				eldritch-nvim
 				incline-nvim
