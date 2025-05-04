@@ -60,6 +60,7 @@ in {
 					cmake.enable = true;
 					nixd.enable = true;
 					lua_ls.enable = true;
+					ts_ls.enable = true;
 				};
 			};
 			blink-cmp = {

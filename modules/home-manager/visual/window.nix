@@ -88,64 +88,63 @@ in  {
 			systemd.enable = false;
 			settings = {
 				monitor = cfg.monitors;
-				cursor.no_hardware_cursors = true;
 				xwayland.force_zero_scaling = true;
+				cursor = {
+					no_hardware_cursors = true;
+					no_warps = true;
+				};
 				input = {
-						kb_layout = "us";
-						follow_mouse = 1;
-						sensitivity = 0;
+					kb_layout = "us";
+					follow_mouse = 1;
+					sensitivity = 0;
 				};
 				general = {
-						gaps_in = 10;
-						gaps_out = 10;
-						border_size = 2;
-						"col.active_border" = "rgba(f5c1e9ff)";
-						"col.inactive_border" = "rgba(f5c1e9ff)";
-						layout = "scroller";
+					gaps_in = 10;
+					gaps_out = 10;
+					border_size = 2;
+					"col.active_border" = "rgba(f5c1e9ff)";
+					"col.inactive_border" = "rgba(f5c1e9ff)";
+					layout = "scroller";
 				};
 				decoration = {
-						rounding = 20;
+					rounding = 20;
 
-						active_opacity = 0.8;
-						inactive_opacity = 0.7;
-						fullscreen_opacity = 1.0;
-						
-						blur = {
-								enabled = true;
-								size = 3;
-								passes = 4;
-								ignore_opacity = true;
-						};
-
-						shadow = {
+					blur = {
 							enabled = true;
-							range = 10;
-							render_power = 3;
-							color = "rgba(f5c1e9ff)";
-							color_inactive = "rgba(f5c1e9ff)";
-						};
+							size = 3;
+							passes = 4;
+							ignore_opacity = true;
+					};
+
+					shadow = {
+						enabled = true;
+						range = 10;
+						render_power = 3;
+						color = "rgba(f5c1e9ff)";
+						color_inactive = "rgba(f5c1e9ff)";
+					};
 				};
 				animations = {
-						enabled = true;
+					enabled = true;
 
-						bezier = [
-							"open, 0.66, 0.88, 0.2, 0.96"
-							"move, 0.18, 1.2, 0.68, 1"
-							"close, 0.03, 0.45, 0, 0.97"
-							"fade, 0.19, 0.02, 0.44, 0.15"
-						];
+					bezier = [
+						"open, 0.66, 0.88, 0.2, 0.96"
+						"move, 0.18, 1.2, 0.68, 1"
+						"close, 0.03, 0.45, 0, 0.97"
+						"fade, 0.19, 0.02, 0.44, 0.15"
+					];
 
-						animation = [
-							"windowsIn, 1, 7, open"
-							"windowsOut, 1, 7, close"
-							"windowsMove, 1, 7, move"
-							"fade, 1, 3, fade"
-							"workspaces, 1, 7, move"
-						];
+					animation = [
+						"windowsIn, 1, 7, open"
+						"windowsOut, 1, 7, close"
+						"windowsMove, 1, 7, move"
+						"fade, 1, 3, fade"
+						"workspaces, 1, 7, move"
+					];
 				};
 				dwindle =  {
-						pseudotile = true;
-						preserve_split = true;
+					pseudotile = true;
+					preserve_split = true;
 				};
 				plugin.scroller = {
 					column_default_width = "onehalf";
@@ -154,8 +153,12 @@ in  {
 					window_heights = "onethird onehalf twothirds one";
 				};
 				windowrulev2 = [
-					"noblur, class:^(firefox)$"
-					"opacity 1.0 override, class:^(firefox)$"
+					"noblur, class:^(?!kitty).*$"
+					"opacity 0.8 0.7 1.0, class:^(kitty)$"
+				];
+				layerrule = [
+					"blur, gtk-layer-shell"
+					"ignorezero, gtk-layer-shell"
 				];
 				bind = [
 					"SUPER, T, exec, kitty"
@@ -209,17 +212,22 @@ in  {
 					"SUPERSHIFT, 5, movetoworkspace, 5"
 				];
 				exec-once = [
-					# wallpaper
-					"swww init; swww img ${cfg.wallpaper} --transition-type none"
-					"ags"
 					"fcitx5 -d -r"
+					"swww init; swww img ${cfg.wallpaper} --transition-type none"
+				] ++ lib.optionals config.tsssni.visual.widget.enable [
+					"tsssni-astal"
 				];
 			} // cfg.extraSettings;
 		};
 
 		home = {
 			file.".tsssnirc" = {
-				source = ./config/.tsssnirc;
+				text = lib.strings.trim ''
+					#!/usr/bin/env nu
+					sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
+					openrgb -p tsssni
+					Hyprland
+				'';
 				executable = true;
 			};
 			packages = with pkgs; [ 
