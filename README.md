@@ -1,8 +1,8 @@
 # tsssni.nix
 
-![md0](./configs/nixos/msi/tsssni/visual/md0.png)
+![md0](./asset/visual0.png)
 
-![md1](./configs/nixos/msi/tsssni/visual/md1.png)
+![md0](./asset/visual1.png)
 
 ## Intro
 
