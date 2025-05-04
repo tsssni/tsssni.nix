@@ -1,5 +1,6 @@
 {
-  lib
+  pkgs
+, lib
 , config
 , ...
 }:
@@ -18,7 +19,7 @@ in {
 			};
 			environmentVariables = {
 				EDITOR = "nvim";
-
+			} // (lib.optionalAttrs pkgs.stdenv.isLinux {
 				XCURSOR_SIZE = 24;
 				XCURSOR_THEME = "macOS";
 				QT_QPA_PLATFORMTHEME = "qt5ct";
@@ -27,7 +28,7 @@ in {
 				GBM_BACKEND = "nvidia-drm";
 				LIBVA_DRIVER_NAME = "nvidia";
 				__GLX_VENDOR_LIBRARY_NAME = "nvidia";
-			};
+			});
 		};
 	};
 }
