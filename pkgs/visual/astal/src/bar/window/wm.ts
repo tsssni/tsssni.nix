@@ -80,19 +80,10 @@ export default new Widget.EventBox({
 			[windowManager.clients, windowManager.activeWorkspace],
 			(clients: any[], activeWorkspace: any) => 
 				clients
-					.filter(client => client.mapped && client.workspace.id === activeWorkspace.id)
-					.sort((a, b) => a.x - b.x)
-					.map(client => WindowIcon(client))
+				.filter(client => client.mapped && client.workspace.id === activeWorkspace.id)
+				.sort((a, b) => a.x - b.x)
+				.map(client => WindowIcon(client))
 		)),
 		spacing: 4,
 	}),
-	onScrollEvent: (self: Widget.EventBox, event: Gdk.Event) => {
-		const [hasDeltas, dx, dy] = event.get_scroll_deltas()
-		if (hasDeltas) {
-			const direction = dy < 0 ? 'l' : 'r'
-			hyprland.dispatch('scroller:movefocus', direction)
-		}
-		
-		return true
-	}
 })

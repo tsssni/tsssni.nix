@@ -109,10 +109,6 @@ in  {
 				decoration = {
 					rounding = 20;
 
-					# active_opacity = 0.8;
-					# inactive_opacity = 0.7;
-					# fullscreen_opacity = 1.0;
-					
 					blur = {
 							enabled = true;
 							size = 3;
@@ -129,26 +125,26 @@ in  {
 					};
 				};
 				animations = {
-						enabled = true;
+					enabled = true;
 
-						bezier = [
-							"open, 0.66, 0.88, 0.2, 0.96"
-							"move, 0.18, 1.2, 0.68, 1"
-							"close, 0.03, 0.45, 0, 0.97"
-							"fade, 0.19, 0.02, 0.44, 0.15"
-						];
+					bezier = [
+						"open, 0.66, 0.88, 0.2, 0.96"
+						"move, 0.18, 1.2, 0.68, 1"
+						"close, 0.03, 0.45, 0, 0.97"
+						"fade, 0.19, 0.02, 0.44, 0.15"
+					];
 
-						animation = [
-							"windowsIn, 1, 7, open"
-							"windowsOut, 1, 7, close"
-							"windowsMove, 1, 7, move"
-							"fade, 1, 3, fade"
-							"workspaces, 1, 7, move"
-						];
+					animation = [
+						"windowsIn, 1, 7, open"
+						"windowsOut, 1, 7, close"
+						"windowsMove, 1, 7, move"
+						"fade, 1, 3, fade"
+						"workspaces, 1, 7, move"
+					];
 				};
 				dwindle =  {
-						pseudotile = true;
-						preserve_split = true;
+					pseudotile = true;
+					preserve_split = true;
 				};
 				plugin.scroller = {
 					column_default_width = "onehalf";
@@ -159,6 +155,10 @@ in  {
 				windowrulev2 = [
 					"noblur, class:^(?!kitty).*$"
 					"opacity 0.8 0.7 1.0, class:^(kitty)$"
+				];
+				layerrule = [
+					"blur, gtk-layer-shell"
+					"ignorezero, gtk-layer-shell"
 				];
 				bind = [
 					"SUPER, T, exec, kitty"
@@ -222,7 +222,12 @@ in  {
 
 		home = {
 			file.".tsssnirc" = {
-				source = ./config/.tsssnirc;
+				text = lib.strings.trim ''
+					#!/usr/bin/env nu
+					sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
+					openrgb -p tsssni
+					Hyprland
+				'';
 				executable = true;
 			};
 			packages = with pkgs; [ 
