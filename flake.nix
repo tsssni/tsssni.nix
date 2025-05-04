@@ -19,10 +19,6 @@
 			url = "github:nix-community/nixvim";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
-		ags = {
-			url = "github:Aylur/ags/v1";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
 		agenix = {
 			url = "github:ryantm/agenix";
 			inputs.nixpkgs.follows = "nixpkgs";
@@ -62,7 +58,6 @@
 					agenix.darwinModules.age
 				];
 				extraHomeManagerModules = with inputs; [
-					ags.homeManagerModules.ags
 					nixvim.homeManagerModules.nixvim
 				];
 			};

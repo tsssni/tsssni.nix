@@ -209,10 +209,10 @@ in  {
 					"SUPERSHIFT, 5, movetoworkspace, 5"
 				];
 				exec-once = [
-					# wallpaper
-					"swww init; swww img ${cfg.wallpaper} --transition-type none"
-					"ags"
 					"fcitx5 -d -r"
+					"swww init; swww img ${cfg.wallpaper} --transition-type none"
+				] ++ lib.optionals config.tsssni.visual.widget.enable [
+					"tsssni-astal"
 				];
 			} // cfg.extraSettings;
 		};
