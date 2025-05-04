@@ -88,42 +88,45 @@ in  {
 			systemd.enable = false;
 			settings = {
 				monitor = cfg.monitors;
-				cursor.no_hardware_cursors = true;
 				xwayland.force_zero_scaling = true;
+				cursor = {
+					no_hardware_cursors = true;
+					no_warps = true;
+				};
 				input = {
-						kb_layout = "us";
-						follow_mouse = 1;
-						sensitivity = 0;
+					kb_layout = "us";
+					follow_mouse = 1;
+					sensitivity = 0;
 				};
 				general = {
-						gaps_in = 10;
-						gaps_out = 10;
-						border_size = 2;
-						"col.active_border" = "rgba(f5c1e9ff)";
-						"col.inactive_border" = "rgba(f5c1e9ff)";
-						layout = "scroller";
+					gaps_in = 10;
+					gaps_out = 10;
+					border_size = 2;
+					"col.active_border" = "rgba(f5c1e9ff)";
+					"col.inactive_border" = "rgba(f5c1e9ff)";
+					layout = "scroller";
 				};
 				decoration = {
-						rounding = 20;
+					rounding = 20;
 
-						active_opacity = 0.8;
-						inactive_opacity = 0.7;
-						fullscreen_opacity = 1.0;
-						
-						blur = {
-								enabled = true;
-								size = 3;
-								passes = 4;
-								ignore_opacity = true;
-						};
-
-						shadow = {
+					# active_opacity = 0.8;
+					# inactive_opacity = 0.7;
+					# fullscreen_opacity = 1.0;
+					
+					blur = {
 							enabled = true;
-							range = 10;
-							render_power = 3;
-							color = "rgba(f5c1e9ff)";
-							color_inactive = "rgba(f5c1e9ff)";
-						};
+							size = 3;
+							passes = 4;
+							ignore_opacity = true;
+					};
+
+					shadow = {
+						enabled = true;
+						range = 10;
+						render_power = 3;
+						color = "rgba(f5c1e9ff)";
+						color_inactive = "rgba(f5c1e9ff)";
+					};
 				};
 				animations = {
 						enabled = true;
@@ -154,8 +157,8 @@ in  {
 					window_heights = "onethird onehalf twothirds one";
 				};
 				windowrulev2 = [
-					"noblur, class:^(firefox)$"
-					"opacity 1.0 override, class:^(firefox)$"
+					"noblur, class:^(?!kitty).*$"
+					"opacity 0.8 0.7 1.0, class:^(kitty)$"
 				];
 				bind = [
 					"SUPER, T, exec, kitty"
