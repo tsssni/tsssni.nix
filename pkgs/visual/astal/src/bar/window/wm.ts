@@ -32,15 +32,48 @@ class WindowManager {
 const windowManager = new WindowManager()
 
 function getIconForClient(client: Hyprland.Client): string {
-	const default_icon = "application-x-executable"
-	if (!client.class) return default_icon
-	
-	const iconInfo = Astal.Icon.lookup_icon(client.class)
-	if (iconInfo) {
-		return client.class
-	}
-	
-	return default_icon
+    const default_icon = "application-x-executable";
+    
+    if (!client.class) return default_icon;
+    
+    let iconInfo = Astal.Icon.lookup_icon(client.class);
+    if (iconInfo) {
+        return client.class;
+    }
+    
+    const lowerClass = client.class.toLowerCase();
+    iconInfo = Astal.Icon.lookup_icon(lowerClass);
+    if (iconInfo) {
+        return lowerClass;
+    }
+    
+    const titleCase = lowerClass.charAt(0).toUpperCase() + lowerClass.slice(1);
+    iconInfo = Astal.Icon.lookup_icon(titleCase);
+    if (iconInfo) {
+        return titleCase;
+    }
+    
+    const normalized = client.class.replace(/[^a-zA-Z0-9]/g, '');
+    iconInfo = Astal.Icon.lookup_icon(normalized);
+    if (iconInfo) {
+        return normalized;
+    }
+    
+    if (client.class.includes('-') || client.class.includes('.')) {
+        const parts = client.class.split(/[-\.]/);
+        
+        // Try each part individually
+        for (const part of parts) {
+            if (part.length > 3) { // Only try meaningful parts
+                iconInfo = Astal.Icon.lookup_icon(part);
+                if (iconInfo) {
+                    return part;
+                }
+            }
+        }
+    }
+    
+    return default_icon;
 }
 
 function WindowIcon(client: Hyprland.Client) {
