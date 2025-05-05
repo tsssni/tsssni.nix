@@ -14,6 +14,7 @@ in {
 	config = lib.mkIf cfg.enable {
 		home = {
 			packages = with pkgs; [
+				xdg-utils
 				dconf
 			];
 

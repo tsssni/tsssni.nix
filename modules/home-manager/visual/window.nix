@@ -22,7 +22,7 @@ in  {
 			'';
 		};
 		wallpaper = lib.mkOption {
-			type = with lib.types; path;
+			type = with lib.types; nullOr path;
 			default = null;
 			description = ''
 				window manager wallpaper
@@ -30,6 +30,14 @@ in  {
 			example = lib.literalExpression ''
 				.config/hypr/wallpaper/plana.jpeg
 			'';
+		};
+		nvidia = lib.mkOption {
+			type = with lib.types; bool;
+			default = false;
+			description = ''
+				use nvidia-settings for window manager
+			'';
+			example = false;
 		};
 		extraSettings = lib.mkOption {
 			type = with lib.types;
@@ -95,6 +103,7 @@ in  {
 				};
 				input = {
 					kb_layout = "us";
+					kb_options = "caps:ctrl_modifier";
 					follow_mouse = 1;
 					sensitivity = 0;
 				};
@@ -211,11 +220,13 @@ in  {
 					"SUPERSHIFT, 4, movetoworkspace, 4"
 					"SUPERSHIFT, 5, movetoworkspace, 5"
 				];
-				exec-once = [
-					"fcitx5 -d -r"
+				exec-once = []
+				++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
 					"swww init; swww img ${cfg.wallpaper} --transition-type none"
 				] ++ lib.optionals config.tsssni.visual.widget.enable [
 					"tsssni-astal"
+				] ++ lib.optionals config.tsssni.visual.ime.enable [
+					"fcitx5 -d -r"
 				];
 			} // cfg.extraSettings;
 		};

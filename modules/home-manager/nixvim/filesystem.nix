@@ -34,8 +34,8 @@ in {
 				telescope = {
 					enable = true;
 					keymaps = {
-						"<C-f>" = "find_files";
-						"<C-g>" = "live_grep";
+						"<A-f>" = "find_files";
+						"<A-g>" = "live_grep";
 					};
 					settings.defaults.mappings.i = {
 						"<C-n>".__raw = "require('telescope.actions').cycle_history_next";
@@ -48,7 +48,7 @@ in {
 			keymaps = [
 				{
 					mode = [ "n" ];
-					key = "<A-f>";
+					key = "<C-f>";
 					action.__raw = ''
 						function()
 							oil = require'oil'

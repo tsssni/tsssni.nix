@@ -20,9 +20,9 @@ in {
 					incremental_selection = {
 						enable = true;
 						keymaps = {
-							init_selection = "<C-s>";
-							node_incremental = "<C-u>";
-							node_decremental = "<C-d>";
+							init_selection = "gs";
+							node_incremental = "gf";
+							node_decremental = "gb";
 						};
 					};
 					indent.enable = false;
@@ -35,10 +35,10 @@ in {
 						gl = "setloclist";
 					};
 					lspBuf = {
-						gD = "declaration";
 						gd = "definition";
-						gR = "rename";
-						gr = "references";
+						gD = "declaration";
+						gr = "rename";
+						gR = "references";
 						gf = "format";
 						gh = "hover";
 					};
@@ -117,14 +117,6 @@ in {
 			virtual_text = false;
 			signs.text = ["" "" "" ""];
 		};
-
-		keymaps = [
-			{
-				mode = "n";
-				key = "<A-d>";
-				action = ":lua vim.diagnostic.setloclist()<CR>";
-			}
-		];
 	};
 
 	home = {
