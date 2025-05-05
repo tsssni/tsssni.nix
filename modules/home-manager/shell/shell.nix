@@ -1,6 +1,5 @@
 {
-  pkgs
-, lib
+  lib
 , config
 , ...
 }:
@@ -19,16 +18,19 @@ in {
 			};
 			environmentVariables = {
 				EDITOR = "nvim";
-			} // (lib.optionalAttrs pkgs.stdenv.isLinux {
+			} // lib.optionalAttrs config.visual.gui.enable {
 				XCURSOR_SIZE = 24;
 				XCURSOR_THEME = "macOS";
 				QT_QPA_PLATFORMTHEME = "qt5ct";
-
 				XDG_SESSION_TYPE = "wayland";
+			} // lib.optionalAttrs (true
+				&& config.visual.window.enable
+				&& config.visual.window.nvidia
+			) {
 				GBM_BACKEND = "nvidia-drm";
 				LIBVA_DRIVER_NAME = "nvidia";
 				__GLX_VENDOR_LIBRARY_NAME = "nvidia";
-			});
+			};
 		};
 	};
 }
