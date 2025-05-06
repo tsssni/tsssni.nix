@@ -1,6 +1,6 @@
 { ... }:
 let
-	domain = "";
+	domain = "tsssni.top";
 in {
 	security.acme = {
 		acceptTerms = true;

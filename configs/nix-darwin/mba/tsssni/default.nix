@@ -9,10 +9,10 @@
 	programs.home-manager.enable = true;
 
 	imports = [
-		./aesth
-		./devel
-		./nixvim
-		./shell
-		./wired
+		./aesth.nix
+		./devel.nix
+		./nixvim.nix
+		./shell.nix
+		./wired.nix
 	];
 }

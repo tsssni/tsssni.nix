@@ -9,9 +9,9 @@
 	programs.home-manager.enable = true;
 
 	imports = [
-		./devel
-		./nixvim
-		./shell
-		./wired
+		./devel.nix
+		./nixvim.nix
+		./shell.nix
+		./wired.nix
 	];
 }

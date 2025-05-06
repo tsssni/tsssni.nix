@@ -1,9 +1,9 @@
 { ... }:
 {
 	imports = [
-		./hardware
-		./nix
-		./system
 		./wired
+		./disko.nix
+		./nix.nix
+		./system.nix
 	];
 }

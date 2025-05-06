@@ -9,7 +9,7 @@
 	programs.home-manager.enable = true;
 
 	imports = [
-		./nix
-		./nixvim
+		./nix.nix
+		./nixvim.nix
 	];
 }

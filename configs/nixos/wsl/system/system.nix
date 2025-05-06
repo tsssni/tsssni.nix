@@ -1,8 +1,16 @@
 {
   config
+, tsssni
 , ...
 }:
 {
+	wsl = {
+		enable = true;
+		defaultUser = "wsl";
+		startMenuLaunchers = true;
+		wslConf.network.hostname = tsssni.func;
+	};
+
 	users.users.wsl = {
 		name = "wsl";
 		home = "/home/wsl";
@@ -11,4 +19,8 @@
 		extraGroups = [ "wheel" ];
 		isNormalUser = true;
 	};
+
+	system.stateVersion = "24.11";
+	time.timeZone = "Asia/Shanghai";
+	i18n.defaultLocale = "en_US.UTF-8";
 }

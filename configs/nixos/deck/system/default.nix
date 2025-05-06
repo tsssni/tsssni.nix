@@ -1,10 +1,10 @@
 { ... }:
 {
 	imports = [
-		./hardware
-		./jovian
-		./nix
-		./system
-		./wired
+		./disko.nix
+		./jovian.nix
+		./nix.nix
+		./system.nix
+		./wired.nix
 	];
 }

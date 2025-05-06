@@ -3,6 +3,14 @@
 , ...
 }:
 {
+	boot.loader = {
+		systemd-boot.enable = true;
+		efi = {
+			canTouchEfiVariables = true;
+			efiSysMountPoint = "/efi";
+		};
+	};
+
 	users.users.deck = {
 		name = "deck";
 		home = "/home/deck";
@@ -11,4 +19,8 @@
 		extraGroups = [ "wheel" ];
 		isNormalUser = true;
 	};
+
+	system.stateVersion = "24.11";
+	time.timeZone = "Asia/Shanghai";
+	i18n.defaultLocale = "en_US.UTF-8";
 }

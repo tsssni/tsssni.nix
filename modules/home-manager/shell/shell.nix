@@ -27,8 +27,9 @@ in {
 				use_kitty_protocol = true;
 				table.missing_value_symbol = "";
 			};
-			environmentVariables = {}
-			// lib.optionalAttrs visualCfg.gui.enable {
+			environmentVariables = {
+				EDITOR = "nvim";
+			} // lib.optionalAttrs visualCfg.gui.enable {
 				XCURSOR_SIZE = 24;
 				XCURSOR_THEME = "macOS";
 				QT_QPA_PLATFORMTHEME = "qt5ct";

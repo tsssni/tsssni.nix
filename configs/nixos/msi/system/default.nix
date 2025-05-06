@@ -1,12 +1,12 @@
 { ... }:
 {
 	imports = [
-		./acous
-		./graphics
-		./hardware
-		./nix
-		./secret
-		./system
-		./wired
+		./acous.nix
+		./graphics.nix
+		./hardware.nix
+		./nix.nix
+		./secret.nix
+		./system.nix
+		./wired.nix
 	];
 }
