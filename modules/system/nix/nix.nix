@@ -1,5 +1,6 @@
 {
-  lib
+  pkgs
+, lib
 , config
 , ...
 }:
@@ -21,11 +22,20 @@ in {
 					"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
 				];
 			};
-			gc = {
+			gc = {}
+			// {
 				automatic = true;
+				options = "--delete-older-than 7d";
+			}
+			// lib.optionalAttrs pkgs.stdenv.isLinux {
 				persistent = true;
-				dates = "weekly";
-				options = "--delete-older-than 14d";
+				dates = "Tue 04:00";
+			} // lib.optionalAttrs pkgs.stdenv.isDarwin {
+				interval = {
+					Weekday = 2;
+					Hour = 4;
+					Minute = 0;
+				};
 			};
 			optimise.automatic = true;
 		};
