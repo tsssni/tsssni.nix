@@ -21,6 +21,12 @@ in {
 					"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
 				];
 			};
+			gc = {
+				automatic = true;
+				persistent = true;
+				dates = "weekly";
+				options = "--delete-older-than 14d";
+			};
 			optimise.automatic = true;
 		};
 	};
