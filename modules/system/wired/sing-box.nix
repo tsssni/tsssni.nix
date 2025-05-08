@@ -43,19 +43,12 @@ in {
 					];
 					rules = [
 						{
-							rule_set = "geosite-cn";
-							server = "local";
-						}
-						{
-							rule_set = "geosite-geolocation-cn";
-							server = "local";
-						}
-						{
-							rule_set = "geosite-steam@cn";
-							server = "local";
-						}
-						{
-							rule_set = "geosite-category-games@cn";
+							rule_set = [
+								"geosite-cn"
+								"geosite-geolocation-cn"
+								"geosite-steam@cn"
+								"geosite-category-games@cn"
+							];
 							server = "local";
 						}
 						{
@@ -77,11 +70,6 @@ in {
 					};
 					strategy = "ipv4_only";
 					independent_cache = true;
-				};
-				ntp = {
-					enabled = true;
-					server = "time.apple.com";
-					detour = "direct";
 				};
 				inbounds = [
 					{
@@ -143,11 +131,6 @@ in {
 								"zju"
 								"cc98"
 							];
-							outbound = "direct";
-						}
-						{
-							port = 123;
-							protocol = "udp";
 							outbound = "direct";
 						}
 					];
