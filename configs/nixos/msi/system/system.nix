@@ -41,6 +41,13 @@
 		};
 	};
 
+	services.timesyncd = {
+		enable = true;
+		servers = [
+			"time.apple.com"
+		];
+	};
+
 	users.users.tsssni = {
 		name = "tsssni";
 		home = "/home/tsssni";

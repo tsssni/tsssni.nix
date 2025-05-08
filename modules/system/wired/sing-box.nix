@@ -145,6 +145,11 @@ in {
 							];
 							outbound = "direct";
 						}
+						{
+							port = 123;
+							protocol = "udp";
+							outbound = "direct";
+						}
 					];
 					rule_set = [
 						{
