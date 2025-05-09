@@ -50,10 +50,7 @@
 		isNormalUser = true;
 	};
 
-	services.timesyncd.enable = false; # windows will do it
-
-	# window will set local time to hardware clock, so do not modify timeZone
-	# time.timeZone = "UTC";
 	system.stateVersion = "24.11";
+	time.timeZone = "Asia/Shanghai";
 	i18n.defaultLocale = "en_US.UTF-8";
 }
