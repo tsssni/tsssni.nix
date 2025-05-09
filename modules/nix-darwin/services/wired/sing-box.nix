@@ -90,8 +90,8 @@ in {
 		launchd.agents.sing-box =
 		let
 			script = ''
-				${genJqSecretsReplacementSnippet cfg.settings "/tmp/sing-box/config.json"}
-				${lib.getExe cfg.package} -C /tmp/sing-box run
+				${genJqSecretsReplacementSnippet cfg.settings "/run/sing-box/config.json"}
+				${lib.getExe cfg.package} -C /run/sing-box run
 			'';
 		in {
 			serviceConfig = {
@@ -99,8 +99,8 @@ in {
 				Label = "org.sagernet.sing-box";
 				KeepAlive = true;
 				RunAtLoad = true;
-				StandardOutPath = "/tmp/sing-box/info.log";
-				StandardErrorPath = "/tmp/sing-box/error.log";
+				StandardOutPath = "/run/sing-box/info.log";
+				StandardErrorPath = "/run/sing-box/error.log";
 			};
 		};
 	};

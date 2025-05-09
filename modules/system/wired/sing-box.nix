@@ -125,6 +125,16 @@ in {
 							outbound = "direct";
 						}
 						{
+							domain = [
+								"time.apple.com"
+								"time.windows.com"
+								"pool.ntp.org"
+							];
+							port = 123;
+							protocol = "udp";
+							outbound = "direct";
+						}
+						{
 							domain_keyword = [
 								"steamserver"
 								"bilibili"
