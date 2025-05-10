@@ -31,15 +31,18 @@ in {
 						show_close_icon = false;
 					};
 				};
-				telescope = {
+				fzf-lua = {
 					enable = true;
 					keymaps = {
-						"<Leader>f" = "find_files";
+						"<Leader>f" = "files";
 						"<Leader>g" = "live_grep";
-					};
-					settings.defaults.mappings.i = {
-						"<C-n>".__raw = "require('telescope.actions').cycle_history_next";
-						"<C-p>".__raw = "require('telescope.actions').cycle_history_prev";
+						"<Leader>h" = "helptags";
+						"<Leader>j" = "jumps";
+						"<Leader>l" = "loclist";
+						"<Leader>r" = "lsp_references";
+						"<Leader>s" = "git_status";
+						"<Leader>t" = "registers";
+						"<Leader>u" = "resume";
 					};
 				};
 				web-devicons.enable = true;

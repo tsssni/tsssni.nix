@@ -31,7 +31,7 @@ in {
 		pumheight = 10;
 		regexpengine = 2;
 		report = 0;
-		relativenumber = true;
+		relativenumber = false;
 		scrolloff = 8;
 		shiftround = true;
 		shiftwidth = 4;

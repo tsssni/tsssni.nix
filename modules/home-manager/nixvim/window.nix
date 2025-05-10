@@ -15,52 +15,32 @@ in {
 		keymaps = [
 			{
 				mode = "n";
-				key = "<Leader>v";
+				key = "<C-w>v";
 				action = ":vsp<CR>";
 			}
 			{
 				mode = "n";
-				key = "<Leader>s";
+				key = "<C-w>s";
 				action = ":sp<CR>";
 			}
 			{
 				mode = "n";
-				key = "<Leader>h";
-				action = "<C-w>h";
-			}
-			{
-				mode = "n";
-				key = "<Leader>j";
-				action = "<C-w>j";
-			}
-			{
-				mode = "n";
-				key = "<Leader>k";
-				action = "<C-w>k";
-			}
-			{
-				mode = "n";
-				key = "<Leader>l";
-				action = "<C-w>l";
-			}
-			{
-				mode = "n";
-				key = "<Leader>Left";
+				key = "<C-w>H";
 				action = ":vertical resize +10<CR>";
 			}
 			{
 				mode = "n";
-				key = "<Leader>Down";
+				key = "<C-w>J";
 				action = ":resize +5<CR>";
 			}
 			{
 				mode = "n";
-				key = "<Leader>Up";
+				key = "<C-w>K";
 				action = ":resize -5<CR>";
 			}
 			{
 				mode ="n";
-				key = "<Leader>Right";
+				key = "<C-w>L";
 				action = ":vertical resize -10<CR>";
 			}
 		];

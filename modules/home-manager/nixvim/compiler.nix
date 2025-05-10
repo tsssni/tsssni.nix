@@ -68,10 +68,10 @@ in {
 				settings = {
 					keymap = {
 						"<Enter>" = ["select_and_accept" "fallback"];
-						"<C-u>" = ["scroll_documentation_up"];
-						"<C-d>" = ["scroll_documentation_down"];
 						"<C-n>" = ["select_next"];
 						"<C-p>" = ["select_prev"];
+						"<C-u>" = ["scroll_documentation_up"];
+						"<C-d>" = ["scroll_documentation_down"];
 						"<C-space>" = [
 							"show"
 							"show_documentation"
