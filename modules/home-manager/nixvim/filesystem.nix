@@ -34,8 +34,8 @@ in {
 				telescope = {
 					enable = true;
 					keymaps = {
-						"<A-f>" = "find_files";
-						"<A-g>" = "live_grep";
+						"<Leader>f" = "find_files";
+						"<Leader>g" = "live_grep";
 					};
 					settings.defaults.mappings.i = {
 						"<C-n>".__raw = "require('telescope.actions').cycle_history_next";
