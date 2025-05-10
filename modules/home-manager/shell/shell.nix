@@ -23,7 +23,7 @@ in {
 					vi_normal = "block";
 					vi_insert = "line";
 				};
-				completions.algorithm = "fuzzy";
+				completions.algorithm = "prefix";
 				use_kitty_protocol = true;
 				table.missing_value_symbol = "";
 			};
