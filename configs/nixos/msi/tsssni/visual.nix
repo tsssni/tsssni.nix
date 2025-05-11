@@ -6,7 +6,7 @@
 		window = {
 			enable = true;
 			monitors = [
-				"desc:Philips Consumer Electronics Company PHL24M1N5500Z UK82338003590, highrr, 0x0, 1.25"
+				"HDMI-A-1, 3840x2160@159.97, 0x0, 1.5"
 			];
 			wallpaper = ./config/hypr/wallpaper/plana.jpeg;
 			nvidia = true;
