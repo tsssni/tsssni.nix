@@ -1,7 +1,4 @@
 { ... }:
 {
-	tsssni.nixvim = {
-		enable = true;
-		colorscheme = "sonokai";
-	};
+	tsssni.nixvim.enable = true;
 }
