@@ -1,12 +1,25 @@
-{ ... }:
+{
+  pkgs
+, config
+, ...
+}:
 let
 	domain = "tsssni.top";
 in {
+	age.secrets."sbx-cloudflare" = {
+		file = ./config/sbx-cloudflare.age;
+		group = "acme";
+		mode = "0440";
+	};
 	security.acme = {
 		acceptTerms = true;
 		defaults.email = "dingyongyu2002@foxmail.com";
 		certs."${domain}" = {
-			webroot = "/var/lib/acme/.challenges";
+			webroot = null;
+			dnsProvider = "cloudflare";
+			environmentFile = "${pkgs.writeText "cf-creds" ''
+				CF_DNS_API_TOKEN_FILE = ${config.age.secrets."sbx-cloudflare".path}
+			''}";
 			group = "nginx";
 		};
 	};
@@ -16,7 +29,10 @@ in {
 			"${domain}" = {
 				forceSSL = true;
 				enableACME = true;
-				locations."/".root = "/var/www";
+				locations = {
+					"/".root = "/var/www";
+					"/.well-known/acme-challenge/".alias = "/var/lib/acme/.challenges/.well-known/acme-challenge/";
+				};
 			};
 			"acmechallenge.${domain}".locations = {
 				"/.well-known/acme-challenge".root = "/var/lib/acme/.challenges";

@@ -143,6 +143,18 @@ in {
 							];
 							outbound = "direct";
 						}
+						{
+							domain = "github.com";
+							port = 22;
+							outbound = "wired";
+						}
+						{
+							port = [
+								22
+								2222
+							];
+							outbound = "direct";
+						}
 					];
 					rule_set = [
 						{

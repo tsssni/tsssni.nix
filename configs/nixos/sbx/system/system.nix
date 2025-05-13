@@ -44,6 +44,7 @@
 				hashedPassword = "$6$/iX/pVpA5bEKVLCq$QOFRlw8zemSplLXeai8hO/D4AVrlDcMRPDIpKFSGI4bs9SlyiCHZMGmb05YAuCA4UrdDCpnsqfKFHHFfCnbRp.";
 				openssh.authorizedKeys.keys = [
 					"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs7JUeKdbtr8B1tAdyNIlRjedkVreAtKERKvAb4ltAq dingyongyu2002@foxmail.com"
+					"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJax0Eo+863xqIl7cHSAQKY8NP/cK3ea8R6OiIUWCtzT dingyongyu2002@foxmail.com"
 				];
 			};
 			nginx.extraGroups = [ "acme" ];

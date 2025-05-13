@@ -6,6 +6,6 @@ let
 		"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7CGrFUDso/RBnhrEZUbMK+fGE1xsNdCJ2srZCZ3hqG root@Mac"
 	];
 in {
-	"sbx-server.age".publicKeys = publicKeys;
 	"sbx-passwd.age".publicKeys = publicKeys;
+	"sbx-server.age".publicKeys = publicKeys;
 }
