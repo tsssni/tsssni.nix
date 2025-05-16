@@ -31,9 +31,6 @@ in {
 			lsp = {
 				enable = true;
 				keymaps = {
-					diagnostic = {
-						gl = "setloclist";
-					};
 					lspBuf = {
 						gd = "definition";
 						gD = "declaration";
@@ -46,17 +43,13 @@ in {
 				servers = {
 					clangd = {
 						enable = true;
-						cmd = [
-							"clangd"
-							"--header-insertion=never"
-							"--function-arg-placeholders=false"
-							"--inlay-hints=false"
-						];
+						cmd = ["clangd" "--header-insertion=never"];
 					};
 					slangd = {
 						enable = true;
 						package = pkgs.tsssni.slang;
 					};
+					glsl_analyzer.enable = true;
 					cmake.enable = true;
 					nixd.enable = true;
 					lua_ls.enable = true;

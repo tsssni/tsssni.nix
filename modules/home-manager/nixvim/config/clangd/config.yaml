@@ -3,3 +3,10 @@ CompileFlags:
     - -fmodules-ts
     - -fmodule-mapper=*
     - -fdeps-format=*
+
+InlayHints:
+  Enabled: false
+
+Completion:
+  HeaderInsertion: Never
+  ArgumentLists: None
