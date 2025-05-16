@@ -44,6 +44,15 @@ in {
 						"<Leader>t" = "registers";
 						"<Leader>u" = "resume";
 					};
+					settings = {
+						keymap.builtin = {
+							"<C-u>" = "preview-page-up";
+							"<C-d>" = "preview-page-down";
+						};
+						fzf_opts = {
+							"--cycle" = true;
+						};
+					};
 				};
 				web-devicons.enable = true;
 			};
