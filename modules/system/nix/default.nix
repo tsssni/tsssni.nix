@@ -1,7 +1,7 @@
 { ... }:
 {
-	imports = [
-		./nix.nix
-		./nixpkgs.nix
-	];
+  imports = [
+    ./nix.nix
+    ./nixpkgs.nix
+  ];
 }

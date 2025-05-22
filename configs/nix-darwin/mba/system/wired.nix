@@ -1,4 +1,4 @@
 { ... }:
 {
-	tsssni.wired.sing-box.enable = true;
+  tsssni.wired.sing-box.enable = true;
 }

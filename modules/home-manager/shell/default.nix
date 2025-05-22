@@ -1,9 +1,9 @@
 { ... }:
 {
-	imports = [
-		./fetch.nix
-		./prompt.nix
-		./shell.nix
-		./terminal.nix
-	];
+  imports = [
+    ./fetch.nix
+    ./prompt.nix
+    ./shell.nix
+    ./terminal.nix
+  ];
 }

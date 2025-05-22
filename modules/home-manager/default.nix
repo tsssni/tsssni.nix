@@ -1,11 +1,11 @@
 { ... }:
 {
-	imports = [
-		./devel
-		./nix
-		./nixvim
-		./shell
-		./visual
-		./wired
-	];
+  imports = [
+    ./devel
+    ./nix
+    ./nixvim
+    ./shell
+    ./visual
+    ./wired
+  ];
 }

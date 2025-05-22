@@ -1,9 +1,9 @@
 { ... }:
 {
-	imports = [
-		./browser.nix
-		./ssh.nix
-		./transfer.nix
-		./vpn.nix
-	];
+  imports = [
+    ./browser.nix
+    ./ssh.nix
+    ./transfer.nix
+    ./vpn.nix
+  ];
 }

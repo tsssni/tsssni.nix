@@ -1,4 +1,4 @@
 { ... }:
 {
-	tsssni.nixvim.enable = true;
+  tsssni.nixvim.enable = true;
 }

@@ -1,8 +1,8 @@
 { ... }:
 {
-	tsssni.shell = {
-		fetch.enable = true;
-		prompt.enable = true;
-		shell.enable = true;
-	};
+  tsssni.shell = {
+    fetch.enable = true;
+    prompt.enable = true;
+    shell.enable = true;
+  };
 }

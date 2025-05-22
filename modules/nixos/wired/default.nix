@@ -1,7 +1,7 @@
 { ... }:
 {
-	imports = [
-		./network.nix
-		./ssh.nix
-	];
+  imports = [
+    ./network.nix
+    ./ssh.nix
+  ];
 }

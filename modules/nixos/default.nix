@@ -1,7 +1,7 @@
 { ... }:
 {
-	imports = [
-		../system
-		./wired
-	];
+  imports = [
+    ../system
+    ./wired
+  ];
 }

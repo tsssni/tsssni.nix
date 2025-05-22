@@ -1,9 +1,9 @@
 { ... }:
 {
-	imports = [
-		./wired
-		./disko.nix
-		./nix.nix
-		./system.nix
-	];
+  imports = [
+    ./wired
+    ./disko.nix
+    ./nix.nix
+    ./system.nix
+  ];
 }

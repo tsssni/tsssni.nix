@@ -1,9 +1,9 @@
 { ... }:
 {
-	imports = [
-		./darwin.nix
-		./nix.nix
-		./secret.nix
-		./wired.nix
-	];
+  imports = [
+    ./darwin.nix
+    ./nix.nix
+    ./secret.nix
+    ./wired.nix
+  ];
 }

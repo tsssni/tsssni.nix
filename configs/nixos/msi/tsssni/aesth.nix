@@ -1,10 +1,10 @@
-{ 
- pkgs
-, ...
+{
+  pkgs,
+  ...
 }:
 {
-	home.packages = with pkgs; [ 
-		blender
-		gimp
-	];
+  home.packages = with pkgs; [
+    blender
+    gimp
+  ];
 }

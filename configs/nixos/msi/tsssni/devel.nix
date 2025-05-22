@@ -1,4 +1,4 @@
 { ... }:
 {
-	tsssni.devel.git.enable = true;
+  tsssni.devel.git.enable = true;
 }
