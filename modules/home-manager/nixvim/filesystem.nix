@@ -35,11 +35,12 @@ in
         fzf-lua = {
           enable = true;
           keymaps = {
+            "<Leader>b" = "buffers";
+            "<Leader>d" = "diagnostics_document";
             "<Leader>f" = "files";
             "<Leader>g" = "live_grep";
             "<Leader>h" = "helptags";
             "<Leader>j" = "jumps";
-            "<Leader>l" = "loclist";
             "<Leader>r" = "lsp_references";
             "<Leader>s" = "git_status";
             "<Leader>t" = "registers";
@@ -63,15 +64,15 @@ in
           mode = [ "n" ];
           key = "<C-f>";
           action.__raw = ''
-            						function()
-            							oil = require'oil'
-            							if vim.o.filetype == 'oil' then
-            								oil.close()
-            							else
-            								oil.open()
-            							end
-            						end
-            					'';
+            function()
+              oil = require'oil'
+                if vim.o.filetype == 'oil' then
+                  oil.close()
+                else
+                  oil.open()
+                end
+            end
+          '';
         }
         {
           mode = "n";
