@@ -47,6 +47,7 @@ in
             cmd = [
               "clangd"
               "--header-insertion=never"
+			  "--function-arg-placeholders=false"
             ];
           };
           slangd = {
