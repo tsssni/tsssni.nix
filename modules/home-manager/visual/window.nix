@@ -94,7 +94,7 @@ in
             { proportion = 1.0 / 2.0; }
             { proportion = 1.0 / 1.0; }
           ];
-          always-center-single-column = true;
+          always-center-single-column = false;
           default-column-display = "normal";
           default-column-width.proportion = 0.5;
           gaps = 20;
@@ -172,10 +172,12 @@ in
           "Mod+B".action = spawn "firefox";
           "Mod+X".action = close-window;
           "Mod+Q".action.quit.skip-confirmation = true;
-          "Mod+S".action.screenshot.show-pointer = false;
+          "Mod+P".action.screenshot.show-pointer = false;
           "Mod+W".action.screenshot-window.write-to-disk = true;
-          "Mod+O".action = open-overview;
-          "Mod+P".action = close-overview;
+          "Mod+O".action = toggle-overview;
+		  "Mod+M".action = maximize-column;
+		  "Mod+F".action = toggle-windowed-fullscreen;
+		  "Mod+V".action = toggle-window-floating;
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;
@@ -188,6 +190,7 @@ in
           "Mod+Ctrl+L".action = move-column-right;
           "Mod+Ctrl+J".action = move-window-down;
           "Mod+Ctrl+K".action = move-window-up;
+		  "Mod+Ctrl+X".action = center-column;
           "Mod+Ctrl+I".action = consume-or-expel-window-left;
           "Mod+Ctrl+O".action = consume-or-expel-window-right;
           "Mod+Ctrl+Down".action = move-window-to-workspace-down;

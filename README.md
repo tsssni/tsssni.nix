@@ -1,8 +1,6 @@
 # tsssni.nix
 
-![md0](./asset/visual0.png)
-
-![md0](./asset/visual1.png)
+![md0](./asset/visual.png)
 
 ## Intro
 
