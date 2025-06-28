@@ -54,6 +54,7 @@ in
             fzf_opts = {
               "--cycle" = true;
             };
+            winopts.wrap = true;
           };
         };
         web-devicons.enable = true;

@@ -10,7 +10,7 @@ in
   programs.nixvim.keymaps = lib.mkIf cfg.enable [
     {
       mode = "n";
-      key = "<C-T>";
+      key = "<T>";
       action = ":terminal<CR>";
     }
     {
