@@ -9,14 +9,14 @@
 }:
 stdenv.mkDerivation rec {
   pname = "slang";
-  version = "2025.7";
+  version = "2025.11";
 
   src = fetchFromGitHub {
     owner = "shader-slang";
     repo = "slang";
     tag = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-kUltUqmUdjuHYAE2W76f3Ns2hCEMU9Op+7u3+sT9BKg=";
+    hash = "sha256-J10xOB4dR4l32yXmEcM8ZvMiV3kZ0cP2L2czpT9D7Jo=";
   };
 
   nativeBuildInputs =

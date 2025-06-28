@@ -14,30 +14,30 @@ in
       type = with lib.types; listOf str;
       default = [ ];
       description = ''
-        				window manager monitors
-        			'';
+        window manager monitors
+      '';
       example = lib.literalExpression ''
-        			[
-        				", preferred, 0x0, 1"
-        			]
-        			'';
+        [
+        	", preferred, 0x0, 1"
+        ]
+      '';
     };
     wallpaper = lib.mkOption {
       type = with lib.types; nullOr path;
       default = null;
       description = ''
-        				window manager wallpaper
-        			'';
+        	window manager wallpaper
+      '';
       example = lib.literalExpression ''
-        				.config/hypr/wallpaper/plana.jpeg
-        			'';
+        .config/hypr/wallpaper/plana.jpeg
+      '';
     };
     nvidia = lib.mkOption {
       type = with lib.types; bool;
       default = false;
       description = ''
-        				use nvidia-settings for window manager
-        			'';
+        	use nvidia-settings for window manager
+      '';
       example = false;
     };
     extraSettings = lib.mkOption {
@@ -61,33 +61,33 @@ in
         valueType;
       default = { };
       description = ''
-        				Hyprland configuration written in Nix. Entries with the same key
-        				should be written as lists. Variables' and colors' names should be
-        				quoted. See <https://wiki.hyprland.org> for more examples.
+        	Hyprland configuration written in Nix. Entries with the same key
+        	should be written as lists. Variables' and colors' names should be
+        	quoted. See <https://wiki.hyprland.org> for more examples.
 
-        				::: {.note}
-        				Use the [](#opt-wayland.windowManager.hyprland.plugins) option to
-        				declare plugins.
-        				:::
+        	::: {.note}
+        	Use the [](#opt-wayland.windowManager.hyprland.plugins) option to
+        	declare plugins.
+        	:::
 
-        			'';
+      '';
       example = lib.literalExpression ''
-        			{
-        				decoration = {
-        					shadow_offset = "0 5";
-        					"col.shadow" = "rgba(00000099)";
-        				};
+        {
+          decoration = {
+            shadow_offset = "0 5";
+            "col.shadow" = "rgba(00000099)";
+          };
 
-        				"$mod" = "SUPER";
+          "$mod" = "SUPER";
 
-        				bindm = [
-        					# mouse movements
-        					"$mod, mouse:272, movewindow"
-        					"$mod, mouse:273, resizewindow"
-        					"$mod ALT, mouse:272, resizewindow"
-        				];
-        			}
-        			'';
+          bindm = [
+            # mouse movements
+            "$mod, mouse:272, movewindow"
+            "$mod, mouse:273, resizewindow"
+            "$mod ALT, mouse:272, resizewindow"
+          ];
+        }
+      '';
     };
   };
 
@@ -96,7 +96,7 @@ in
       enable = true;
       package = pkgs.hyprland;
       plugins = with pkgs.hyprlandPlugins; [
-        hyprscroller
+        hyprscrolling
       ];
       systemd.enable = false;
       settings = {
@@ -118,7 +118,7 @@ in
           border_size = 2;
           "col.active_border" = "rgba(f5c1e9ff)";
           "col.inactive_border" = "rgba(f5c1e9ff)";
-          layout = "scroller";
+          layout = "scrolling";
         };
         decoration = {
           rounding = 20;
@@ -156,18 +156,16 @@ in
             "workspaces, 1, 7, move"
           ];
         };
-        dwindle = {
-          pseudotile = true;
-          preserve_split = true;
+        plugin.hyprscrolling = {
+          column_width = 0.5;
+          explicit_column_widths = "0.333, 0.5, 0.667";
+          focus_fit_method = 1;
         };
-        plugin.scroller = {
-          column_default_width = "onehalf";
-          window_default_height = "one";
-          column_widths = "onethird onehalf twothirds";
-          window_heights = "onethird onehalf twothirds one";
+        dwindle = {
+          force_split = 2;
         };
         windowrulev2 = [
-          "noblur, class:^(?!kitty).*$"
+          # "noblur, class:^(?!kitty).*$"
           "opacity 0.8 0.7 1.0, class:^(kitty)$"
         ];
         layerrule = [
@@ -180,8 +178,6 @@ in
           "SUPER, Q, exit"
           "SUPER, V, togglefloating"
           "SUPER, B, exec, firefox"
-          "SUPER, F, fullscreen, 0"
-          "SUPER, M, fullscreen, 1"
           "SUPER, O, exec, hyprctl setprop active opaque toggle"
           "SUPER, P, pseudo"
           "SUPER, S, togglesplit"
@@ -189,29 +185,12 @@ in
           "SUPER, N, changegroupactive, f"
           "SUPER, R, exec, grim -g \"$(slurp)\""
 
-          "SUPER, H, scroller:movefocus, l"
-          "SUPER, L, scroller:movefocus, r"
-          "SUPER, J, scroller:movefocus, d"
-          "SUPER, K, scroller:movefocus, u"
-
-          "SUPERCTRL, H, scroller:movewindow, l"
-          "SUPERCTRL, L, scroller:movewindow, r"
-          "SUPERCTRL, J, scroller:movewindow, d"
-          "SUPERCTRL, K, scroller:movewindow, u"
-          "SUPERCTRL, I, scroller:movewindow, b"
-          "SUPERCTRL, O, scroller:movewindow, e"
-          "SUPERCTRL, Z, scroller:alignwindow, l"
-          "SUPERCTRL, X, scroller:alignwindow, c"
-          "SUPERCTRL, C, scroller:alignwindow, r"
-          "SUPERCTRL, V, scroller:alignwindow, u"
-          "SUPERCTRL, B, scroller:alignwindow, d"
-
-          "SUPERALT, J, scroller:setmode, row"
-          "SUPERALT, K, scroller:setmode, col"
-          "SUPERALT, H, scroller:cyclesize, prev"
-          "SUPERALT, L, scroller:cyclesize, next"
-          "SUPERALT, I, scroller:admitwindow"
-          "SUPERALT, O, scroller:expelwindow"
+          "SUPER, H, layoutmsg, move -col"
+          "SUPER, L, layoutmsg, move +col"
+          "SUPERCTRL, H, swapwindow, l"
+          "SUPERCTRL, L, swapwindow, r"
+          "SUPERALT, H, layoutmsg, colresize -conf"
+          "SUPERALT, L, layoutmsg, colresize +conf"
 
           "SUPER, 1, workspace, 1"
           "SUPER, 2, workspace, 2"
@@ -228,7 +207,7 @@ in
         exec-once =
           [ ]
           ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
-            "swww init; swww img ${cfg.wallpaper} --transition-type none"
+            "swww img ${cfg.wallpaper}"
           ]
           ++ lib.optionals config.tsssni.visual.widget.enable [
             "tsssni-astal"
@@ -242,11 +221,11 @@ in
     home = {
       file.".tsssnirc" = {
         text = lib.strings.trim ''
-          					#!/usr/bin/env nu
-          					sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
-          					openrgb -p tsssni
-          					Hyprland
-          				'';
+          #!/usr/bin/env nu
+          sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
+          openrgb -p tsssni
+          Hyprland
+        '';
         executable = true;
       };
       packages = with pkgs; [

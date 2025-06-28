@@ -49,9 +49,9 @@ in
           completionsPath = nuScriptsPath + "custom-completions/";
         in
         ''
-          				source ${completionsPath}/git/git-completions.nu
-          				source ${completionsPath}/nix/nix-completions.nu
-          			'';
+          source ${completionsPath}/git/git-completions.nu
+          source ${completionsPath}/nix/nix-completions.nu
+        '';
     };
   };
 }

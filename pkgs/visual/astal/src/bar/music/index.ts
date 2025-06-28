@@ -13,48 +13,48 @@ const coverVar = Variable('')
 const titleVar = Variable('')
 const artistVar = Variable('')
 const updatePlayer = (out: string) => {
-		let cover = ''
-		let title = ''
-		let artist = ''
-		if (out.length > 0) [cover, title, artist] = out.split('$')
-		
-		if (cover.length == 0 || out.length == 0)
-			cover = defaultCover
-		else if (cover != oldCover) {
-			if (cover.startsWith('file://'))
-				cover.substring(6)
-			else {
-				const err = exec([
-					'curl', cover,
-					'-o', '/tmp/ags/cover.png',
-					'-s', '--max-time', '5'
-				])
+	let cover = ''
+	let title = ''
+	let artist = ''
+	if (out.length > 0) [cover, title, artist] = out.split('$')
+	
+	if (cover.length == 0 || out.length == 0)
+		cover = defaultCover
+	else if (cover != oldCover) {
+		if (cover.startsWith('file://'))
+			cover.substring(6)
+		else {
+			const err = exec([
+				'curl', cover,
+				'-o', '/tmp/ags/cover.png',
+				'-s', '--max-time', '5'
+			])
 
-				if (Number(err) == 0)
-					cover = '/tmp/ags/cover.png'
-				else
-					cover = defaultCover
-			}
-
-			oldCover = cover
+			if (Number(err) == 0)
+				cover = '/tmp/ags/cover.png'
+			else
+				cover = defaultCover
 		}
 
-		coverIdx = (coverIdx + 1) % 2
-		exec([
-			'convert', cover, '-resize', '40x40',
-			swapConvertedCover[coverIdx]
-		])
-		coverVar.set(swapConvertedCover[coverIdx])
+		oldCover = cover
+	}
 
-		if (title.length == 0 || out.length == 0)
-			title = 'ブルーアーカイブ'
-		titleVar.set(title)
+	coverIdx = (coverIdx + 1) % 2
+	exec([
+		'convert', cover, '-resize', '40x40',
+		swapConvertedCover[coverIdx]
+	])
+	coverVar.set(swapConvertedCover[coverIdx])
 
-		if (artist.length == 0 || out.length == 0)
-			artist = 'プラナ'
-		artistVar.set(artist)
+	if (title.length == 0 || out.length == 0)
+		title = 'ブルーアーカイブ'
+	titleVar.set(title)
 
-		return ''
+	if (artist.length == 0 || out.length == 0)
+		artist = 'プラナ'
+	artistVar.set(artist)
+
+	return ''
 }
 
 

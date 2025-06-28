@@ -146,7 +146,7 @@ in
           foreground = "#f8f8ff";
           template = " ";
         };
-        version = 2;
+        version = 3;
       };
     };
   };
