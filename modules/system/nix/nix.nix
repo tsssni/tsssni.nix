@@ -46,5 +46,8 @@ in
         };
       optimise.automatic = true;
     };
+    environment.systemPackages = with pkgs; [
+      nh
+    ];
   };
 }

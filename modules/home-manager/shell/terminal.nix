@@ -66,6 +66,7 @@ in
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
+		font_size = 16.0;
 
         # tab
         allow_remote_control = "yes";

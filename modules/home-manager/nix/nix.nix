@@ -34,5 +34,8 @@ in
         ];
       };
     };
+    home.packages = with pkgs; [
+      nh
+    ];
   };
 }
