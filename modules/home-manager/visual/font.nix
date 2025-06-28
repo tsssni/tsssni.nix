@@ -14,14 +14,12 @@ in
       type = lib.types.listOf lib.types.package;
       default = with pkgs; [
         nerd-fonts.blex-mono
-        noto-fonts
-        noto-fonts-cjk-sans
-        noto-fonts-color-emoji
+		ibm-plex
       ];
       example = lib.literalExpression "[ pkgs.nerd-fonts.blex-mono ]";
       description = ''
-        				font packages used by system
-        			'';
+        font packages used by system
+      '';
     };
     latinFont = lib.mkOption {
       type = lib.hm.types.fontType;
@@ -31,8 +29,8 @@ in
         size = 12;
       };
       description = ''
-        				latin font
-        			'';
+        latin font
+      '';
     };
   };
 

@@ -36,20 +36,24 @@ in
           enable = true;
           keymaps = {
             "<Leader>b" = "buffers";
+            "<Leader>c" = "git_commits";
             "<Leader>d" = "diagnostics_document";
             "<Leader>f" = "files";
             "<Leader>g" = "live_grep";
             "<Leader>h" = "helptags";
             "<Leader>j" = "jumps";
+            "<Leader>m" = "git_blame";
             "<Leader>r" = "lsp_references";
             "<Leader>s" = "git_status";
-            "<Leader>t" = "registers";
+            "<Leader>t" = "git_stash";
             "<Leader>u" = "resume";
           };
           settings = {
-            keymap.builtin = {
-              "<C-u>" = "preview-page-up";
-              "<C-d>" = "preview-page-down";
+            keymap = {
+              builtin = {
+                "<C-u>" = "preview-page-up";
+                "<C-d>" = "preview-page-down";
+              };
             };
             fzf_opts = {
               "--cycle" = true;
