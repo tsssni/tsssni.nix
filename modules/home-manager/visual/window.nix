@@ -6,27 +6,45 @@
 }:
 let
   cfg = config.tsssni.visual.window;
+  settingsType =
+    with lib.types;
+    let
+      valueType =
+        nullOr (oneOf [
+          bool
+          int
+          float
+          str
+          path
+          (attrsOf valueType)
+          (listOf valueType)
+        ])
+        // {
+          description = "window manager configuration value";
+        };
+    in
+    valueType;
 in
 {
   options.tsssni.visual.window = {
     enable = lib.mkEnableOption "tsssni.visual.window";
     monitors = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [ ];
+      type = settingsType;
+      default = { };
       description = ''
         window manager monitors
       '';
       example = lib.literalExpression ''
-        [
-        	", preferred, 0x0, 1"
-        ]
+        {
+          "eDP-1".scale = 2.0;
+        }
       '';
     };
     wallpaper = lib.mkOption {
       type = with lib.types; nullOr path;
       default = null;
       description = ''
-        	window manager wallpaper
+        window manager wallpaper
       '';
       example = lib.literalExpression ''
         .config/hypr/wallpaper/plana.jpeg
@@ -36,185 +54,153 @@ in
       type = with lib.types; bool;
       default = false;
       description = ''
-        	use nvidia-settings for window manager
+        use nvidia-settings for window manager
       '';
       example = false;
     };
     extraSettings = lib.mkOption {
-      type =
-        with lib.types;
-        let
-          valueType =
-            nullOr (oneOf [
-              bool
-              int
-              float
-              str
-              path
-              (attrsOf valueType)
-              (listOf valueType)
-            ])
-            // {
-              description = "Hyprland configuration value";
-            };
-        in
-        valueType;
+      type = settingsType;
       default = { };
       description = ''
-        	Hyprland configuration written in Nix. Entries with the same key
-        	should be written as lists. Variables' and colors' names should be
-        	quoted. See <https://wiki.hyprland.org> for more examples.
-
-        	::: {.note}
-        	Use the [](#opt-wayland.windowManager.hyprland.plugins) option to
-        	declare plugins.
-        	:::
-
+        window manager extra configurations
       '';
       example = lib.literalExpression ''
         {
-          decoration = {
-            shadow_offset = "0 5";
-            "col.shadow" = "rgba(00000099)";
-          };
-
-          "$mod" = "SUPER";
-
-          bindm = [
-            # mouse movements
-            "$mod, mouse:272, movewindow"
-            "$mod, mouse:273, resizewindow"
-            "$mod ALT, mouse:272, resizewindow"
-          ];
+          outputs."eDP-1".scale = 2.0;
         }
       '';
     };
   };
 
   config = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland = {
+    programs.niri = {
       enable = true;
-      package = pkgs.hyprland;
-      plugins = with pkgs.hyprlandPlugins; [
-        hyprscrolling
-      ];
-      systemd.enable = false;
       settings = {
-        monitor = cfg.monitors;
-        xwayland.force_zero_scaling = true;
-        cursor = {
-          no_hardware_cursors = true;
-          no_warps = true;
-        };
         input = {
-          kb_layout = "us";
-          kb_options = "caps:ctrl_modifier";
-          follow_mouse = 1;
-          sensitivity = 0;
-        };
-        general = {
-          gaps_in = 10;
-          gaps_out = 10;
-          border_size = 2;
-          "col.active_border" = "rgba(f5c1e9ff)";
-          "col.inactive_border" = "rgba(f5c1e9ff)";
-          layout = "scrolling";
-        };
-        decoration = {
-          rounding = 20;
-
-          blur = {
-            enabled = true;
-            size = 3;
-            passes = 4;
-            ignore_opacity = true;
+          keyboard.xkb = {
+            layout = "us";
+            options = "caps:ctrl_modifier";
           };
-
+          focus-follows-mouse.enable = true;
+        };
+        outputs = cfg.monitors;
+        layout = {
+          preset-column-widths = [
+            { proportion = 1.0 / 3.0; }
+            { proportion = 1.0 / 2.0; }
+            { proportion = 2.0 / 3.0; }
+          ];
+          preset-window-heights = [
+            { proportion = 1.0 / 2.0; }
+            { proportion = 1.0 / 1.0; }
+          ];
+          always-center-single-column = true;
+          default-column-display = "normal";
+          default-column-width.proportion = 0.5;
+          gaps = 20;
+          focus-ring.enable = false;
+          border = {
+            enable = true;
+            width = 2;
+            active.color = "#f5c1e9";
+            inactive.color = "#f5c1e9";
+            urgent.color = "#f5c1e9";
+          };
           shadow = {
-            enabled = true;
-            range = 10;
-            render_power = 3;
-            color = "rgba(f5c1e9ff)";
-            color_inactive = "rgba(f5c1e9ff)";
+            enable = true;
+            color = "#f5c1e9";
+            inactive-color = "#f5c1e9";
+            softness = 10;
+            offset = {
+              x = 0.0;
+              y = 0.0;
+            };
           };
+          background-color = "transparent";
         };
         animations = {
-          enabled = true;
-
-          bezier = [
-            "open, 0.66, 0.88, 0.2, 0.96"
-            "move, 0.18, 1.2, 0.68, 1"
-            "close, 0.03, 0.45, 0, 0.97"
-            "fade, 0.19, 0.02, 0.44, 0.15"
-          ];
-
-          animation = [
-            "windowsIn, 1, 7, open"
-            "windowsOut, 1, 7, close"
-            "windowsMove, 1, 7, move"
-            "fade, 1, 3, fade"
-            "workspaces, 1, 7, move"
-          ];
+          window-open.easing = {
+            curve = "ease-out-cubic";
+            duration-ms = 500;
+          };
+          window-close.easing = {
+            curve = "ease-out-expo";
+            duration-ms = 700;
+          };
+          window-movement.spring = {
+            damping-ratio = 0.8;
+            stiffness = 200;
+            epsilon = 0.001;
+          };
         };
-        plugin.hyprscrolling = {
-          column_width = 0.5;
-          explicit_column_widths = "0.333, 0.5, 0.667";
-          focus_fit_method = 1;
-        };
-        dwindle = {
-          force_split = 2;
-        };
-        windowrulev2 = [
-          # "noblur, class:^(?!kitty).*$"
-          "opacity 0.8 0.7 1.0, class:^(kitty)$"
+        window-rules = [
+          {
+            clip-to-geometry = true;
+            geometry-corner-radius = {
+              bottom-left = 20.0;
+              bottom-right = 20.0;
+              top-left = 20.0;
+              top-right = 20.0;
+            };
+          }
         ];
-        layerrule = [
-          "blur, gtk-layer-shell"
-          "ignorezero, gtk-layer-shell"
-        ];
-        bind = [
-          "SUPER, T, exec, kitty"
-          "SUPER, X, killactive"
-          "SUPER, Q, exit"
-          "SUPER, V, togglefloating"
-          "SUPER, B, exec, firefox"
-          "SUPER, O, exec, hyprctl setprop active opaque toggle"
-          "SUPER, P, pseudo"
-          "SUPER, S, togglesplit"
-          "SUPER, G, togglegroup"
-          "SUPER, N, changegroupactive, f"
-          "SUPER, R, exec, grim -g \"$(slurp)\""
-
-          "SUPER, H, layoutmsg, move -col"
-          "SUPER, L, layoutmsg, move +col"
-          "SUPERCTRL, H, swapwindow, l"
-          "SUPERCTRL, L, swapwindow, r"
-          "SUPERALT, H, layoutmsg, colresize -conf"
-          "SUPERALT, L, layoutmsg, colresize +conf"
-
-          "SUPER, 1, workspace, 1"
-          "SUPER, 2, workspace, 2"
-          "SUPER, 3, workspace, 3"
-          "SUPER, 4, workspace, 4"
-          "SUPER, 5, workspace, 5"
-
-          "SUPERSHIFT, 1, movetoworkspace, 1"
-          "SUPERSHIFT, 2, movetoworkspace, 2"
-          "SUPERSHIFT, 3, movetoworkspace, 3"
-          "SUPERSHIFT, 4, movetoworkspace, 4"
-          "SUPERSHIFT, 5, movetoworkspace, 5"
-        ];
-        exec-once =
+        prefer-no-csd = true;
+        layer-rules =
           [ ]
           ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
-            "swww img ${cfg.wallpaper}"
+            {
+              matches = [
+                { namespace = "^swww-daemon$"; }
+              ];
+              place-within-backdrop = true;
+            }
+          ];
+        spawn-at-startup =
+          [ ]
+          ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
+            { command = [ "swww-daemon" ]; }
+            { command = [ "swww img ${cfg.wallpaper} --transition-type none" ]; }
           ]
           ++ lib.optionals config.tsssni.visual.widget.enable [
-            "tsssni-astal"
+            { command = [ "tsssni-astal" ]; }
           ]
           ++ lib.optionals config.tsssni.visual.ime.enable [
-            "fcitx5 -d -r"
+            { command = [ "fcitx5" ]; }
           ];
+        binds = with config.lib.niri.actions; {
+          "Mod+T".action = spawn "kitty";
+          "Mod+B".action = spawn "firefox";
+          "Mod+X".action = close-window;
+          "Mod+Q".action.quit.skip-confirmation = true;
+          "Mod+S".action.screenshot.show-pointer = false;
+          "Mod+W".action.screenshot-window.write-to-disk = true;
+          "Mod+O".action = open-overview;
+          "Mod+P".action = close-overview;
+
+          "Mod+H".action = focus-column-left;
+          "Mod+L".action = focus-column-right;
+          "Mod+J".action = focus-window-down;
+          "Mod+K".action = focus-window-up;
+          "Mod+Down".action = focus-workspace-down;
+          "Mod+Up".action = focus-workspace-up;
+
+          "Mod+Ctrl+H".action = move-column-left;
+          "Mod+Ctrl+L".action = move-column-right;
+          "Mod+Ctrl+J".action = move-window-down;
+          "Mod+Ctrl+K".action = move-window-up;
+          "Mod+Ctrl+I".action = consume-or-expel-window-left;
+          "Mod+Ctrl+O".action = consume-or-expel-window-right;
+          "Mod+Ctrl+Down".action = move-window-to-workspace-down;
+          "Mod+Ctrl+Up".action = move-window-to-workspace-up;
+
+          "Mod+Alt+H".action = switch-preset-column-width;
+          "Mod+Alt+L".action = maximize-column;
+          "Mod+Alt+J".action = switch-preset-window-height;
+          "Mod+Alt+K".action = reset-window-height;
+
+          "Mod+WheelScrollUp".action = focus-column-left;
+          "Mod+WheelScrollDown".action = focus-column-right;
+        };
       } // cfg.extraSettings;
     };
 
@@ -224,29 +210,14 @@ in
           #!/usr/bin/env nu
           sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
           openrgb -p tsssni
-          Hyprland
+          niri
         '';
         executable = true;
       };
       packages = with pkgs; [
         swww
-        grim
-        slurp
-        hyprsunset
         wl-clipboard
       ];
-    };
-
-    xdg.portal = {
-      enable = true;
-      xdgOpenUsePortal = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-      ];
-      config = {
-        common.default = [ "gtk" ];
-        hyprland.default = [ "hyprland" ];
-      };
     };
   };
 }

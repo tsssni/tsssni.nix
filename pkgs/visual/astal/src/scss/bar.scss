@@ -1,7 +1,7 @@
 @use "color" as *;
 
 .bar {
-	background-color: rgba($front, 0.6);
+	background-color: rgba($front, 0.8);
 	border-radius: 10px;
 	min-height: 50px;
 
@@ -22,7 +22,7 @@
 	.time {
       font-size: 20px;
 	  margin: 0px 10px 0px 10px;
-	  color: $cyan;
+	  color: rgba($red, 0.5);
     }
 
 	.music {

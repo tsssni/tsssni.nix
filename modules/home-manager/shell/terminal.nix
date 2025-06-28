@@ -34,18 +34,18 @@ in
       type = lib.types.attrsOf settingsValueType;
       default = { };
       example = lib.literalExpression ''
-        			{
-        				scrollback_lines = 10000;
-        				enable_audio_bell = false;
-        				update_check_interval = 0;
-        			}
-        			'';
+        {
+          scrollback_lines = 10000;
+          enable_audio_bell = false;
+          update_check_interval = 0;
+        }
+      '';
       description = ''
-        				Configuration written to
-        				{file}`$XDG_CONFIG_HOME/kitty/kitty.conf`. See
-        				<https://sw.kovidgoyal.net/kitty/conf.html>
-        				for the documentation.
-        			'';
+        Configuration written to
+        {file}`$XDG_CONFIG_HOME/kitty/kitty.conf`. See
+        <https://sw.kovidgoyal.net/kitty/conf.html>
+        for the documentation.
+      '';
     };
   };
 

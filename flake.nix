@@ -32,6 +32,10 @@
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -62,6 +66,7 @@
           ];
           extraHomeManagerModules = with inputs; [
             nixvim.homeManagerModules.nixvim
+            niri.homeModules.niri
           ];
         };
       };

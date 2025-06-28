@@ -8,7 +8,7 @@ const timeVar = Variable('').poll(
 		const now = new Date()
 
 		const time = now.toTimeString().slice(0, 8)
-		const weekday = ['月','火','水','木','金','土','日'][now.getDay()]+'曜'
+		const weekday = ['日','月','火','水','木','金','土'][now.getDay()]+'曜'
 		const date = now.toLocaleDateString('en-US')
 
 		return `${time} ${weekday} ${date}`

@@ -5,9 +5,16 @@
     gui.enable = true;
     window = {
       enable = true;
-      monitors = [
-        "HDMI-A-1, 3840x2160@159.97, 0x0, 1.5, bitdepth, 10, cm, wide"
-      ];
+      monitors = {
+        "HDMI-A-1" = {
+          scale = 1.5;
+          mode = {
+            width = 3840;
+            height = 2160;
+            refresh = 159.97;
+          };
+        };
+      };
       wallpaper = ./config/hypr/wallpaper/plana.jpeg;
       nvidia = true;
     };
