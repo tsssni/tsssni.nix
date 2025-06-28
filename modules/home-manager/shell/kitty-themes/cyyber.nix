@@ -1,7 +1,7 @@
 {
   # basic colors
   foreground = "#f5c1e9";
-  background = "#120b10";
+  background = "#252024";
   selection_foreground = "none";
   selection_background = "#1a0b63";
 
@@ -48,16 +48,15 @@
 
   # kitty window border colors and terminal bell colors
   active_border_color = "#ff0055";
-  inactive_border_color = "#120b10";
+  inactive_border_color = "#252024";
   bell_border_color = "#ff0055";
   visual_bell_color = "none";
 
   # tab bar colors
-  active_tab_foreground = "#120b10";
+  active_tab_foreground = "#252024";
   active_tab_background = "#ff0055";
   inactive_tab_foreground = "#ff0055";
-  inactive_tab_background = "#120b10";
-  tab_bar_background = "#120b10";
-  tab_bar_margin_color = "#120b10";
-
+  inactive_tab_background = "#252024";
+  tab_bar_background = "#252024";
+  tab_bar_margin_color = "#252024";
 }

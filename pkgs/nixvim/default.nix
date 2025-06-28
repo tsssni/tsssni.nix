@@ -12,8 +12,8 @@ with pkgs;
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "cyyber.nvim";
-      rev = "b5006ce";
-      hash = "sha256-lIhl6Laba+Z6yzfId020glShs2FxR3A4VuMtS86WGeE=";
+      rev = "c6c461d";
+      hash = "sha256-K48bijNRjHgtYrceJfrT8b3TXuRQDTW6OilXqoYUJbk=";
     };
     dependencies = [ pkgs.vimPlugins.lush-nvim ];
   };
