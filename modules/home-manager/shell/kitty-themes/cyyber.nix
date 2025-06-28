@@ -1,9 +1,9 @@
 {
   # basic colors
   foreground = "#f5c1e9";
-  background = "#252024";
+  background = "#2a252f";
   selection_foreground = "none";
-  selection_background = "#1a0b63";
+  selection_background = "#333333";
 
   # basic 16 colors
 
@@ -40,23 +40,23 @@
   color15 = "#f8f8ff";
 
   # cursor colors
-  cursor = "#ff0055";
-  cursor_text_color = "#f8f8ff";
+  cursor = "#aaaabb";
+  cursor_text_color = "#2a252f";
 
   # url underline color when hovering with mouse
   url_color = "#bef743";
 
   # kitty window border colors and terminal bell colors
   active_border_color = "#ff0055";
-  inactive_border_color = "#252024";
+  inactive_border_color = "#2a252f";
   bell_border_color = "#ff0055";
   visual_bell_color = "none";
 
   # tab bar colors
-  active_tab_foreground = "#252024";
+  active_tab_foreground = "#2a252f";
   active_tab_background = "#ff0055";
   inactive_tab_foreground = "#ff0055";
-  inactive_tab_background = "#252024";
-  tab_bar_background = "#252024";
-  tab_bar_margin_color = "#252024";
+  inactive_tab_background = "#2a252f";
+  tab_bar_background = "#2a252f";
+  tab_bar_margin_color = "#2a252f";
 }

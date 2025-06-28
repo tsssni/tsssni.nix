@@ -86,15 +86,15 @@ in
           sources = {
             default = [
               "lsp"
+              "copilot"
               "buffer"
               "path"
-              "copilot"
             ];
             providers.copilot = {
               async = true;
               module = "blink-copilot";
               name = "copilot";
-              score_offset = 100;
+              score_offset = -1;
             };
           };
         };
