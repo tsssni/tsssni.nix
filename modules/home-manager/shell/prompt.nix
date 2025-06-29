@@ -21,36 +21,36 @@ in
             newline = true;
             segments = [
               {
-                background = "#f8f8ff";
-                foreground = "#333333";
+                background = "lightWhite";
+                foreground = "black";
                 leading_diamond = "";
                 properties.macos = "󱄅 ";
                 style = "diamond";
                 template = "";
-                trailing_diamond = "<transparent,#f8f8ff></>";
+                trailing_diamond = "<transparent,lightWhite></>";
                 type = "os";
               }
               {
-                background = "#f8f8ff";
-                foreground = "#333333";
+                background = "lightWhite";
+                foreground = "black";
                 leading_diamond = "";
                 style = "diamond";
                 template = "  {{ .Name }}";
-                trailing_diamond = "<transparent,#f8f8ff></>";
+                trailing_diamond = "<transparent,lightWhite></>";
                 type = "shell";
               }
               {
-                background = "#4685ea";
-                foreground = "#f8f8ff";
+                background = "blue";
+                foreground = "lightWhite";
                 leading_diamond = "";
                 style = "diamond";
                 template = "  MEM: {{ round .PhysicalPercentUsed .Precision }}% | {{ (div ((sub .PhysicalTotalMemory .PhysicalAvailableMemory)|float64) 1073741824.0) }}/{{ (div .PhysicalTotalMemory 1073741824.0) }}GB  ";
-                trailing_diamond = "<transparent,#4685ea></>";
+                trailing_diamond = "<transparent,blue></>";
                 type = "sysinfo";
               }
               {
-                background = "#333333";
-                foreground = "#777777";
+                background = "black";
+                foreground = "lightBlack";
                 leading_diamond = "";
                 properties = {
                   style = "roundrock";
@@ -68,8 +68,8 @@ in
             alignment = "right";
             segments = [
               {
-                background = "#bef743";
-                foreground = "#333333";
+                background = "lightGreen";
+                foreground = "black";
                 leading_diamond = "";
                 properties = {
                   branch_icon = " ";
@@ -91,13 +91,13 @@ in
             newline = true;
             segments = [
               {
-                foreground = "#777777";
+                foreground = "lightBlack";
                 style = "plain";
                 template = "╭─";
                 type = "text";
               }
               {
-                foreground = "#777777";
+                foreground = "lightBlack";
                 properties = {
                   time_format = "15:04";
                 };
@@ -106,13 +106,13 @@ in
                 type = "time";
               }
               {
-                foreground = "#777777";
+                foreground = "lightBlack";
                 style = "plain";
                 template = "  ";
                 type = "root";
               }
               {
-                foreground = "#777777";
+                foreground = "lightBlack";
                 properties = {
                   folder_icon = " ";
                   folder_separator_icon = "  ";
@@ -130,7 +130,7 @@ in
             newline = true;
             segments = [
               {
-                foreground = "#777777";
+                foreground = "lightBlack";
                 properties.always_enabled = true;
                 style = "plain";
                 template = "╰─ ";
@@ -143,7 +143,7 @@ in
         console_title_template = "{{ .Folder }}";
         transient_prompt = {
           background = "transparent";
-          foreground = "#f8f8ff";
+          foreground = "lightWhite";
           template = " ";
         };
         version = 3;

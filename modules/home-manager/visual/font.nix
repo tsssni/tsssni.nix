@@ -14,7 +14,8 @@ in
       type = lib.types.listOf lib.types.package;
       default = with pkgs; [
         nerd-fonts.blex-mono
-		ibm-plex
+        ibm-plex
+        noto-fonts-monochrome-emoji
       ];
       example = lib.literalExpression "[ pkgs.nerd-fonts.blex-mono ]";
       description = ''

@@ -23,8 +23,8 @@ in
     enable = lib.mkEnableOption "tsssni.nixvim";
     colorscheme = lib.mkOption {
       type = lib.types.str;
-      default = "cyyber";
-      example = "cyyber";
+      default = "plana";
+      example = "plana";
       description = "colorscheme used in current installation";
     };
   };
@@ -38,6 +38,7 @@ in
       extraPlugins =
         [ ]
         ++ (with pkgs.vimPlugins; [
+		  incline-nvim
           nvim-web-devicons
           lush-nvim
           tokyonight-nvim
@@ -45,9 +46,9 @@ in
           sonokai
         ])
         ++ (with pkgs.tsssni.vimPlugins; [
+          plana-nvim
           cyyber-nvim
           eldritch-nvim
-          incline-nvim
         ]);
     };
   };

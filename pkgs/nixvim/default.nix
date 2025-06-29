@@ -7,6 +7,16 @@ let
 in
 with pkgs;
 {
+  plana-nvim = build {
+    name = "plana.nvim";
+    src = fetchFromGitHub {
+      owner = "tsssni";
+      repo = "plana.nvim";
+      rev = "7e1d445";
+      hash = "sha256-5A78Kfu0OTpSwBd0PCZ33ddlSsA27U+6mvCfvW1z1dQ=";
+    };
+    dependencies = [ pkgs.vimPlugins.lush-nvim ];
+  };
   cyyber-nvim = build {
     name = "cyyber.nvim";
     src = fetchFromGitHub {
@@ -24,15 +34,6 @@ with pkgs;
       repo = "eldritch.nvim";
       rev = "adedead";
       hash = "sha256-i0TG8yVRi1AZQS8ZOEXchYRxgU8UCNoHCmhOV8rBmX4=";
-    };
-  };
-  incline-nvim = build {
-    name = "incline";
-    src = fetchFromGitHub {
-      owner = "b0o";
-      repo = "incline.nvim";
-      rev = "0eb5b7f";
-      hash = "sha256-EeNvFa+Zrqgnp3Wtcwi4EdOgtnlZf9a68xPcYrH545k=";
     };
   };
 }

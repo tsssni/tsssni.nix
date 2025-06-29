@@ -55,6 +55,7 @@ in
                 "<C-d>" = "preview-page-down";
               };
             };
+			fzf_colors = true;
             fzf_opts = {
               "--cycle" = true;
             };

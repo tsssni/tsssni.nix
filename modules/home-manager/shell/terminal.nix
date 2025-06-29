@@ -26,8 +26,8 @@ in
     enable = lib.mkEnableOption "tsssni.shell.terminal";
     theme = lib.mkOption {
       type = lib.types.str;
-      default = "cyyber";
-      example = "cyyber";
+      default = "plana";
+      example = "plana";
       description = "theme used by kitty";
     };
     extraSettings = lib.mkOption {

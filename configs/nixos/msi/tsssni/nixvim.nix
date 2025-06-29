@@ -1,7 +1,4 @@
 { ... }:
 {
-  tsssni.nixvim = {
-    enable = true;
-    colorscheme = "cyyber";
-  };
+  tsssni.nixvim.enable = true;
 }

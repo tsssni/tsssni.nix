@@ -1,67 +1,68 @@
 @use "color" as *;
 
 .bar {
-	background-color: rgba($front, 0.8);
-	border-radius: 10px;
-	min-height: 50px;
+  background-color: rgba($bar, 0.8);
+  border-radius: 10px;
+  min-height: 50px;
 
-	.logo {
-		color: $cyan;
-		background-color: rgba($red, 0.5);
-		min-width: 36px;
-		min-height: 40px;
-		border-radius: 10px;
-		font-size: 32px;
-		margin: 4px;
-		padding-right: 5px;
-		border-width: 2px;
-		border-style: groove;
-		border-color: $cyan;
-	}
+  .logo {
+    color: $light-cyan;
+    background-color: $red;
+    min-width: 36px;
+    min-height: 40px;
+    border-radius: 10px;
+    font-size: 32px;
+    margin: 4px;
+    padding-right: 5px;
+    border-width: 2px;
+    border-style: groove;
+    border-color: $light-cyan;
+  }
 
-	.time {
-      font-size: 20px;
-	  margin: 0px 10px 0px 10px;
-	  color: rgba($red, 0.5);
+  .time {
+    font-size: 20px;
+    margin: 0px 10px 0px 10px;
+    color: $red;
+  }
+
+  .music {
+    color: $red;
+    .img {
+      min-width: 40px;
+      min-height: 40px;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: 4px;
     }
+    .title {
+      font-size: 16px;
+            margin: 2px;
+    }
+    .artist {
+      font-size: 16px;
+    }
+  }
 
-	.music {
-		color: rgba($red, 0.6);
-		.img {
-			min-width: 40px;
-			min-height: 40px;
-			background-repeat: no-repeat;
-            background-position: center;
-			margin: 4px;
-		}
-		.title {
-			font-size: 14px;
-		}
-		.artist {
-			font-size: 14px;
-		}
-	}
-
-	.hardware {
-		font-size: 20px;
-		margin: 0px 10px 0px 10px;
-		.type {
-			color: rgba($red, 0.6);
-		}
-		.usage {
-			color: $light-blue;
-		}
-		.freq {
-			color: rgba($magenta, 0.8);
-		}
-		.power {
-			color: rgba($light-yellow, 0.8);
-		}
-		.temp {
-			color: $blue;
-		}
-		.mem {
-			color: $light-cyan;
-		}
-	}
+  .hardware {
+    font-size: 20px;
+    margin: 0px 10px 0px 10px;
+    .type {
+      color: $red;
+    }
+    .usage {
+      color: $blue;
+    }
+    .freq {
+      color: $light-magenta;
+    }
+    .power {
+      color: $blue;
+    }
+    .temp {
+      color: rgba($light-black, 0.5);
+    }
+    .mem {
+      color: $magenta;
+    }
+  }
 }
