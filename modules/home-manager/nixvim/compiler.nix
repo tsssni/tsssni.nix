@@ -94,7 +94,7 @@ in
               async = true;
               module = "blink-copilot";
               name = "copilot";
-              score_offset = -1;
+              score_offset = -5;
             };
           };
         };

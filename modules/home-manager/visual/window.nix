@@ -97,25 +97,35 @@ in
           always-center-single-column = false;
           default-column-display = "normal";
           default-column-width.proportion = 0.5;
-          gaps = 20;
-          focus-ring.enable = false;
-          border = {
-            enable = true;
-            width = 2;
-            active.color = "#f5c1e9";
-            inactive.color = "#f5c1e9";
-            urgent.color = "#f5c1e9";
-          };
-          shadow = {
-            enable = true;
-            color = "#f5c1e9";
-            inactive-color = "#f5c1e9";
-            softness = 10;
-            offset = {
-              x = 0.0;
-              y = 0.0;
+          gaps = 10;
+          border =
+            let
+              color = "#645e8c";
+            in
+            {
+              enable = true;
+              width = 2;
+              active.color = color;
+              inactive.color = color;
+              urgent.color = color;
             };
-          };
+          focus-ring =
+            let
+              gradient = {
+                from = "#a0b4e5";
+                to = "#9fe5e5";
+                angle = 180;
+                relative-to = "workspace-view";
+              };
+            in
+            {
+              enable = true;
+              width = 5;
+              active.gradient = gradient;
+              inactive.gradient = gradient;
+              urgent.gradient = gradient;
+            };
+          shadow.enable = false;
           background-color = "transparent";
         };
         animations = {
@@ -175,9 +185,9 @@ in
           "Mod+P".action.screenshot.show-pointer = false;
           "Mod+W".action.screenshot-window.write-to-disk = true;
           "Mod+O".action = toggle-overview;
-		  "Mod+M".action = maximize-column;
-		  "Mod+F".action = toggle-windowed-fullscreen;
-		  "Mod+V".action = toggle-window-floating;
+          "Mod+M".action = maximize-column;
+          "Mod+F".action = toggle-windowed-fullscreen;
+          "Mod+V".action = toggle-window-floating;
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;
@@ -190,7 +200,7 @@ in
           "Mod+Ctrl+L".action = move-column-right;
           "Mod+Ctrl+J".action = move-window-down;
           "Mod+Ctrl+K".action = move-window-up;
-		  "Mod+Ctrl+X".action = center-column;
+          "Mod+Ctrl+X".action = center-column;
           "Mod+Ctrl+I".action = consume-or-expel-window-left;
           "Mod+Ctrl+O".action = consume-or-expel-window-right;
           "Mod+Ctrl+Down".action = move-window-to-workspace-down;
