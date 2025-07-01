@@ -33,9 +33,10 @@ class HardwareMonitor {
 
 const hardware = ['cpu', 'amd', 'nvidia']
 let detect = (hardware: string) => {
-	return exec(prefix + `${hardware}.py -d`).split(',').map((device: string) => {
-		return new HardwareMonitor(hardware, device)
-	})
+	const output = exec(prefix + `${hardware}.py -d`).trim()
+	return output ? output.split(',').map(
+		(device: string) => new HardwareMonitor(hardware, device.trim())
+	) : []
 }
 let monitors = hardware.flatMap(detect)
 

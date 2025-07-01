@@ -96,6 +96,7 @@ export default new Widget.Box({
 			],
 			name: 'music-info',
 			vertical: true,
+			valign: Gtk.Align.CENTER,
 		})
 	],
 	name: 'info',

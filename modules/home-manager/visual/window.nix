@@ -119,15 +119,15 @@ in
           background-color = "transparent";
         };
         animations = {
-          window-open.easing = {
+          window-open.kind.easing = {
             curve = "ease-out-cubic";
             duration-ms = 500;
           };
-          window-close.easing = {
+          window-close.kind.easing = {
             curve = "ease-out-expo";
             duration-ms = 700;
           };
-          window-movement.spring = {
+          window-movement.kind.spring = {
             damping-ratio = 0.8;
             stiffness = 200;
             epsilon = 0.001;

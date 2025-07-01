@@ -13,6 +13,7 @@ def device():
         )
     except subprocess.CalledProcessError as e:
         print('')
+        exit(1)
 
     reader = csv.DictReader(StringIO(result.stdout))
     rows = list(reader)
