@@ -66,9 +66,7 @@ eval (
     {
       pkgs = import inputs.nixpkgs {
         inherit system;
-        overlays = [
-          (import ../pkgs)
-        ];
+        overlays = (import ../pkgs);
       };
       extraSpecialArgs = specialArgs;
       modules = homeManagerModules "${path}";

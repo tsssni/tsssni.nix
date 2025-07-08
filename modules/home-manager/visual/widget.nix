@@ -15,7 +15,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      tsssni.astal
+      plana-astal
     ];
   };
 }

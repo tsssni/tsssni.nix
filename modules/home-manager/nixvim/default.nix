@@ -35,21 +35,17 @@ in
       defaultEditor = true;
       nixpkgs.useGlobalPackages = true;
       colorscheme = cfg.colorscheme;
-      extraPlugins =
-        [ ]
-        ++ (with pkgs.vimPlugins; [
-		  incline-nvim
-          nvim-web-devicons
-          lush-nvim
-          tokyonight-nvim
-          bluloco-nvim
-          sonokai
-        ])
-        ++ (with pkgs.tsssni.vimPlugins; [
-          plana-nvim
-          cyyber-nvim
-          eldritch-nvim
-        ]);
+      extraPlugins = with pkgs.vimPlugins; [
+        incline-nvim
+        nvim-web-devicons
+        lush-nvim
+        tokyonight-nvim
+        bluloco-nvim
+        sonokai
+        plana-nvim
+        cyyber-nvim
+        eldritch-nvim
+      ];
     };
   };
 }

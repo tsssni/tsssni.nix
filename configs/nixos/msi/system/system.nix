@@ -31,7 +31,7 @@
             path = "/efi";
           }
         ];
-        theme = pkgs.tsssni.plana-grub;
+        theme = pkgs.plana-grub;
         configurationLimit = 5;
       };
       efi = {

@@ -16,13 +16,13 @@ stdenv.mkDerivation {
   };
 
   installPhase = ''
-    		runHook preInstall
+    runHook preInstall
 
-    		mkdir -p $out/
-    		cp -r ./* $out/
+    mkdir -p $out/
+    cp -r ./* $out/
 
-    		runHook postInstall
-    	'';
+    runHook postInstall
+  '';
 
   meta = {
     description = "plana grub theme";

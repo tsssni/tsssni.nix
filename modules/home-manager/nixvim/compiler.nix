@@ -47,12 +47,12 @@ in
             cmd = [
               "clangd"
               "--header-insertion=never"
-			  "--function-arg-placeholders=false"
+              "--function-arg-placeholders=false"
             ];
           };
           slangd = {
             enable = true;
-            package = pkgs.tsssni.slang;
+            package = pkgs.shader-slang;
           };
           glsl_analyzer.enable = true;
           cmake.enable = true;

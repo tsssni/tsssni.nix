@@ -81,9 +81,15 @@ in
             layout = "us";
             options = "caps:ctrl_modifier";
           };
-          focus-follows-mouse.enable = true;
+          focus-follows-mouse = {
+            enable = true;
+            max-scroll-amount = "10%";
+          };
         };
         outputs = cfg.monitors;
+        gestures = {
+          hot-corners.enable = false;
+        };
         layout = {
           preset-column-widths = [
             { proportion = 1.0 / 3.0; }
@@ -172,7 +178,7 @@ in
             { command = [ "swww img ${cfg.wallpaper} --transition-type none" ]; }
           ]
           ++ lib.optionals config.tsssni.visual.widget.enable [
-            { command = [ "tsssni-astal" ]; }
+            { command = [ "plana-astal" ]; }
           ]
           ++ lib.optionals config.tsssni.visual.ime.enable [
             { command = [ "fcitx5" ]; }
