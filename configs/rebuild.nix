@@ -58,15 +58,13 @@ in
 eval (
   if (distro != "home-manager") then
     {
-      inherit system;
-      specialArgs = specialArgs;
+      inherit system specialArgs;
       modules = systemModules "${path}";
     }
   else
     {
       pkgs = import inputs.nixpkgs {
         inherit system;
-        overlays = (import ../pkgs);
       };
       extraSpecialArgs = specialArgs;
       modules = homeManagerModules "${path}";
