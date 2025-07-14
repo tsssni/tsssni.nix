@@ -50,18 +50,25 @@ in
               "--function-arg-placeholders=false"
             ];
           };
-          slangd = {
-            enable = true;
-            package = pkgs.shader-slang;
-          };
-          glsl_analyzer.enable = true;
           cmake.enable = true;
+          glsl_analyzer.enable = true;
+          lua_ls.enable = true;
           nixd = {
             enable = true;
             settings.formatting.command = [ "nixfmt" ];
           };
-          lua_ls.enable = true;
+          slangd = {
+            enable = true;
+            package = pkgs.shader-slang;
+          };
           ts_ls.enable = true;
+          tinymist = {
+            enable = true;
+            settings = {
+              exportPdf = "onSave";
+              formatterMode = "typstyle";
+            };
+          };
         };
       };
       blink-cmp = {
