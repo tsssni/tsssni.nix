@@ -42,6 +42,7 @@ in
           };
         };
         servers = {
+          basedpyright.enable = true;
           clangd = {
             enable = true;
             cmd = [
