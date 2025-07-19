@@ -36,16 +36,12 @@ in
           enable = true;
           keymaps = {
             "<Leader>b" = "buffers";
-            "<Leader>c" = "git_commits";
             "<Leader>d" = "diagnostics_document";
             "<Leader>f" = "files";
             "<Leader>g" = "live_grep";
             "<Leader>h" = "helptags";
             "<Leader>j" = "jumps";
-            "<Leader>m" = "git_blame";
             "<Leader>r" = "lsp_references";
-            "<Leader>s" = "git_status";
-            "<Leader>t" = "git_stash";
             "<Leader>u" = "resume";
           };
           settings = {
@@ -55,19 +51,20 @@ in
                 "<C-d>" = "preview-page-down";
               };
             };
-			fzf_colors = true;
+            fzf_colors = true;
             fzf_opts = {
               "--cycle" = true;
             };
             winopts.wrap = true;
           };
         };
+        neogit.enable = true;
         web-devicons.enable = true;
       };
 
       keymaps = [
         {
-          mode = [ "n" ];
+          mode = "n";
           key = "<C-f>";
           action.__raw = ''
             function()
@@ -79,6 +76,11 @@ in
                 end
             end
           '';
+        }
+        {
+          mode = "n";
+          key = "<Leader>s";
+          action = ":Neogit<CR>";
         }
         {
           mode = "n";
@@ -107,6 +109,5 @@ in
         }
       ];
     };
-    ripgrep.enable = true; # for telescope live grep
   };
 }
