@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -38,7 +39,7 @@ in
             "<Leader>b" = "buffers";
             "<Leader>d" = "diagnostics_document";
             "<Leader>f" = "files";
-            "<Leader>g" = "live_grep";
+            "<Leader>s" = "live_grep";
             "<Leader>h" = "helptags";
             "<Leader>j" = "jumps";
             "<Leader>r" = "lsp_references";
@@ -56,6 +57,18 @@ in
               "--cycle" = true;
             };
             winopts.wrap = true;
+          };
+        };
+        claude-code = {
+          enable = true;
+          settings = {
+            window.position = "float";
+            shell = {
+              separator = ";";
+              pushd_cmd = "use std/dirs; dirs add";
+              popd_cmd = "dirs drop";
+            };
+            keymaps.toggle.normal = "<Leader>a";
           };
         };
         neogit.enable = true;
@@ -79,7 +92,7 @@ in
         }
         {
           mode = "n";
-          key = "<Leader>s";
+          key = "<Leader>g";
           action = ":Neogit<CR>";
         }
         {
@@ -110,4 +123,8 @@ in
       ];
     };
   };
+
+  home.packages = with pkgs; [
+    claude-code
+  ];
 }
