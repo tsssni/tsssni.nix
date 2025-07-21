@@ -126,7 +126,7 @@ in
       {
         mode = "n";
         key = "<C-Esc>";
-        action = ":bd!";
+        action = ":bd!<CR>";
       }
     ];
   };

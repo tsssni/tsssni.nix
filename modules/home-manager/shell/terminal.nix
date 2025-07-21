@@ -66,13 +66,14 @@ in
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
-		font_size = 16.0;
+		    font_size = 16.0;
 
         # tab
         allow_remote_control = "yes";
 
         # window
         confirm_os_window_close = 0;
+        hide_window_decorations = "yes";
         macos_option_as_alt = "left";
       }
       // (lib.optionalAttrs customTheme (import ./kitty-themes/${file}))

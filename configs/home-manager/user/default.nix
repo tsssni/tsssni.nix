@@ -11,5 +11,6 @@
   imports = [
     ./nix.nix
     ./nixvim.nix
+    ./shell.nix
   ];
 }
