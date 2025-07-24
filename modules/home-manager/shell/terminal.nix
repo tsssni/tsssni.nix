@@ -52,10 +52,10 @@ in
   config.programs.kitty = lib.mkIf cfg.enable {
     enable = true;
     keybindings = {
-      "ctrl+t" = "new_tab";
-      "ctrl+q" = "close_tab";
-      "ctrl+j" = "previous_tab";
-      "ctrl+k" = "next_tab";
+      "ctrl+shift+t" = "new_tab";
+      "ctrl+shift+q" = "close_tab";
+      "ctrl+shift+j" = "previous_tab";
+      "ctrl+shift+k" = "next_tab";
     };
     themeFile = if customTheme then null else cfg.theme;
     settings =
@@ -66,7 +66,7 @@ in
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
-		    font_size = 16.0;
+        font_size = 16.0;
 
         # tab
         allow_remote_control = "yes";

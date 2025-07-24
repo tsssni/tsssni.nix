@@ -69,7 +69,7 @@ in
             popd_cmd = "dirs drop";
           };
           keymaps.toggle = {
-            normal = "<Leader>a";
+            normal = "<C-a>";
             terminal = "<C-a>";
           };
         };
@@ -125,7 +125,7 @@ in
       }
       {
         mode = "n";
-        key = "<C-Esc>";
+        key = "<C-q>";
         action = ":bd!<CR>";
       }
     ];

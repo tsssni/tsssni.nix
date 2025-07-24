@@ -12,7 +12,7 @@ in
       enable = true;
       settings = {
         direction = "float";
-        open_mapping = "[[<C-`>]]";
+        open_mapping = "[[<C-t>]]";
       };
     };
     keymaps = lib.mkIf cfg.enable [
