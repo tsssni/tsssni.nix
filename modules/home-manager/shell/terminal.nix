@@ -54,8 +54,8 @@ in
     keybindings = {
       "ctrl+shift+t" = "new_tab";
       "ctrl+shift+q" = "close_tab";
-      "ctrl+shift+j" = "previous_tab";
-      "ctrl+shift+k" = "next_tab";
+      "ctrl+shift+h" = "previous_tab";
+      "ctrl+shift+l" = "next_tab";
     };
     themeFile = if customTheme then null else cfg.theme;
     settings =
