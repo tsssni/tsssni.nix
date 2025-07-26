@@ -50,14 +50,6 @@ in
         .config/hypr/wallpaper/plana.jpeg
       '';
     };
-    nvidia = lib.mkOption {
-      type = with lib.types; bool;
-      default = false;
-      description = ''
-        use nvidia-settings for window manager
-      '';
-      example = false;
-    };
     extraSettings = lib.mkOption {
       type = settingsType;
       default = { };

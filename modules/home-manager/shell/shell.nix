@@ -37,11 +37,6 @@ in
           XCURSOR_THEME = "macOS";
           QT_QPA_PLATFORMTHEME = "qt5ct";
           XDG_SESSION_TYPE = "wayland";
-        }
-        // lib.optionalAttrs (true && visualCfg.window.enable && visualCfg.window.nvidia) {
-          GBM_BACKEND = "nvidia-drm";
-          LIBVA_DRIVER_NAME = "nvidia";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         };
       configFile.text =
         let

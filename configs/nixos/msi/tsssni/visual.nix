@@ -11,12 +11,10 @@
           mode = {
             width = 3840;
             height = 2160;
-            refresh = 159.97;
           };
         };
       };
       wallpaper = ./config/hypr/wallpaper/plana.jpeg;
-      nvidia = true;
     };
     widget.enable = true;
     ime.enable = true;
