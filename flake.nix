@@ -65,7 +65,7 @@
             agenix.darwinModules.age
           ];
           extraHomeManagerModules = with inputs; [
-            nixvim.homeManagerModules.nixvim
+            nixvim.homeModules.nixvim
             niri.homeModules.niri
           ];
         };
