@@ -13,5 +13,8 @@
     };
   };
 
-  system.stateVersion = 6;
+  system = {
+    primaryUser = "tsssni";
+    stateVersion = 6;
+  };
 }

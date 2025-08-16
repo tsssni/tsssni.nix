@@ -94,25 +94,10 @@ in
           sources = {
             default = [
               "lsp"
-              "copilot"
               "buffer"
               "path"
             ];
-            providers.copilot = {
-              async = true;
-              module = "blink-copilot";
-              name = "copilot";
-              score_offset = -10;
-            };
           };
-        };
-      };
-      blink-copilot.enable = true;
-      copilot-lua = {
-        enable = true;
-        settings = {
-          panel.enabled = false;
-          suggestion.enabled = false;
         };
       };
       nvim-autopairs.enable = true;
@@ -120,8 +105,9 @@ in
 
     filetype.extension = {
       slang = "shaderslang";
-      glsl = "glsl";
       hlsl = "hlsl";
+      glsl = "glsl";
+      "glsl.hpp" = "glsl";
     };
 
     diagnostic.settings = {
@@ -137,12 +123,7 @@ in
   };
 
   home = {
-    file.".config/clangd" = {
-      source = ./config/clangd;
-      recursive = true;
-    };
     packages = with pkgs; [
-      copilot-language-server
       lldb
       nixfmt-rfc-style
     ];
