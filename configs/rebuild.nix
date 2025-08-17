@@ -22,13 +22,13 @@ let
     inherit inputs;
   };
 
-  homeManagerModules =
+  homeModules =
     path:
     [
       ./${path}
-      tsssni.homeManagerModules.tsssni
+      tsssni.homeModules.tsssni
     ]
-    ++ tsssni.extraHomeManagerModules;
+    ++ tsssni.extraHomeModules;
 
   systemModules =
     path:
@@ -47,7 +47,7 @@ let
             |> lib.filterAttrs (dir: type: true && type == "directory" && dir != "system")
             |> lib.mapAttrs (
               dir: _: {
-                imports = homeManagerModules "${path}/${dir}";
+                imports = homeModules "${path}/${dir}";
               }
             );
         };
@@ -67,6 +67,6 @@ eval (
         inherit system;
       };
       extraSpecialArgs = specialArgs;
-      modules = homeManagerModules "${path}";
+      modules = homeModules "${path}";
     }
 )

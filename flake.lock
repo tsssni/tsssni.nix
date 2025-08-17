@@ -128,11 +128,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1755313937,
-        "narHash": "sha256-pQb7bNcolxYGRiylUCrTddiF+qW2wsUiM9+eRIDUrVU=",
+        "lastModified": 1755397986,
+        "narHash": "sha256-qwrF5laj6eE3Zht0wKYTmH6QzL7bdOyE2f6jd3WCO8g=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "2a749f4790a14f7168be67cdf6e548ef1c944e10",
+        "rev": "8b4ac149687e8520187a66f05e9d4eafebf96522",
         "type": "github"
       },
       "original": {
@@ -202,11 +202,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1755327868,
-        "narHash": "sha256-ED1ijLqHE5xuFJVNdNac5WlJQ0X4jWKl1U9w2sTVnHU=",
+        "lastModified": 1755337977,
+        "narHash": "sha256-enrs40LRu+hbnKF7bcZL1uCgUflTmzJM1HUx1q2Pg8I=",
         "owner": "sodiboo",
         "repo": "niri-flake",
-        "rev": "48b801cd7b250348c5020592c9b916e30692958a",
+        "rev": "b634336507cb4cace8170f71063cc81a3eb225e5",
         "type": "github"
       },
       "original": {
@@ -235,11 +235,11 @@
     "niri-unstable": {
       "flake": false,
       "locked": {
-        "lastModified": 1755324584,
-        "narHash": "sha256-W8/kqFJTmSDLuA9nn6V6EVy1D8TzXBqlf8nN3wkmK9U=",
+        "lastModified": 1755333728,
+        "narHash": "sha256-XJdE2XgTrstjV5Uh1mdGfjaKF6cawnBH8ybMRMlR8tQ=",
         "owner": "YaLTeR",
         "repo": "niri",
-        "rev": "a003e013074b5188a2b1f2364fff90fb4caf972a",
+        "rev": "af30cc8df68b29973c8b9eec290f9e6b93463929",
         "type": "github"
       },
       "original": {

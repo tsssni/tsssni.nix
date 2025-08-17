@@ -53,7 +53,7 @@
             lib
             nixosModules
             darwinModules
-            homeManagerModules
+            homeModules
             ;
           extraNixosModules = with inputs; [
             agenix.nixosModules.age
@@ -64,7 +64,7 @@
           extraDarwinModules = with inputs; [
             agenix.darwinModules.age
           ];
-          extraHomeManagerModules = with inputs; [
+          extraHomeModules = with inputs; [
             nixvim.homeModules.nixvim
             niri.homeModules.niri
           ];
@@ -89,9 +89,9 @@
         tsssni = import ./modules/nix-darwin;
         default = self.darwinModules.tsssni;
       };
-      homeManagerModules = {
+      homeModules = {
         tsssni = import ./modules/home-manager;
-        default = self.homeManagerModules.tsssni;
+        default = self.homeModules.tsssni;
       };
       nixosConfigurations = collectConfigs "nixos";
       darwinConfigurations = collectConfigs "nix-darwin";

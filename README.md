@@ -37,7 +37,7 @@ darwinConfigurations.tsssni = nix-darwin.lib.darwinSystem {
 };
 {
   home-manager.users.tsssni = { ... }: {
-    imports = [ tsssni.homeManagerModules.tsssni ];
+    imports = [ tsssni.homeModules.tsssni ];
   };
 }
 ```
