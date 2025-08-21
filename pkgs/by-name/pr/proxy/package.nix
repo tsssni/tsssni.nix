@@ -4,15 +4,15 @@
   lib,
   stdenv,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "proxy";
   version = "4.0.0";
 
   src = fetchFromGitHub {
     owner = "microsoft";
     repo = "proxy";
-    rev = "82bb5d5";
-    sha256 = "sha256-TbnDWK+eHon515oCLuL+5rh7bw3JbP8Nze4qfABQEJs=";
+    rev = "${version}";
+    sha256 = "sha256-WssVOwbRPozDboub8kRiOe7x3f6Fc4haVI1UNADBVpw=";
   };
 
   nativeBuildInputs = [ cmake ];
