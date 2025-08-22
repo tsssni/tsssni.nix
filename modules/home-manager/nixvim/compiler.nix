@@ -106,8 +106,14 @@ in
     filetype.extension = {
       slang = "shaderslang";
       hlsl = "hlsl";
+      hlsli = "hlsl";
       glsl = "glsl";
-      "glsl.hpp" = "glsl";
+      vert = "glsl";
+      tesc = "glsl";
+      tese = "glsl";
+      geom = "glsl";
+      frag = "glsl";
+      comp = "glsl";
     };
 
     diagnostic.settings = {
