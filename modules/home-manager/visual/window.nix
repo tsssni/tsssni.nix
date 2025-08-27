@@ -47,7 +47,7 @@ in
         window manager wallpaper
       '';
       example = lib.literalExpression ''
-        .config/hypr/wallpaper/plana.jpeg
+        .config/niri/wallpaper/plana.jpeg
       '';
     };
     extraSettings = lib.mkOption {

@@ -14,12 +14,15 @@ in
   config = lib.mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      forwardAgent = true;
-      addKeysToAgent = "yes";
-      hashKnownHosts = true;
+      enableDefaultConfig = false;
       includes = [
         "~/.ssh/config.d/*"
       ];
+      matchBlocks."*" = {
+        forwardAgent = true;
+        addKeysToAgent = "yes";
+        hashKnownHosts = true;
+      };
     };
   };
 }

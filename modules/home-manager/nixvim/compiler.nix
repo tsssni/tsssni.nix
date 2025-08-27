@@ -51,7 +51,7 @@ in
               "--function-arg-placeholders=false"
             ];
           };
-          cmake.enable = true;
+          # cmake.enable = true;
           glsl_analyzer.enable = true;
           lua_ls.enable = true;
           nixd = {

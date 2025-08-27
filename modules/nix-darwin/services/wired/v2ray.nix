@@ -11,10 +11,10 @@
         type = lib.types.bool;
         default = false;
         description = ''
-          					Whether to run v2ray server.
+          Whether to run v2ray server.
 
-          					Either `configFile` or `config` must be specified.
-          				'';
+          Either `configFile` or `config` must be specified.
+        '';
       };
 
       package = lib.mkPackageOption pkgs "v2ray" { };
@@ -24,12 +24,12 @@
         default = null;
         example = "/etc/v2ray/config.json";
         description = ''
-          					The absolute path to the configuration file.
+          The absolute path to the configuration file.
 
-          					Either `configFile` or `config` must be specified.
+          Either `configFile` or `config` must be specified.
 
-          					See <https://www.v2fly.org/en_US/v5/config/overview.html>.
-          				'';
+          See <https://www.v2fly.org/en_US/v5/config/overview.html>.
+        '';
       };
 
       config = lib.mkOption {
@@ -50,12 +50,12 @@
           ];
         };
         description = ''
-          					The configuration object.
+          The configuration object.
 
-          					Either `configFile` or `config` must be specified.
+          Either `configFile` or `config` must be specified.
 
-          					See <https://www.v2fly.org/en_US/v5/config/overview.html>.
-          				'';
+          See <https://www.v2fly.org/en_US/v5/config/overview.html>.
+        '';
       };
     };
 
@@ -72,8 +72,8 @@
             name = "v2ray.json";
             text = builtins.toJSON cfg.config;
             checkPhase = ''
-              				${cfg.package}/bin/v2ray test -c $out
-              			'';
+              ${cfg.package}/bin/v2ray test -c $out
+            '';
           };
 
     in

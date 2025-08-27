@@ -4,7 +4,6 @@
   makeWrapper,
   astal,
   ags,
-  hyprland,
   playerctl,
   imagemagick,
   curl,
@@ -27,7 +26,6 @@ stdenvNoCC.mkDerivation {
     io
     gjs
     astal3
-    hyprland
   ];
 
   installPhase = ''
@@ -42,11 +40,6 @@ stdenvNoCC.mkDerivation {
 
   preFixup = ''
     wrapProgram $out/bin/${name} \
-    --prefix GI_TYPELIB_PATH ':' ${
-      lib.makeSearchPath "lib/girepository-1.0" [
-        astal.hyprland
-      ]
-    } \
     --prefix PATH ':' ${
       lib.makeBinPath [
         ags

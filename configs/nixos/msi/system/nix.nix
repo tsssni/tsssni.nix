@@ -2,6 +2,9 @@
 {
   tsssni.nix = {
     nix.enable = true;
-    nixpkgs.enable = true;
+    nixpkgs = {
+      enable = true;
+      cudaSupport = true;
+    };
   };
 }

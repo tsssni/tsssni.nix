@@ -14,7 +14,7 @@
           };
         };
       };
-      wallpaper = ./config/hypr/wallpaper/plana.jpeg;
+      wallpaper = ./config/niri/wallpaper/plana.jpeg;
     };
     widget.enable = true;
     ime.enable = true;
