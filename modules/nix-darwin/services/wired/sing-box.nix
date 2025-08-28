@@ -42,19 +42,19 @@ let
       stringOrDefault = str: def: if str == "" then def else str;
     in
     ''
-      			if [[ -h '${output}' ]]; then
-      				rm '${output}'
-      			fi
+      if [[ -h '${output}' ]]; then
+        rm '${output}'
+      fi
 
-      			inherit_errexit_enabled=0
-      			shopt -pq inherit_errexit && inherit_errexit_enabled=1
-      			shopt -s inherit_errexit
-      		''
+      inherit_errexit_enabled=0
+      shopt -pq inherit_errexit && inherit_errexit_enabled=1
+      shopt -s inherit_errexit
+    ''
     + lib.concatStringsSep "\n" (
       lib.imap1 (index: name: ''
-        			secret${toString index}=$(<'${secrets.${name}}')
-        			export secret${toString index}
-        		'') (lib.attrNames secrets)
+        secret${toString index}=$(<'${secrets.${name}}')
+        export secret${toString index}
+      '') (lib.attrNames secrets)
     )
     + "\n"
     + "${pkgs.jq}/bin/jq >'${output}' "
@@ -65,10 +65,10 @@ let
     )
     + ''
       <<'EOF'
-      			${builtins.toJSON set}
+      ${builtins.toJSON set}
       EOF
-      			(( ! $inherit_errexit_enabled )) && shopt -u inherit_errexit
-      		'';
+      (( ! $inherit_errexit_enabled )) && shopt -u inherit_errexit
+    '';
 in
 {
   options.services.sing-box = {
@@ -80,12 +80,12 @@ in
       };
       default = { };
       description = ''
-        				The sing-box configuration, see https://sing-box.sagernet.org/configuration/ for documentation.
+        The sing-box configuration, see https://sing-box.sagernet.org/configuration/ for documentation.
 
-        				Options containing secret data should be set to an attribute set
-        				containing the attribute `_secret` - a string pointing to a file
-        				containing the value the option should be set to.
-        			'';
+        Options containing secret data should be set to an attribute set
+        containing the attribute `_secret` - a string pointing to a file
+        containing the value the option should be set to.
+      '';
     };
   };
 
@@ -93,13 +93,14 @@ in
     launchd.agents.sing-box =
       let
         script = ''
-          				${genJqSecretsReplacementSnippet cfg.settings "/run/sing-box/config.json"}
-          				${lib.getExe cfg.package} -C /run/sing-box run
-          			'';
+          ${genJqSecretsReplacementSnippet cfg.settings "/run/sing-box/config.json"}
+          ${lib.getExe cfg.package} -C /run/sing-box run
+        '';
       in
       {
         serviceConfig = {
           Program = toString (pkgs.writeShellScript "sing-box-wrapper" script);
+          ProgramArguments = [ ];
           Label = "org.sagernet.sing-box";
           KeepAlive = true;
           RunAtLoad = true;
