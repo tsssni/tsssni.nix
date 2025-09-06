@@ -49,34 +49,36 @@ in
     };
   };
 
-  config.programs.kitty = lib.mkIf cfg.enable {
-    enable = true;
-    keybindings = {
-      "ctrl+shift+t" = "new_tab";
-      "ctrl+shift+q" = "close_tab";
-      "ctrl+shift+h" = "previous_tab";
-      "ctrl+shift+l" = "next_tab";
+  config = lib.mkIf cfg.enable {
+    programs.kitty = {
+      enable = true;
+      keybindings = {
+        "ctrl+shift+t" = "new_tab";
+        "ctrl+shift+q" = "close_tab";
+        "ctrl+shift+h" = "previous_tab";
+        "ctrl+shift+l" = "next_tab";
+      };
+      themeFile = if customTheme then null else cfg.theme;
+      settings =
+        { }
+        // {
+          # font
+          font_family = config.tsssni.visual.font.latinFont.name;
+          bold_font = "auto";
+          italic_font = "auto";
+          bold_italic_font = "auto";
+          font_size = 16.0;
+
+          # tab
+          allow_remote_control = "yes";
+
+          # window
+          confirm_os_window_close = 0;
+          hide_window_decorations = "yes";
+          macos_option_as_alt = "left";
+        }
+        // (lib.optionalAttrs customTheme (import ./kitty-themes/${file}))
+        // cfg.extraSettings;
     };
-    themeFile = if customTheme then null else cfg.theme;
-    settings =
-      { }
-      // {
-        # font
-        font_family = config.tsssni.visual.font.latinFont.name;
-        bold_font = "auto";
-        italic_font = "auto";
-        bold_italic_font = "auto";
-        font_size = 16.0;
-
-        # tab
-        allow_remote_control = "yes";
-
-        # window
-        confirm_os_window_close = 0;
-        hide_window_decorations = "yes";
-        macos_option_as_alt = "left";
-      }
-      // (lib.optionalAttrs customTheme (import ./kitty-themes/${file}))
-      // cfg.extraSettings;
   };
 }
