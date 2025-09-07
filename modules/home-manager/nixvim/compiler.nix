@@ -107,6 +107,8 @@ in
       slang = "shaderslang";
       hlsl = "hlsl";
       hlsli = "hlsl";
+      usf = "hlsl";
+      ush = "hlsl";
       glsl = "glsl";
       vert = "glsl";
       tesc = "glsl";
