@@ -12,6 +12,7 @@
     ./aesth.nix
     ./devel.nix
     ./nixvim.nix
+    ./office.nix
     ./shell.nix
     ./visual.nix
     ./wired.nix
