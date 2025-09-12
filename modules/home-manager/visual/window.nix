@@ -67,6 +67,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.niri = {
       enable = true;
+      package = pkgs.niri;
       settings = {
         input = {
           keyboard.xkb = {
@@ -212,7 +213,8 @@ in
           "Mod+WheelScrollUp".action = focus-column-left;
           "Mod+WheelScrollDown".action = focus-column-right;
         };
-      } // cfg.extraSettings;
+      }
+      // cfg.extraSettings;
     };
 
     home = {
