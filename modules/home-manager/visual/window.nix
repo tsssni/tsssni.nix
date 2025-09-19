@@ -230,6 +230,7 @@ in
       packages = with pkgs; [
         swww
         wl-clipboard
+        xwayland-satellite
       ];
     };
   };
