@@ -21,6 +21,6 @@ stdenv.mkDerivation {
     description = "Expressive Vector Engine - SIMD in C++ Goes Brrrr";
     homepage = "https://jfalcou.github.io/eve/";
     license = lib.licenses.boost;
-    platforms = lib.platforms.linux;
+    platforms = lib.platforms.linux ++ lib.platforms.darwin;
   };
 }
