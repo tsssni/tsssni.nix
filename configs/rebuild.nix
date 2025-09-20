@@ -13,13 +13,13 @@ let
   specialArgs = {
     tsssni = {
       inherit
-        func
+        inputs
         distro
+        func
         system
         ;
-      lib = tsssni.lib;
-    };
-    inherit inputs;
+    }
+    // tsssni;
   };
 
   homeModules =

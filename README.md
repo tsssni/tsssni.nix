@@ -49,7 +49,7 @@ Provide pkgs via overlays under `pkgs.tsssni`. Require turning on `tsssni.nixpkg
 ```nix
 tsssni.nixpkgs.enable = true;
 environment.systemPackages = with pkgs.tsssni; [
-    slang
+  slang
 ]
 ```
 
@@ -66,8 +66,8 @@ Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-ma
 , func
 }:
 import ../rebuild.nix {
-	inherit inputs tsssni func;
-	system = "x86_64-linux";
+  inherit inputs tsssni func;
+  system = "x86_64-linux";
 }
 ```
 
