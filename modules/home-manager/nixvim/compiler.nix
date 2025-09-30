@@ -9,7 +9,66 @@ let
 in
 {
   programs.nixvim = lib.mkIf cfg.enable {
+    lsp = {
+      keymaps = [
+        {
+          key = "gd";
+          lspBufAction = "definition";
+        }
+        {
+          key = "gD";
+          lspBufAction = "declaration";
+        }
+        {
+          key = "gr";
+          lspBufAction = "rename";
+        }
+        {
+          key = "gR";
+          lspBufAction = "references";
+        }
+        {
+          key = "gf";
+          lspBufAction = "format";
+        }
+        {
+          key = "gh";
+          lspBufAction = "hover";
+        }
+      ];
+      servers = {
+        basedpyright.enable = true;
+        clangd = {
+          enable = true;
+          settings.cmd = [
+            "clangd"
+            "--header-insertion=never"
+            "--function-arg-placeholders=false"
+          ];
+        };
+        cmake.enable = true;
+        glsl_analyzer.enable = true;
+        lua_ls.enable = true;
+        nixd = {
+          enable = true;
+          settings.formattings.command = [ "nixfmt" ];
+        };
+        slangd = {
+          enable = true;
+          package = pkgs.shader-slang;
+        };
+        ts_ls.enable = true;
+        tinymist = {
+          enable = true;
+          settings = {
+            exportPdf = "onSave";
+            formatterMode = "typstyle";
+          };
+        };
+      };
+    };
     plugins = {
+      lsp.enable = true;
       treesitter = {
         enable = true;
         nixvimInjections = true;
@@ -27,49 +86,6 @@ in
             };
           };
           indent.enable = false;
-        };
-      };
-      lsp = {
-        enable = true;
-        keymaps = {
-          lspBuf = {
-            gd = "definition";
-            gD = "declaration";
-            gr = "rename";
-            gR = "references";
-            gf = "format";
-            gh = "hover";
-          };
-        };
-        servers = {
-          basedpyright.enable = true;
-          clangd = {
-            enable = true;
-            cmd = [
-              "clangd"
-              "--header-insertion=never"
-              "--function-arg-placeholders=false"
-            ];
-          };
-          cmake.enable = true;
-          glsl_analyzer.enable = true;
-          lua_ls.enable = true;
-          nixd = {
-            enable = true;
-            settings.formatting.command = [ "nixfmt" ];
-          };
-          slangd = {
-            enable = true;
-            package = pkgs.shader-slang;
-          };
-          ts_ls.enable = true;
-          tinymist = {
-            enable = true;
-            settings = {
-              exportPdf = "onSave";
-              formatterMode = "typstyle";
-            };
-          };
         };
       };
       blink-cmp = {
