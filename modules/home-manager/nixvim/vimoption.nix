@@ -16,7 +16,7 @@ in
     completeopt = "menu,menuone,noselect,noinsert";
     cursorline = true;
     encoding = "utf-8";
-    expandtab = false;
+    expandtab = true;
     exrc = true;
     fileencoding = "utf-8";
     fileformats = "unix";
