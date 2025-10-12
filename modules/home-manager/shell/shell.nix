@@ -28,16 +28,15 @@ in
         use_kitty_protocol = true;
         table.missing_value_symbol = "";
       };
-      environmentVariables =
-        {
-          EDITOR = "nvim";
-        }
-        // lib.optionalAttrs visualCfg.gui.enable {
-          XCURSOR_SIZE = 24;
-          XCURSOR_THEME = "macOS";
-          QT_QPA_PLATFORMTHEME = "qt5ct";
-          XDG_SESSION_TYPE = "wayland";
-        };
+      environmentVariables = {
+        EDITOR = "nvim";
+      }
+      // lib.optionalAttrs visualCfg.gui.enable {
+        XCURSOR_SIZE = 24;
+        XCURSOR_THEME = "macOS";
+        QT_QPA_PLATFORMTHEME = "qt5ct";
+        XDG_SESSION_TYPE = "wayland";
+      };
       configFile.text =
         let
           nuScriptsPath = "${pkgs.nu_scripts}/share/nu_scripts/";
@@ -49,9 +48,9 @@ in
         '';
     };
 
-	programs.btop = {
-		enable = true;
-		settings.color_theme = "TTY";
-	};
+    programs.btop = {
+      enable = true;
+      settings.color_theme = "TTY";
+    };
   };
 }

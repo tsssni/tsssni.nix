@@ -5,6 +5,6 @@ import scss from './main.scss'
 App.start({
     css: scss,
     main() {
-		bar
+        bar
     },
 })

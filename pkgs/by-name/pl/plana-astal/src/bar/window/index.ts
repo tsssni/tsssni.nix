@@ -1,13 +1,13 @@
 import logo from './logo'
-import time from './time'
+import window from './window'
 import { Widget, Gtk } from 'astal/gtk3'
 
 export default new Widget.Box({
-	children: [
-		logo,
-		time,
-	],
-	name: 'info',
-	halign: Gtk.Align.FILL,
-	spacing: 2,
+    children: [
+        logo,
+        window,
+    ],
+    name: 'info',
+    halign: Gtk.Align.START,
+    spacing: 2,
 })
