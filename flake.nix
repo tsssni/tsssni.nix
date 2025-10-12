@@ -36,10 +36,6 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    tev = {
-      url = "github:Tom94/tev";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =

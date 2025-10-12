@@ -40,7 +40,7 @@ in
         basedpyright.enable = true;
         clangd = {
           enable = true;
-          settings.cmd = [
+          config.cmd = [
             "clangd"
             "--header-insertion=never"
             "--function-arg-placeholders=false"
@@ -51,7 +51,7 @@ in
         lua_ls.enable = true;
         nixd = {
           enable = true;
-          settings.formattings.command = [ "nixfmt" ];
+          config.formattings.command = [ "nixfmt" ];
         };
         slangd = {
           enable = true;
@@ -60,7 +60,7 @@ in
         ts_ls.enable = true;
         tinymist = {
           enable = true;
-          settings = {
+          config = {
             exportPdf = "onSave";
             formatterMode = "typstyle";
           };
