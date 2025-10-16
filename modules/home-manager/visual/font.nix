@@ -10,32 +10,46 @@ in
 {
   options.tsssni.visual.font = {
     enable = lib.mkEnableOption "tsssni.visual.font";
-    packages = lib.mkOption {
-      type = lib.types.listOf lib.types.package;
-      default = with pkgs; [
-        nerd-fonts.blex-mono
-        ibm-plex
-        noto-fonts-monochrome-emoji
-      ];
-      example = lib.literalExpression "[ pkgs.nerd-fonts.blex-mono ]";
+    nerdFont = lib.mkOption {
+      type = lib.hm.types.fontType;
+      default = {
+        package = pkgs.nerd-fonts.blex-mono;
+        name = "BlexMono Nerd Font";
+        size = 16;
+      };
       description = ''
-        font packages used by system
+        nerd font
       '';
     };
     latinFont = lib.mkOption {
       type = lib.hm.types.fontType;
       default = {
-        package = pkgs.nerd-fonts.blex-mono;
-        name = "BlexMono Nerd Font";
-        size = 12;
+        package = pkgs.ibm-plex;
+        name = "IBM Plex Mono";
+        size = 16;
       };
       description = ''
         latin font
       '';
     };
+    emojiFont = lib.mkOption {
+      type = lib.hm.types.fontType;
+      default = {
+        package = pkgs.noto-fonts-monochrome-emoji;
+        name = "Noto Emoji";
+        size = 16;
+      };
+      description = ''
+        emoji font
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = cfg.packages;
+    home.packages = with cfg; [
+      nerdFont.package
+      latinFont.package
+      emojiFont.package
+    ];
   };
 }

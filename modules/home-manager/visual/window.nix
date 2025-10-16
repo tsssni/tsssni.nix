@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.tsssni.visual.window;
+  color = config.tsssni.visual.color;
   settingsType =
     with lib.types;
     let
@@ -97,22 +98,18 @@ in
           default-column-display = "normal";
           default-column-width.proportion = 0.5;
           gaps = 10;
-          border =
-            let
-              color = "#645e8c";
-            in
-            {
-              enable = true;
-              width = 2;
-              active.color = color;
-              inactive.color = color;
-              urgent.color = color;
-            };
+          border = {
+            enable = true;
+            width = 2;
+            active.color = color.lightBlack;
+            inactive.color = color.lightBlack;
+            urgent.color = color.lightBlack;
+          };
           focus-ring =
             let
               gradient = {
-                from = "#a0b4e5";
-                to = "#9fe5e5";
+                from = color.lightBlue;
+                to = color.lightCyan;
                 angle = 180;
                 relative-to = "workspace-view";
               };
@@ -177,7 +174,7 @@ in
             { command = [ "fcitx5" ]; }
           ];
         binds = with config.lib.niri.actions; {
-          "Mod+T".action = spawn "kitty";
+          "Mod+T".action = spawn "ghostty";
           "Mod+B".action = spawn "firefox";
           "Mod+X".action = close-window;
           "Mod+Q".action.quit.skip-confirmation = true;

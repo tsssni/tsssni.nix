@@ -1,6 +1,7 @@
 { ... }:
 {
   tsssni.visual = {
+    color.enable = true;
     font.enable = true;
     gui.enable = true;
     window = {

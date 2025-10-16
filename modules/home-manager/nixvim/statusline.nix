@@ -59,7 +59,7 @@ in
                     return active_clients
                   end
                 '';
-                icon = "⚙ LSP:";
+                icon = " LSP:";
               }
             ];
             lualine_y = [
@@ -178,7 +178,10 @@ in
               }
             ];
             lualine_z = [
-              "branch"
+              {
+                __unkeyed-1 = "branch";
+                icon = "";
+              }
             ];
           };
           inactiveSections = {

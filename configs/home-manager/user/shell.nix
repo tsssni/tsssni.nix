@@ -6,7 +6,7 @@
     shell.enable = true;
     terminal = {
       enable = true;
-      extraSettings.font_size = 20.0;
+      extraSettings.font-size = 20.0;
     };
   };
 }

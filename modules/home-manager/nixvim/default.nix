@@ -21,12 +21,6 @@ in
 
   options.tsssni.nixvim = {
     enable = lib.mkEnableOption "tsssni.nixvim";
-    colorscheme = lib.mkOption {
-      type = lib.types.str;
-      default = "plana";
-      example = "plana";
-      description = "colorscheme used in current installation";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -34,7 +28,7 @@ in
       enable = true;
       defaultEditor = true;
       nixpkgs.useGlobalPackages = true;
-      colorscheme = cfg.colorscheme;
+      colorscheme = "plana";
       extraPlugins = with pkgs.vimPlugins; [
         incline-nvim
         nvim-web-devicons

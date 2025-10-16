@@ -1,84 +1,73 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
   cfg = config.tsssni.shell.terminal;
-  settingsValueType =
-    with lib.types;
-    oneOf [
-      str
-      bool
-      int
-      float
-    ];
-  file = "${cfg.theme}.nix";
-  themes =
-    ./kitty-themes
-    |> builtins.readDir
-    |> lib.filterAttrs (file: type: type == "regular")
-    |> lib.attrNames;
-  customTheme = builtins.elem file themes;
+  color = config.tsssni.visual.color;
+  font = config.tsssni.visual.font;
+  keyValueSettings = {
+    listsAsDuplicateKeys = true;
+    mkKeyValue = lib.generators.mkKeyValueDefault { } " = ";
+  };
+  keyValue = pkgs.formats.keyValue keyValueSettings;
 in
 {
   options.tsssni.shell.terminal = {
     enable = lib.mkEnableOption "tsssni.shell.terminal";
-    theme = lib.mkOption {
-      type = lib.types.str;
-      default = "plana";
-      example = "plana";
-      description = "theme used by kitty";
-    };
     extraSettings = lib.mkOption {
-      type = lib.types.attrsOf settingsValueType;
+      inherit (keyValue) type;
       default = { };
       example = lib.literalExpression ''
         {
-          scrollback_lines = 10000;
-          enable_audio_bell = false;
-          update_check_interval = 0;
+          theme = "catppuccin-mocha";
+          font-size = 10;
+          keybind = [
+            "ctrl+h=goto_split:left"
+            "ctrl+l=goto_split:right"
+          ];
         }
       '';
       description = ''
-        Configuration written to
-        {file}`$XDG_CONFIG_HOME/kitty/kitty.conf`. See
-        <https://sw.kovidgoyal.net/kitty/conf.html>
-        for the documentation.
+        Configuration written to {file}`$XDG_CONFIG_HOME/ghostty/config`.
+
+        See <https://ghostty.org/docs/config/reference> for more information.
       '';
     };
   };
 
   config = lib.mkIf cfg.enable {
-    programs.kitty = {
+    programs.ghostty = {
       enable = true;
-      keybindings = {
-        "ctrl+shift+t" = "new_tab";
-        "ctrl+shift+q" = "close_tab";
-        "ctrl+shift+h" = "previous_tab";
-        "ctrl+shift+l" = "next_tab";
+      package = with pkgs; if stdenv.isLinux then ghostty else ghostty-bin;
+      settings = {
+        theme = "plana";
+        keybind = [
+          "ctrl+shift+t=new_tab"
+          "ctrl+shift+q=close_tab"
+          "ctrl+shift+h=previous_tab"
+          "ctrl+shift+l=next_tab"
+        ];
+        font-family = [
+            font.nerdFont.name
+            font.latinFont.name
+            font.emojiFont.name
+        ];
+        font-size = font.latinFont.size;
+        window-decoration = "none";
+        confirm-close-surface = false;
+        macos-option-as-alt = true;
+      } // cfg.extraSettings;
+      themes.plana = {
+        palette = builtins.genList (i: "${builtins.toString i}=${builtins.elemAt color.palette i}") 16;
+        foreground = color.foreground;
+        background = color.background;
+        selection-background = color.lightBlack;
+        cursor-color = color.lightBlack;
+        cursor-text = color.lightWhite;
       };
-      themeFile = if customTheme then null else cfg.theme;
-      settings =
-        { }
-        // {
-          # font
-          font_family = config.tsssni.visual.font.latinFont.name;
-          bold_font = "auto";
-          italic_font = "auto";
-          bold_italic_font = "auto";
-          font_size = 16.0;
-
-          # tab
-          allow_remote_control = "yes";
-
-          # window
-          confirm_os_window_close = 0;
-          hide_window_decorations = "yes";
-          macos_option_as_alt = "left";
-        }
-        // (lib.optionalAttrs customTheme (import ./kitty-themes/${file}))
-        // cfg.extraSettings;
     };
   };
 }

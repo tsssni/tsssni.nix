@@ -10,12 +10,6 @@ in
 {
   options.tsssni.shell.fetch = {
     enable = lib.mkEnableOption "tsssni.shell.fetch";
-    logo = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      example = "tsssni-nixos";
-      description = "logo used by fastfetch";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -23,9 +17,7 @@ in
       enable = true;
       settings = {
         logo =
-          if cfg.logo != "" then
-            cfg.logo
-          else if pkgs.stdenv.isLinux then
+          if pkgs.stdenv.isLinux then
             {
               type = "file";
               source = "${config.home.homeDirectory}/.config/fastfetch/nix-small.txt";
