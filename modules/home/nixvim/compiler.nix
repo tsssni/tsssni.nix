@@ -48,7 +48,7 @@ in
         };
         cmake.enable = true;
         glsl_analyzer.enable = true;
-        lua_ls.enable = true;
+        emmylua_ls.enable = true;
         nixd = {
           enable = true;
           config.formattings.command = [ "nixfmt" ];
