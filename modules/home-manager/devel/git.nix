@@ -21,5 +21,8 @@ in
         rebase.pull = "rebase";
       };
     };
+    programs.lazygit = {
+      enable = true;
+    };
   };
 }

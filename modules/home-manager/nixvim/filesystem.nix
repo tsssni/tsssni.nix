@@ -38,11 +38,11 @@ in
           "<Leader>b" = "buffers";
           "<Leader>d" = "diagnostics_document";
           "<Leader>f" = "files";
-          "<Leader>s" = "live_grep";
+          "<Leader>g" = "live_grep";
           "<Leader>h" = "helptags";
           "<Leader>j" = "jumps";
           "<Leader>r" = "lsp_references";
-          "<Leader>u" = "resume";
+          "<Leader>s" = "resume";
         };
         settings = {
           keymap = {
@@ -74,7 +74,6 @@ in
           };
         };
       };
-      neogit.enable = true;
       web-devicons.enable = true;
     };
 
@@ -92,11 +91,6 @@ in
               end
           end
         '';
-      }
-      {
-        mode = "n";
-        key = "<Leader>g";
-        action = ":Neogit<CR>";
       }
       {
         mode = "n";
