@@ -51,23 +51,21 @@ let
   ];
 in
 {
-  options.tsssni.visual.color =
-    { }
-    // {
-      enable = lib.mkEnableOption "tsssni.visual.color";
-      palette = lib.mkOption {
-        type = with lib.types; listOf str;
-        default = palette;
-      };
-      foreground = colorOption foreground;
-      background = colorOption background;
-    }
-    // builtins.listToAttrs (
-      builtins.map (x: {
-        name = x;
-        value = colorOption null;
-      }) colorList
-    );
+  options.tsssni.visual.color = {
+    enable = lib.mkEnableOption "tsssni.visual.color";
+    palette = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = palette;
+    };
+    foreground = colorOption foreground;
+    background = colorOption background;
+  }
+  // builtins.listToAttrs (
+    builtins.map (x: {
+      name = x;
+      value = colorOption null;
+    }) colorList
+  );
 
   config = lib.mkIf cfg.enable {
     tsssni.visual.color = builtins.listToAttrs (

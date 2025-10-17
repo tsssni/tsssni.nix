@@ -2,7 +2,6 @@
 {
   imports = [
     ./devel
-    ./nix
     ./nixvim
     ./shell
     ./visual

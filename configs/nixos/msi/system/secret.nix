@@ -1,4 +1,0 @@
-{ ... }:
-{
-  tsssni.secret.enable = true;
-}

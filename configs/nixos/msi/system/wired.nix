@@ -3,12 +3,15 @@
   ...
 }:
 {
-  tsssni.wired = {
-    network = {
-      enable = true;
-      hostName = tsssni.func;
+  tsssni = {
+    wired = {
+      network = {
+        enable = true;
+        hostName = tsssni.func;
+      };
+      sing-box.enable = true;
+      ssh.enable = true;
     };
-    sing-box.enable = true;
-    ssh.enable = true;
+    secret.enable = true;
   };
 }
