@@ -58,14 +58,8 @@ Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-ma
 
 ```nix
 {
-  inputs
-, tsssni
-, func
-}:
-import ../rebuild.nix {
-  inherit inputs tsssni func;
   system = "x86_64-linux";
-  cudaSupport = true;
+  cuda = true;
 }
 ```
 

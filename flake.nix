@@ -71,12 +71,15 @@
         };
       };
       collectConfigs =
-        distro:
-        ./configs/${distro}
+        path:
+        path
         |> builtins.readDir
         |> lib.filterAttrs (dir: type: type == "directory")
         |> lib.mapAttrs (
-          dir: _: (import ./configs/${distro}/${dir}/rebuild.nix (configArgs // { func = dir; }))
+          dir: _:
+          (import (path + /rebuild.nix) (
+            configArgs // { func = dir; } // (import (path + /${dir}/rebuild.nix))
+          ))
         );
     in
     {
@@ -86,15 +89,15 @@
         default = self.nixosModules.tsssni;
       };
       darwinModules = {
-        tsssni = import ./modules/nix-darwin;
+        tsssni = import ./modules/darwin;
         default = self.darwinModules.tsssni;
       };
       homeModules = {
-        tsssni = import ./modules/home-manager;
+        tsssni = import ./modules/home;
         default = self.homeModules.tsssni;
       };
-      nixosConfigurations = collectConfigs "nixos";
-      darwinConfigurations = collectConfigs "nix-darwin";
-      homeConfigurations = collectConfigs "home-manager";
+      nixosConfigurations = collectConfigs ./configs/nixos;
+      darwinConfigurations = collectConfigs ./configs/darwin;
+      homeConfigurations = collectConfigs ./configs/home;
     };
 }
