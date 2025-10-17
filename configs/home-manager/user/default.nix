@@ -12,5 +12,6 @@
     ./nix.nix
     ./nixvim.nix
     ./shell.nix
+    ./visual.nix
   ];
 }

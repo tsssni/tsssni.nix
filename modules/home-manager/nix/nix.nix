@@ -35,6 +35,7 @@ in
       };
     };
     home.packages = with pkgs; [
+      nix
       nh
     ];
   };
