@@ -8,10 +8,17 @@
 
   programs.home-manager.enable = true;
 
-  imports = [
-    ./devel.nix
-    ./nixvim.nix
-    ./shell.nix
-    ./wired.nix
-  ];
+  tsssni = {
+    devel.git.enable = true;
+    nixvim.enable = true;
+    shell = {
+      fetch.enable = true;
+      prompt.enable = true;
+      shell.enable = true;
+    };
+    wired = {
+      ssh.enable = true;
+      transfer.enable = true;
+    };
+  };
 }

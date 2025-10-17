@@ -44,13 +44,10 @@ darwinConfigurations.tsssni = nix-darwin.lib.darwinSystem {
 
 ### pkgs
 
-Provide pkgs via overlays under `pkgs.tsssni`. Require turning on `tsssni.nixpkgs.enable`.
+Provide pkgs via overlays.
 
 ```nix
-tsssni.nixpkgs.enable = true;
-environment.systemPackages = with pkgs.tsssni; [
-  slang
-]
+nixpkgs.overlays = inputs.tsssni.pkgs;
 ```
 
 ## Config
@@ -68,6 +65,7 @@ Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-ma
 import ../rebuild.nix {
   inherit inputs tsssni func;
   system = "x86_64-linux";
+  cudaSupport = true;
 }
 ```
 

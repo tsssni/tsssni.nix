@@ -1,7 +1,42 @@
-{ ... }:
 {
-  imports = [
-    ./nix.nix
-    ./nixpkgs.nix
-  ];
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.tsssni.nix;
+in
+{
+  options.tsssni.nix = {
+    enable = lib.mkEnableOption "tsssni.nix";
+  };
+
+  config = lib.mkIf cfg.enable {
+    nix = {
+      package = pkgs.nix;
+      settings = {
+        experimental-features = [
+          "nix-command"
+          "flakes"
+          "pipe-operators"
+        ];
+        substituters = [
+          "https://cache.nixos.org"
+          "https://cache.garnix.io"
+        ];
+        trusted-substituters = [
+          "https://cache.garnix.io"
+        ];
+        trusted-public-keys = [
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        ];
+      };
+    };
+    home.packages = with pkgs; [
+      nix
+      nh
+    ];
+  };
 }

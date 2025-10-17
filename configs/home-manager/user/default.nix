@@ -1,4 +1,7 @@
-{ ... }:
+{
+  pkgs,
+  ...
+}:
 {
   home = {
     username = "user";
@@ -8,10 +11,17 @@
 
   programs.home-manager.enable = true;
 
-  imports = [
-    ./nix.nix
-    ./nixvim.nix
-    ./shell.nix
-    ./visual.nix
-  ];
+  tsssni = {
+    nixvim.enable = true;
+    shell = {
+      fetch.enable = true;
+      prompt.enable = true;
+      shell.enable = true;
+      terminal.enable = true;
+    };
+    visual = {
+      color.enable = true;
+      font.enable = true;
+    };
+  };
 }

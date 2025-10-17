@@ -5,10 +5,40 @@
   func,
   system,
   eval,
+  cudaSupport ? false,
+  rocmSupport ? false,
 }:
 let
   lib = inputs.nixpkgs.lib;
   path = "${distro}/${func}";
+  rebuildModules = [
+    {
+      tsssni.nix.enable = true;
+    }
+    {
+      nixpkgs = {
+        inherit system;
+        config =
+          { }
+          // {
+            allowUnfree = true;
+          }
+          // lib.optionalAttrs (distro == "nixos") {
+            inherit cudaSupport rocmSupport;
+          };
+        overlays =
+          with inputs;
+          (
+            [
+              (final: prev: {
+                agenix = agenix.packages.${system}.default;
+              })
+            ]
+            ++ (import ../pkgs lib)
+          );
+      };
+    }
+  ];
 
   specialArgs = {
     tsssni = {
@@ -28,6 +58,7 @@ let
       ./${path}
       tsssni.homeModules.tsssni
     ]
+    ++ lib.optionals (distro == "home-manager") rebuildModules
     ++ tsssni.extraHomeModules;
 
   systemModules =
@@ -53,6 +84,7 @@ let
         };
       }
     ]
+    ++ rebuildModules
     ++ tsssni.extraSystemModules;
 in
 eval (

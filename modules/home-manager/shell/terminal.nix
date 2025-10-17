@@ -51,15 +51,16 @@ in
           "ctrl+shift+l=next_tab"
         ];
         font-family = [
-            font.nerdFont.name
-            font.latinFont.name
-            font.emojiFont.name
+          font.nerdFont.name
+          font.latinFont.name
+          font.emojiFont.name
         ];
         font-size = font.latinFont.size;
         window-decoration = "none";
         confirm-close-surface = false;
         macos-option-as-alt = true;
-      } // cfg.extraSettings;
+      }
+      // cfg.extraSettings;
       themes.plana = {
         palette = builtins.genList (i: "${builtins.toString i}=${builtins.elemAt color.palette i}") 16;
         foreground = color.foreground;
