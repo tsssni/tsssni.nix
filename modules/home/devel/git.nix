@@ -14,9 +14,11 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = "tsssni";
-      userEmail = "dingyongyu2002@foxmail.com";
-      extraConfig = {
+      settings = {
+        user = {
+            name = "tsssni";
+            email = "dingyongyu2002@foxmail.com";
+        };
         credential.helper = "store";
         rebase.pull = "rebase";
       };
