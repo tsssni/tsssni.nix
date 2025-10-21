@@ -38,14 +38,7 @@ in
       ];
       servers = {
         basedpyright.enable = true;
-        clangd = {
-          enable = true;
-          config.cmd = [
-            "clangd"
-            "--header-insertion=never"
-            "--function-arg-placeholders=false"
-          ];
-        };
+        clangd.enable = true;
         cmake.enable = true;
         glsl_analyzer.enable = true;
         emmylua_ls.enable = true;
