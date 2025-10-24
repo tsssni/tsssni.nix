@@ -36,6 +36,9 @@ in
           lspBufAction = "hover";
         }
       ];
+      luaConfig.content = ''
+        vim.lsp.set_log_level('OFF')
+      '';
       servers = {
         basedpyright.enable = true;
         clangd.enable = true;
