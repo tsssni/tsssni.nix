@@ -79,6 +79,7 @@ in
             enable = true;
             max-scroll-amount = "10%";
           };
+          power-key-handling.enable = false;
         };
         outputs = cfg.monitors;
         gestures = {
