@@ -35,8 +35,8 @@ in
     emojiFont = lib.mkOption {
       type = lib.hm.types.fontType;
       default = {
-        package = pkgs.noto-fonts-monochrome-emoji;
-        name = "Noto Emoji";
+        package = pkgs.noto-fonts-color-emoji;
+        name = "Noto Color Emoji";
         size = 16;
       };
       description = ''

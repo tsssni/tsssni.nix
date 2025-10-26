@@ -44,18 +44,11 @@ in
       package = with pkgs; if stdenv.isLinux then ghostty else ghostty-bin;
       settings = {
         theme = "plana";
-        keybind = [
-          "ctrl+shift+t=new_tab"
-          "ctrl+shift+q=close_tab"
-          "ctrl+shift+h=previous_tab"
-          "ctrl+shift+l=next_tab"
-        ];
         font-family = [
-          font.nerdFont.name
-          font.latinFont.name
-          font.emojiFont.name
+            font.nerdFont.name
+            font.latinFont.name
         ];
-        font-size = font.latinFont.size;
+        font-size = font.nerdFont.size;
         window-decoration = "none";
         confirm-close-surface = false;
         macos-option-as-alt = true;
