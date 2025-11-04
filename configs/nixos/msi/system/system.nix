@@ -44,12 +44,13 @@
   users.users.tsssni = {
     name = "tsssni";
     home = "/home/tsssni";
-    shell = config.tsssni.shell.shell.package;
+    shell = config.tsssni.shell.package;
     hashedPassword = "$y$j9T$mzXj7DKn7uD9EWbb.EdTo0$Yix0Fy713KpDwzwYF4K3yYAWhMlyR7Acy8SU81lx7Q5";
     extraGroups = [ "wheel" ];
     isNormalUser = true;
   };
 
+  tsssni.shell.enable = true;
   system.stateVersion = "24.11";
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";

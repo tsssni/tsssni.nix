@@ -8,7 +8,7 @@
     users.tsssni = {
       name = "tsssni";
       home = "/Users/tsssni";
-      shell = config.tsssni.shell.shell.package;
+      shell = config.tsssni.shell.package;
       uid = 501;
     };
   };
@@ -19,6 +19,7 @@
   };
 
   tsssni = {
+    shell.enable = true;
     secret.enable = true;
     wired.sing-box.enable = true;
   };
