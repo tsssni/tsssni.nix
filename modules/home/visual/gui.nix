@@ -18,7 +18,6 @@ in
         xdg-utils
         dconf
       ];
-
       pointerCursor = {
         gtk.enable = true;
         package = pkgs.apple-cursor;
@@ -29,19 +28,16 @@ in
 
     gtk = {
       enable = true;
-
       theme = {
         name = "Fluent";
         package = pkgs.fluent-gtk-theme;
       };
-
       iconTheme = {
         name = "Fluent";
         package = pkgs.fluent-icon-theme;
       };
-
       font = config.tsssni.visual.font.latinFont;
-
+      colorScheme = "dark";
       gtk2.extraConfig = "gtk-application-prefer-dark-theme = 1";
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;

@@ -32,13 +32,7 @@ in
       extraPlugins = with pkgs.vimPlugins; [
         incline-nvim
         nvim-web-devicons
-        lush-nvim
-        tokyonight-nvim
-        bluloco-nvim
-        sonokai
         plana-nvim
-        cyyber-nvim
-        eldritch-nvim
       ];
     };
   };
