@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.tsssni.shell.shell;
+  homeCfg = config.tsssni.home;
   visualCfg = config.tsssni.visual;
 in
 {
@@ -50,6 +51,7 @@ in
 
     programs.btop = {
       enable = true;
+      package = if homeCfg.standalone then null else pkgs.btop;
       settings = {
         color_theme = "TTY";
         theme_background = false;

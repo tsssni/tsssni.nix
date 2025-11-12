@@ -12,6 +12,7 @@
   programs.home-manager.enable = true;
 
   tsssni = {
+    home.standalone = true;
     nixvim.enable = true;
     shell = {
       fetch.enable = true;

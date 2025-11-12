@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.tsssni.shell.fetch;
+  homeCfg = config.tsssni.home;
 in
 {
   options.tsssni.shell.fetch = {
@@ -15,6 +16,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.fastfetch = {
       enable = true;
+      package = with pkgs; if homeCfg.standalone then null else fastfetch;
       settings = {
         logo =
           if pkgs.stdenv.isLinux then

@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.tsssni.shell.terminal;
+  homeCfg = config.tsssni.home;
   color = config.tsssni.visual.color;
   font = config.tsssni.visual.font;
   keyValueSettings = {
@@ -41,12 +42,20 @@ in
   config = lib.mkIf cfg.enable {
     programs.ghostty = {
       enable = true;
-      package = with pkgs; if stdenv.isLinux then ghostty else ghostty-bin;
+      package =
+        with pkgs;
+        if homeCfg.standalone then
+          null
+        else if stdenv.isLinux then
+          ghostty
+        else
+          ghostty-bin;
+      systemd.enable = pkgs.stdenv.isLinux && !homeCfg.standalone;
       settings = {
         theme = "plana";
         font-family = [
-            font.nerdFont.name
-            font.latinFont.name
+          font.nerdFont.name
+          font.latinFont.name
         ];
         font-size = font.nerdFont.size;
         window-decoration = "none";
