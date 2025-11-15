@@ -1,4 +1,4 @@
 {
   system = "x86_64-linux";
-  rocm = true;
+  config.rocmSupport = true;
 }

@@ -5,14 +5,13 @@
   func,
   eval,
   system,
-  cuda ? false,
-  rocm ? false,
+  config ? {},
 }:
 let
   lib = inputs.nixpkgs.lib;
   path = "${distro}/${func}";
   specialArgs.tsssni = {
-    inherit inputs distro func eval system cuda rocm;
+    inherit inputs distro func eval system config;
   };
 
   homeModules =

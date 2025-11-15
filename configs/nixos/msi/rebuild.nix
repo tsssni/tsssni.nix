@@ -1,4 +1,7 @@
 {
   system = "x86_64-linux";
-  cuda = true;
+  config = {
+    cudaSupport = true;
+    cudaCapabilities = [ "8.9" ];
+  };
 }

@@ -9,10 +9,7 @@
     config = {
       allowUnfree = true;
     }
-    // lib.optionalAttrs (tsssni.distro == "nixos") {
-      cudaSupport = tsssni.cuda;
-      rocmSupport = tsssni.rocm;
-    };
+    // lib.optionalAttrs (tsssni.distro == "nixos") tsssni.config;
     overlays =
       with tsssni.inputs;
       (
