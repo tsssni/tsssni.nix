@@ -183,7 +183,7 @@ in
           "Mod+W".action.screenshot-window.write-to-disk = true;
           "Mod+O".action = toggle-overview;
           "Mod+M".action = maximize-column;
-          "Mod+F".action = toggle-windowed-fullscreen;
+          "Mod+F".action = fullscreen-window;
           "Mod+V".action = toggle-window-floating;
 
           "Mod+H".action = focus-column-left;
