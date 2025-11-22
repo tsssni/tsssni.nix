@@ -51,6 +51,7 @@ in
         else
           ghostty-bin;
       systemd.enable = pkgs.stdenv.isLinux && !homeCfg.standalone;
+      clearDefaultKeybinds = true;
       settings = {
         theme = "plana";
         font-family = [
@@ -61,6 +62,10 @@ in
         window-decoration = "none";
         confirm-close-surface = false;
         macos-option-as-alt = true;
+        keybind = [
+            "ctrl+shift+c=copy_to_clipboard"
+            "ctrl+shift+v=paste_from_clipboard"
+        ];
       }
       // cfg.extraSettings;
       themes.plana = {

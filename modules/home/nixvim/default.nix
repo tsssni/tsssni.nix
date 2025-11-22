@@ -14,7 +14,7 @@ in
     ./session.nix
     ./statusline.nix
     ./terminal.nix
-    ./vimoption.nix
+    ./option.nix
     ./visual.nix
     ./window.nix
   ];
