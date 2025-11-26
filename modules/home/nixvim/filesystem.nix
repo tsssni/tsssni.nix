@@ -125,12 +125,8 @@ in
     ];
   };
 
-  programs.ripgrep.enable = true;
-
-  home.packages = lib.mkIf cfg.enable (
-    with pkgs;
-    [
-      claude-code
-    ]
-  );
+  programs = {
+    ripgrep.enable = true;
+    claude-code.enable = true;
+  };
 }

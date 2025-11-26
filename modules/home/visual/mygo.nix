@@ -14,15 +14,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages =
-      with pkgs;
-      [ ]
-      ++ [
-        go-musicfox
-      ]
-      ++ lib.optionals stdenv.isLinux [
-        bluez
-        alsa-utils
-      ];
+    home.packages = with pkgs; [
+      go-musicfox
+    ];
   };
 }

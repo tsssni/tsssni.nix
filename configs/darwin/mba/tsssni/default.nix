@@ -8,7 +8,7 @@
     homeDirectory = "/Users/tsssni";
     stateVersion = "24.11";
     packages = with pkgs; [
-      # tev
+      tev
     ];
   };
 
@@ -29,10 +29,6 @@
       mygo.enable = true;
       mujica.enable = true;
     };
-    wired = {
-      ssh.enable = true;
-      transfer.enable = true;
-      vpn.enable = true;
-    };
+    wired.ssh.enable = true;
   };
 }

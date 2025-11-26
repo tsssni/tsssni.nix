@@ -20,9 +20,6 @@
       color.enable = true;
       font.enable = true;
     };
-    wired = {
-      ssh.enable = true;
-      transfer.enable = true;
-    };
+    wired.ssh.enable = true;
   };
 }

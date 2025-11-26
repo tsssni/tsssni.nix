@@ -14,8 +14,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    programs.mpv.enable = true;
     home.packages = with pkgs; [
-      mpv
       clouddrive2
     ];
   };

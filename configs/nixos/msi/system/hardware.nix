@@ -13,9 +13,16 @@
     };
   };
 
-  services.hardware.openrgb = {
-    enable = true;
-    package = pkgs.openrgb-with-all-plugins;
+  services = {
+    hardware.openrgb = {
+      enable = true;
+      package = pkgs.openrgb-with-all-plugins;
+    };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
+    };
   };
 
   fileSystems = {
@@ -35,9 +42,4 @@
   };
 
   swapDevices = [ ];
-
-  programs.fuse = {
-    enable = true;
-    userAllowOther = true;
-  };
 }

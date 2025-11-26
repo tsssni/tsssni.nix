@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -24,5 +25,10 @@ in
         hashKnownHosts = true;
       };
     };
+    home.packages = with pkgs; [
+      curl
+      wget
+      wireguard-tools
+    ];
   };
 }
