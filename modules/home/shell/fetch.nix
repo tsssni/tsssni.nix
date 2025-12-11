@@ -30,7 +30,7 @@ in
             }
           else if pkgs.stdenv.isDarwin then
             {
-              type = "kitty";
+              type = "kitty-direct";
               source = "${config.home.homeDirectory}/.config/fastfetch/nix-darwin.png";
               width = 16;
             }
@@ -40,64 +40,68 @@ in
             };
 
         modules =
-          [ ]
+          [
+            {
+              type = "cpu";
+              format = "{name}";
+              key = " 芯";
+              keyColor = "light_blue";
+            }
+            {
+              type = "cpu";
+              format = "{march}";
+              key = "󰭄 构";
+              keyColor = "light_magenta";
+            }
+            {
+              type = "opengl";
+              format = "{library} {slv}";
+              key = "󰾲 显";
+              keyColor = "light_cyan";
+            }
+          ]
+          ++ lib.optionals pkgs.stdenv.isLinux [
+            {
+              type = "vulkan";
+              format = "Vulkan {api-version}";
+              key = "󰡷 图";
+              keyColor = "blue";
+            }
+          ]
           ++ lib.optionals pkgs.stdenv.isDarwin [
             {
-              type = "break";
+              type = "gpu";
+              format = "{platform-api}";
+              key = "󰡷 图";
+              keyColor = "blue";
             }
           ]
           ++ [
             {
               type = "os";
-              format = "{2} {9}";
+              format = "{name} {codename}";
               key = "󱄅 系";
-              keyColor = "cyan";
+              keyColor = "light_red";
             }
             {
               type = "kernel";
-              format = "{1} {2}";
+              format = "{sysname} {release}";
               key = " 核";
-              keyColor = "light_yellow";
+              keyColor = "light_white";
             }
             {
               type = "shell";
-              format = "{3} {4}";
+              format = "{exe-name} {version}";
               key = " 壳";
               keyColor = "light_green";
-            }
-            {
-              type = "terminal";
-              format = "{5} {6}";
-              key = " 端";
-              keyColor = "light_magenta";
-            }
-            {
-              type = "packages";
-              format = "Nix {9}";
-              key = "󰏗 包";
-              keyColor = "light_blue";
-            }
-            {
-              type = "opengl";
-              format = "{5} {4}";
-              key = "󰡷 图";
-              keyColor = "light_cyan";
-            }
-            {
-              type = "vulkan";
-              format = "Vulkan {2}";
-              key = "󰈸 火";
-              keyColor = "light_white";
             }
           ];
       };
     };
 
-    home = {
-      file.".config/fastfetch" = {
-        source = ./config/fastfetch;
-        recursive = true;
-      };
+    home.file.".config/fastfetch" = {
+      source = ./config/fastfetch;
+      recursive = true;
     };
   };
 }
