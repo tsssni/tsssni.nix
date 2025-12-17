@@ -62,6 +62,7 @@ in
         window-decoration = "none";
         confirm-close-surface = false;
         macos-option-as-alt = true;
+        maximize = pkgs.stdenv.isDarwin;
         keybind = [
             "ctrl+shift+c=copy_to_clipboard"
             "ctrl+shift+v=paste_from_clipboard"

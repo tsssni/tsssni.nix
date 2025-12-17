@@ -6,22 +6,6 @@
 }:
 let
   cfg = config.tsssni.nixvim;
-  mkLsp =
-    lsps:
-    (lib.mapAttrs (
-      lsp: config:
-      config
-      // {
-        enable = true;
-        package = null;
-      }
-    ) lsps)
-    // {
-      nixd = {
-        enable = true;
-        config.formattings.command = [ "nixfmt" ];
-      };
-    };
 in
 {
   programs.nixvim = lib.mkIf cfg.enable {
@@ -55,18 +39,9 @@ in
       luaConfig.content = ''
         vim.lsp.set_log_level('OFF')
       '';
-      servers = mkLsp {
-        basedpyright = { };
-        clangd = { };
-        cmake = { };
-        glsl_analyzer = { };
-        emmylua_ls = { };
-        slangd = { };
-        ts_ls = { };
-        tinymist.config = {
-          exportPdf = "onSave";
-          formatterMode = "typstyle";
-        };
+      servers.nixd = {
+        enable = true;
+        config.formattings.command = [ "nixfmt" ];
       };
     };
     plugins = {
@@ -74,8 +49,6 @@ in
       treesitter = {
         enable = true;
         nixvimInjections = true;
-        grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;
-        nixGrammars = true;
         settings = {
           auto_install = false;
           highlight.enable = true;
@@ -119,21 +92,6 @@ in
         };
       };
       nvim-autopairs.enable = true;
-    };
-
-    filetype.extension = {
-      slang = "shaderslang";
-      hlsl = "hlsl";
-      hlsli = "hlsl";
-      usf = "hlsl";
-      ush = "hlsl";
-      glsl = "glsl";
-      vert = "glsl";
-      tesc = "glsl";
-      tese = "glsl";
-      geom = "glsl";
-      frag = "glsl";
-      comp = "glsl";
     };
 
     diagnostic.settings = {
