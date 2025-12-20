@@ -219,7 +219,6 @@ in
       file.".tsssnirc" = {
         text = lib.strings.trim ''
           #!/usr/bin/env nu
-          sudo chmod 444 /sys/class/powercap/intel-rapl:0/energy_uj;
           openrgb -p tsssni
           niri-session
         '';

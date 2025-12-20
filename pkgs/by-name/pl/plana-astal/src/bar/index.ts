@@ -1,6 +1,6 @@
 import window from './window'
 import music from './music'
-import info from './info'
+import time from './time'
 import { Widget, Astal, Gtk } from 'astal/gtk3'
 
 const bar = new Widget.CenterBox({
@@ -11,7 +11,7 @@ const bar = new Widget.CenterBox({
     homogeneous: true,
     startWidget: window,
     centerWidget: music,
-    endWidget: info,
+    endWidget: time,
 })
 
 export default new Widget.Window({
