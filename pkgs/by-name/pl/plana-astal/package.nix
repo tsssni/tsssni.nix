@@ -6,9 +6,6 @@
   ags,
   playerctl,
   imagemagick,
-  curl,
-  python3,
-  rocmPackages,
 }:
 let
   name = "plana-astal";
@@ -45,11 +42,6 @@ stdenvNoCC.mkDerivation {
         ags
         playerctl
         imagemagick
-        curl
-        rocmPackages.rocm-smi
-        (python3.withPackages (python-pkgs: [
-          python-pkgs.psutil
-        ]))
       ]
     }
   '';
