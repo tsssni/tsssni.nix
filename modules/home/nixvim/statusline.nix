@@ -127,10 +127,13 @@ in
                       local process_symbol
                       process_symbol = function (symbol)
                         if is_scope(symbol.kind) then
-                          local symbol_start_line = symbol.range['start'].line
-                          local symbol_start_col = symbol.range['start'].character
-                          local symbol_end_line = symbol.range['end'].line
-                          local symbol_end_col = symbol.range['end'].character
+                          local range = symbol.range or (symbol.location and symbol.location.range)
+                          if not range then return end
+
+                          local symbol_start_line = range['start'].line
+                          local symbol_start_col = range['start'].character
+                          local symbol_end_line = range['end'].line
+                          local symbol_end_col = range['end'].character
 
                           local row_in_symbol = function ()
                             local inline = symbol_start_line <= row and symbol_end_line >= row
