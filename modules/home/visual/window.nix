@@ -184,7 +184,6 @@ in
           "Mod+O".action = toggle-overview;
           "Mod+M".action = maximize-column;
           "Mod+F".action = fullscreen-window;
-          "Mod+V".action = toggle-window-floating;
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;

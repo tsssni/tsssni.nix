@@ -12,20 +12,8 @@ in
     lsp = {
       keymaps = [
         {
-          key = "gd";
-          lspBufAction = "definition";
-        }
-        {
-          key = "gD";
-          lspBufAction = "declaration";
-        }
-        {
           key = "gr";
           lspBufAction = "rename";
-        }
-        {
-          key = "gR";
-          lspBufAction = "references";
         }
         {
           key = "gf";
@@ -52,14 +40,6 @@ in
         settings = {
           auto_install = false;
           highlight.enable = true;
-          incremental_selection = {
-            enable = true;
-            keymaps = {
-              init_selection = "gs";
-              node_incremental = "gf";
-              node_decremental = "gb";
-            };
-          };
           indent.enable = false;
         };
       };
