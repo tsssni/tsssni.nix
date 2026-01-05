@@ -19,8 +19,8 @@ in
       webroot = null;
       dnsProvider = "cloudflare";
       environmentFile = "${pkgs.writeText "cf-creds" ''
-        				CF_DNS_API_TOKEN_FILE = ${config.age.secrets."sbx-cloudflare".path}
-        			''}";
+        CF_DNS_API_TOKEN_FILE = ${config.age.secrets."sbx-cloudflare".path}
+      ''}";
       group = "nginx";
     };
   };
