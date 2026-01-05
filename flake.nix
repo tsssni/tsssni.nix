@@ -71,14 +71,14 @@
         };
       };
       collectConfigs =
-        path:
-        path
+        folder:
+        folder
         |> builtins.readDir
         |> lib.filterAttrs (dir: type: type == "directory")
         |> lib.mapAttrs (
           dir: _:
-          (import (path + /rebuild.nix) (
-            configArgs // { func = dir; } // (import (path + /${dir}/rebuild.nix))
+          (import (folder + /rebuild.nix) (
+            configArgs // { func = dir; } // (import (folder + /${dir}/rebuild.nix))
           ))
         );
     in

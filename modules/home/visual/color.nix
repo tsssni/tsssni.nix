@@ -61,7 +61,7 @@ in
     background = colorOption background;
   }
   // builtins.listToAttrs (
-    builtins.map (x: {
+    map (x: {
       name = x;
       value = colorOption null;
     }) colorList

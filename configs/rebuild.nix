@@ -5,19 +5,26 @@
   func,
   eval,
   system,
-  config ? {},
+  config ? { },
 }:
 let
   lib = inputs.nixpkgs.lib;
-  path = "${distro}/${func}";
+  folder = "${distro}/${func}";
   specialArgs.tsssni = {
-    inherit inputs distro func eval system config;
+    inherit
+      inputs
+      distro
+      func
+      eval
+      system
+      config
+      ;
   };
 
   homeModules =
-    path:
+    folder:
     [
-      ./${path}
+      ./${folder}
       tsssni.homeModules.tsssni
     ]
     ++ lib.optionals (distro == "home") [
@@ -27,7 +34,7 @@ let
 
   systemModules = [
     ./prelude
-    ./${path}/system
+    ./${folder}/system
     tsssni.systemModules
     inputs.home-manager.systemModules
     {
@@ -36,12 +43,12 @@ let
         useUserPackages = true;
         extraSpecialArgs = specialArgs;
         users =
-          ./${path}
+          ./${folder}
           |> builtins.readDir
           |> lib.filterAttrs (dir: type: true && type == "directory" && dir != "system")
           |> lib.mapAttrs (
             dir: _: {
-              imports = homeModules "${path}/${dir}";
+              imports = homeModules "${folder}/${dir}";
             }
           );
       };
@@ -61,6 +68,6 @@ eval (
         inherit system;
       };
       extraSpecialArgs = specialArgs;
-      modules = homeModules "${path}";
+      modules = homeModules "${folder}";
     }
 )
