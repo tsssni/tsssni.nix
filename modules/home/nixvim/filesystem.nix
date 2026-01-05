@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -35,8 +34,9 @@ in
       fzf-lua = {
         enable = true;
         keymaps = {
-          "<Leader>b" = "buffers";
-          "<Leader>d" = "diagnostics_document";
+          "gd" = "lsp_declarations";
+          "ge" = "lsp_definitions";
+          "<Leader>e" = "diagnostics_document";
           "<Leader>f" = "files";
           "<Leader>g" = "live_grep";
           "<Leader>h" = "helptags";
@@ -56,6 +56,9 @@ in
             "--cycle" = true;
           };
           winopts.wrap = true;
+          grep = {
+            rg_opts = "--column -n --no-heading --color=always -S -U -M=4096 -e";
+          };
         };
       };
       claude-code = {

@@ -64,13 +64,13 @@ in
         macos-option-as-alt = true;
         maximize = pkgs.stdenv.isDarwin;
         keybind = [
-            "ctrl+shift+c=copy_to_clipboard"
-            "ctrl+shift+v=paste_from_clipboard"
+            "cmd+c=copy_to_clipboard"
+            "cmd+v=paste_from_clipboard"
         ];
       }
       // cfg.extraSettings;
       themes.plana = {
-        palette = builtins.genList (i: "${builtins.toString i}=${builtins.elemAt color.palette i}") 16;
+        palette = builtins.genList (i: "${toString i}=${builtins.elemAt color.palette i}") 16;
         foreground = color.foreground;
         background = color.background;
         selection-background = color.lightBlack;
