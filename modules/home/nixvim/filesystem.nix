@@ -34,9 +34,9 @@ in
       fzf-lua = {
         enable = true;
         keymaps = {
-          "gd" = "lsp_declarations";
-          "ge" = "lsp_definitions";
-          "<Leader>e" = "diagnostics_document";
+          "gd" = "lsp_definitions";
+          "gl" = "lsp_declarations";
+          "<Leader>d" = "diagnostics_document";
           "<Leader>f" = "files";
           "<Leader>g" = "live_grep";
           "<Leader>h" = "helptags";
