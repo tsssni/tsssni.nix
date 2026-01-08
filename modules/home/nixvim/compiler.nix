@@ -29,9 +29,11 @@ in
       '';
       servers.nixd = {
         enable = true;
+        package = null;
         config.formattings.command = [ "nixfmt" ];
       };
     };
+
     plugins = {
       lsp.enable = true;
       treesitter = {
@@ -89,7 +91,8 @@ in
   home = {
     packages = with pkgs; [
       lldb
-      nixfmt-rfc-style
+      nixd
+      nixfmt
     ];
   };
 }

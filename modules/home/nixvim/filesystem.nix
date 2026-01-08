@@ -126,9 +126,16 @@ in
         action = ":bd!<CR>";
       }
     ];
+
+    dependencies = {
+      fzf.enable = false;
+      git.enable = false;
+      claude-code.enable = false;
+    };
   };
 
   programs = {
+    fzf.enable = true;
     ripgrep.enable = true;
     claude-code.enable = true;
   };
