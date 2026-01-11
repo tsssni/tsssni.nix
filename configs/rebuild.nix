@@ -10,6 +10,9 @@
 let
   lib = inputs.nixpkgs.lib;
   folder = "${distro}/${func}";
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+  };
   specialArgs.tsssni = {
     inherit
       inputs
@@ -27,14 +30,12 @@ let
       ./${folder}
       tsssni.homeModules.tsssni
     ]
-    ++ lib.optionals (distro == "home") [
-      ./prelude
-    ]
+    ++ lib.optionals (distro == "home") [ ./prelude.nix ]
     ++ tsssni.extraHomeModules;
 
   systemModules = [
-    ./prelude
     ./${folder}/system
+    ./prelude.nix
     tsssni.systemModules
     inputs.home-manager.systemModules
     {
@@ -64,9 +65,7 @@ eval (
     }
   else
     {
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-      };
+      inherit pkgs;
       extraSpecialArgs = specialArgs;
       modules = homeModules "${folder}";
     }
