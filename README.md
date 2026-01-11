@@ -59,7 +59,10 @@ Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-ma
 ```nix
 {
   system = "x86_64-linux";
-  cuda = true;
+  config = {
+    cudaSupport = true;
+    cudaCapabilities = [ "8.9" ];
+  };
 }
 ```
 
