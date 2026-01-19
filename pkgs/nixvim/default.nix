@@ -12,8 +12,8 @@ with pkgs;
     src = fetchFromGitHub {
       owner = "tsssni";
       repo = "plana.nvim";
-      rev = "7e1d445";
-      hash = "sha256-5A78Kfu0OTpSwBd0PCZ33ddlSsA27U+6mvCfvW1z1dQ=";
+      rev = "6aef23c";
+      hash = "sha256-uzlYQaGZgE+0paKSwPmKcEuY47hQYOOBWFtHeubHBGI=";
     };
     dependencies = [ pkgs.vimPlugins.lush-nvim ];
   };
