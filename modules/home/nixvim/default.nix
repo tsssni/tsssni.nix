@@ -29,11 +29,7 @@ in
       defaultEditor = true;
       nixpkgs.useGlobalPackages = true;
       colorscheme = "plana";
-      extraPlugins = with pkgs.vimPlugins; [
-        incline-nvim
-        nvim-web-devicons
-        plana-nvim
-      ];
+      extraPlugins = with pkgs.vimPlugins; [ plana-nvim ];
     };
   };
 }
