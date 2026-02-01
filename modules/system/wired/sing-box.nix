@@ -29,17 +29,15 @@ in
         dns = {
           servers = [
             {
-              tag = "cf";
-              address = "tls://1.1.1.1";
-            }
-            {
               tag = "local";
-              address = "223.5.5.5";
-              detour = "direct";
+              type = "udp";
+              server = "223.5.5.5";
             }
             {
               tag = "remote";
-              address = "fakeip";
+              type = "fakeip";
+              inet4_range = "198.18.0.0/15";
+              inet6_range = "fc00::/18";
             }
           ];
           rules = [
@@ -53,10 +51,6 @@ in
               server = "local";
             }
             {
-              outbound = "any";
-              server = "local";
-            }
-            {
               query_type = [
                 "A"
                 "AAAA"
@@ -64,11 +58,6 @@ in
               server = "remote";
             }
           ];
-          fakeip = {
-            enabled = true;
-            inet4_range = "198.18.0.0/15";
-            inet6_range = "fc00::/18";
-          };
           strategy = "ipv4_only";
           independent_cache = true;
         };
@@ -85,12 +74,10 @@ in
         ];
         outbounds = [
           {
-            type = "hysteria2";
+            type = "trojan";
             tag = "wired";
             server._secret = config.age.secrets."sbx-server".path;
-            server_port = 8080;
-            up_mbps = 100;
-            down_mbps = 100;
+            server_port = 8443;
             password._secret = config.age.secrets."sbx-passwd".path;
             tls = {
               enabled = true;
@@ -189,6 +176,7 @@ in
               path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-steam@cn.srs";
             }
           ];
+          default_domain_resolver = "local";
           auto_detect_interface = true;
         };
       };
