@@ -29,6 +29,12 @@ in
         dns = {
           servers = [
             {
+              tag = "cf";
+              type = "tls";
+              server = "1.1.1.1";
+              detour = "wired";
+            }
+            {
               tag = "local";
               type = "udp";
               server = "223.5.5.5";
@@ -74,11 +80,14 @@ in
         ];
         outbounds = [
           {
-            type = "trojan";
+            type = "hysteria2";
             tag = "wired";
             server._secret = config.age.secrets."sbx-server".path;
-            server_port = 8443;
+            server_port = 8080;
+            up_mbps = 100;
+            down_mbps = 100;
             password._secret = config.age.secrets."sbx-passwd".path;
+            domain_resolver = "local";
             tls = {
               enabled = true;
               server_name._secret = config.age.secrets."sbx-server".path;
@@ -176,7 +185,6 @@ in
               path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-steam@cn.srs";
             }
           ];
-          default_domain_resolver = "local";
           auto_detect_interface = true;
         };
       };
