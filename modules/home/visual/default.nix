@@ -1,12 +1,12 @@
 { ... }:
 {
   imports = [
+    ./aesth.nix
     ./color.nix
     ./font.nix
     ./gui.nix
     ./ime.nix
-    ./mujica.nix
-    ./mygo.nix
+    ./media.nix
     ./widget.nix
     ./window.nix
   ];

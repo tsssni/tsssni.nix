@@ -1,15 +1,9 @@
-{
-  pkgs,
-  ...
-}:
+{ ... }:
 {
   home = {
     username = "tsssni";
     homeDirectory = "/Users/tsssni";
     stateVersion = "24.11";
-    packages = with pkgs; [
-      tev
-    ];
   };
 
   programs.home-manager.enable = true;
@@ -26,7 +20,7 @@
     visual = {
       color.enable = true;
       font.enable = true;
-      mygo.enable = true;
+      media.enable = true;
     };
     wired.ssh.enable = true;
   };

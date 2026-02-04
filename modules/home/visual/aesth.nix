@@ -6,17 +6,17 @@
 }:
 
 let
-  cfg = config.tsssni.visual.mujica;
+  cfg = config.tsssni.visual.aesth;
 in
 {
-  options.tsssni.visual.mujica = {
+  options.tsssni.visual.aesth = {
     enable = lib.mkEnableOption "tsssni.visual.mujica";
   };
 
   config = lib.mkIf cfg.enable {
-    programs.mpv.enable = true;
     home.packages = with pkgs; [
-      clouddrive2
+      blender
+      gimp3
     ];
   };
 }
