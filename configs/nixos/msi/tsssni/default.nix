@@ -1,20 +1,9 @@
-{
-  pkgs,
-  ...
-}:
+{ ... }:
 {
   home = {
     username = "tsssni";
     homeDirectory = "/home/tsssni";
     stateVersion = "24.11";
-    packages = with pkgs; [
-      blender
-      gimp3
-      hotspot
-      libreoffice
-      perf
-      tev
-    ];
   };
 
   programs.home-manager.enable = true;
@@ -29,9 +18,11 @@
       terminal.enable = true;
     };
     visual = {
+      aesth.enable = true;
       color.enable = true;
       font.enable = true;
       gui.enable = true;
+      media.enable = true;
       window = {
         enable = true;
         monitors = {
@@ -52,6 +43,7 @@
     };
     wired = {
       browser.enable = true;
+      cloud.enable = true;
       ssh.enable = true;
     };
   };
