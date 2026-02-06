@@ -10,7 +10,7 @@ let
 in
 {
   options.tsssni.visual.media = {
-    enable = lib.mkEnableOption "tsssni.visual.mujica";
+    enable = lib.mkEnableOption "tsssni.visual.media";
   };
 
   config = lib.mkIf cfg.enable {
