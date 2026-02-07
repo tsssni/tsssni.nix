@@ -7,6 +7,7 @@
 
 let
   cfg = config.tsssni.visual.aesth;
+  nixvimConfig = config.programs.nixvim;
 in
 {
   options.tsssni.visual.aesth = {
@@ -17,7 +18,10 @@ in
     home.packages = with pkgs; [
       blender
       gimp3
-      unityhub
+      (unityhub.override {
+        # without available editor unity refuse to generate csproj
+        extraLibs = (pkgs: [ nixvimConfig.finalPackage ]);
+      })
     ];
   };
 }
