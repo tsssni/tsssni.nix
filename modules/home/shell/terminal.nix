@@ -60,6 +60,7 @@ in
         ];
         font-size = font.nerdFont.size;
         window-decoration = "none";
+        window-inherit-working-directory = false;
         confirm-close-surface = false;
         macos-option-as-alt = true;
         maximize = pkgs.stdenv.isDarwin;
