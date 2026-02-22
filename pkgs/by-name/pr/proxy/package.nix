@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   version = "4.0.1";
 
   src = fetchFromGitHub {
-    owner = "microsoft";
+    owner = "ngcpp";
     repo = "proxy";
     rev = "${version}";
     sha256 = "sha256-nU1aQXW6HXvy9B2WdED8SH+/vYyxt2MWoUkS40UC8TA=";
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Proxy: Next Generation Polymorphism in C++";
-    homepage = "https://microsoft.github.io/proxy/";
+    homepage = "https://ngcpp.github.io/proxy/spec/";
     license = lib.licenses.mit;
     platforms = lib.platforms.all;
   };
