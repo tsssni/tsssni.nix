@@ -20,6 +20,7 @@
     visual = {
       color.enable = true;
       font.enable = true;
+      ime.enable = true;
       media.enable = true;
     };
     wired.ssh.enable = true;

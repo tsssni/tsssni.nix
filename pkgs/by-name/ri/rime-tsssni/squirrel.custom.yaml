@@ -1,0 +1,5 @@
+patch:
+  style:
+    candidate_list_layout: linear
+    color_scheme: purity_of_form_custom
+    color_scheme_dark: purity_of_form_custom
