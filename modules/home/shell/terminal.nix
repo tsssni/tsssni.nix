@@ -40,6 +40,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    tsssni.visual.font.enable = true;
     programs.ghostty = {
       enable = true;
       package =

@@ -1,0 +1,4 @@
+patch:
+  "translator/packs/+":
+    - zhwiki
+    - moegirl

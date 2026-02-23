@@ -7,6 +7,51 @@
 
 let
   cfg = config.tsssni.visual.ime;
+  font = config.tsssni.visual.font;
+  fcitxCfg = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      addons = with pkgs; [
+        fcitx5-fluent
+        fcitx5-mozc
+        (fcitx5-rime.override {
+          rimeDataPkgs = [
+            rime-tsssni
+          ];
+        })
+      ];
+      waylandFrontend = true;
+      settings = {
+        addons = {
+          classicui.globalSection =
+            let
+              uiFont = font.nerdFont.name + " 10";
+            in
+            {
+              Font = uiFont;
+              MenuFont = uiFont;
+              TrayFont = uiFont;
+              Theme = "FluentDark";
+            };
+        };
+        globalOptions = {
+          HotKey.EnumerateWithTriggerKeys = "True";
+          "Hotkey/TriggerKeys"."0" = "Super+space";
+        };
+        inputMethod = {
+          "Groups/0" = {
+            Name = "Default";
+            "Default Layout" = "us";
+            DefaultIM = "rime";
+          };
+          "Groups/0/Items/0".Name = "keyboard-us";
+          "Groups/0/Items/1".Name = "rime";
+          "Groups/0/Items/2".Name = "mozc";
+        };
+      };
+    };
+  };
 in
 {
   options.tsssni.visual.ime = {
@@ -14,21 +59,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    i18n.inputMethod = {
-      enable = true;
-      type = "fcitx5";
-      fcitx5.addons =
-        with pkgs;
-        [
-          fcitx5-gtk
-          fcitx5-fluent
-          fcitx5-mozc
-          fcitx5-pinyin-zhwiki
-          fcitx5-pinyin-moegirl
-        ]
-        ++ (with pkgs.qt6Packages; [
-          fcitx5-chinese-addons
-        ]);
-    };
+    tsssni.visual.font.enable = true;
+    i18n.inputMethod = fcitxCfg;
   };
 }
