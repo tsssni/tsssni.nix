@@ -20,7 +20,7 @@ in
       gimp3
       (unityhub.override {
         # without available editor unity refuse to generate csproj
-        extraLibs = (pkgs: [ nixvimConfig.finalPackage ]);
+        extraLibs = (pkgs: [ nixvimConfig.build.package ]);
       })
     ];
   };
