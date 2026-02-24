@@ -7,6 +7,12 @@
 
 let
   cfg = config.tsssni.visual.ime;
+  homeCfg = config.tsssni.home;
+  allowedTypes = lib.types.enum [
+    "fcitx5"
+    "ibus"
+    "squirrel"
+  ];
   font = config.tsssni.visual.font;
   fcitx5Cfg = {
     addons = with pkgs; [
@@ -52,21 +58,41 @@ in
 {
   options.tsssni.visual.ime = {
     enable = lib.mkEnableOption "tsssni.visual.ime";
+    type = lib.mkOption {
+      type = lib.types.nullOr allowedTypes;
+      default = "fcitx5";
+      example = "fcitx5";
+      description = ''
+        Select the enabled input method.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
     tsssni.visual.font.enable = true;
-    i18n.inputMethod = lib.optionalAttrs pkgs.stdenv.isLinux {
+    i18n.inputMethod = lib.optionalAttrs (!homeCfg.standalone && pkgs.stdenv.isLinux) {
       enable = true;
       type = "fcitx5";
-      fcitx5 = fcitx5Cfg;
+      fcitx5 = lib.optionalAttrs (cfg.type == "fcitx5") fcitx5Cfg;
     };
-    home.file = lib.optionalAttrs pkgs.stdenv.isDarwin {
-      "Library/Rime" = {
-        source = "${pkgs.rime-tsssni}/share/rime-data";
-        recursive = true;
-        force = true;
+    home.file =
+      let
+        path =
+          if (pkgs.stdenv.isDarwin && cfg.type == "squirrel") then
+            "Library/Rime"
+          else if (cfg.type == "fcitx5") then
+            ".local/share/fcitx5/rime"
+          else if (cfg.type == "ibus") then
+            ".config/ibus/rime"
+          else
+            throw "ime type not supported";
+      in
+      lib.optionalAttrs (homeCfg.standalone || pkgs.stdenv.isDarwin) {
+        "${path}" = {
+          source = "${pkgs.rime-tsssni}/share/rime-data";
+          recursive = true;
+          force = true;
+        };
       };
-    };
   };
 }

@@ -20,7 +20,10 @@
     visual = {
       color.enable = true;
       font.enable = true;
-      ime.enable = true;
+      ime = {
+        enable = true;
+        type = "squirrel";
+      };
       media.enable = true;
     };
     wired.ssh.enable = true;

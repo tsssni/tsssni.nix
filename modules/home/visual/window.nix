@@ -6,6 +6,8 @@
 }:
 let
   cfg = config.tsssni.visual.window;
+  widgetCfg = config.tsssni.visual.widget;
+  imeCfg = config.tsssni.visual.ime;
   color = config.tsssni.visual.color;
   settingsType =
     with lib.types;
@@ -168,10 +170,10 @@ in
             { command = [ "swww-daemon" ]; }
             { command = [ "swww img ${cfg.wallpaper} --transition-type none" ]; }
           ]
-          ++ lib.optionals config.tsssni.visual.widget.enable [
+          ++ lib.optionals widgetCfg.enable [
             { command = [ "plana-astal" ]; }
           ]
-          ++ lib.optionals config.tsssni.visual.ime.enable [
+          ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
             { command = [ "fcitx5" ]; }
           ];
         binds = with config.lib.niri.actions; {

@@ -22,7 +22,10 @@
       color.enable = true;
       font.enable = true;
       gui.enable = true;
-      ime.enable = true;
+      ime = {
+        enable = true;
+        type = "fcitx5";
+      };
       media.enable = true;
       widget.enable = true;
       window = {
