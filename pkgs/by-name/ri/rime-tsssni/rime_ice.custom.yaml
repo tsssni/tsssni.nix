@@ -2,3 +2,6 @@ patch:
   "translator/packs/+":
     - zhwiki
     - moegirl
+  "switches/@next":
+    name: ascii_punct
+    reset: 1
