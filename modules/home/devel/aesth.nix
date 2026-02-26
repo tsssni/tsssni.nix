@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.tsssni.visual.aesth;
+  cfg = config.tsssni.devel.aesth;
   nixvimConfig = config.programs.nixvim;
 in
 {
-  options.tsssni.visual.aesth = {
+  options.tsssni.devel.aesth = {
     enable = lib.mkEnableOption "tsssni.visual.aesth";
   };
 
