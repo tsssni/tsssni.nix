@@ -26,8 +26,8 @@ in
       };
     };
     home.packages = with pkgs; [
+      _7zz
       curl
-      wget
       wireguard-tools
     ];
   };

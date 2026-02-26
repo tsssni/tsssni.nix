@@ -9,7 +9,10 @@
   programs.home-manager.enable = true;
 
   tsssni = {
-    devel.git.enable = true;
+    devel = {
+      aesth.enable = true;
+      git.enable = true;
+    };
     nixvim.enable = true;
     shell = {
       fetch.enable = true;
@@ -18,7 +21,6 @@
       terminal.enable = true;
     };
     visual = {
-      aesth.enable = true;
       color.enable = true;
       font.enable = true;
       gui.enable = true;
