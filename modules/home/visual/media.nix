@@ -14,7 +14,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.mpv.enable = true;
+    # programs.mpv.enable = true;
     home.packages = with pkgs; [
       go-musicfox
       tev

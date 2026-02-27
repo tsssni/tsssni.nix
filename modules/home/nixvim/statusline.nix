@@ -66,8 +66,8 @@ in
       navic = {
         enable = true;
         settings = {
-            lsp.auto_attach = true;
-            separator = " -> ";
+          lsp.auto_attach = true;
+          separator = " -> ";
         };
       };
       gitsigns.enable = true;

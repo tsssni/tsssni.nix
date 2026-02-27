@@ -11,7 +11,7 @@ let
 in
 {
   options.tsssni.devel.aesth = {
-    enable = lib.mkEnableOption "tsssni.visual.aesth";
+    enable = lib.mkEnableOption "tsssni.devel.aesth";
   };
 
   config = lib.mkIf cfg.enable {
