@@ -49,15 +49,18 @@ in
         '';
     };
 
-    programs.btop = {
-      enable = true;
-      package = if homeCfg.standalone then null else pkgs.btop;
-      settings = {
-        color_theme = "TTY";
-        theme_background = false;
-        vim_keys = true;
-        update_ms = 2000;
+    programs = {
+      btop = {
+        enable = true;
+        package = if homeCfg.standalone then null else pkgs.btop;
+        settings = {
+          color_theme = "TTY";
+          theme_background = false;
+          vim_keys = true;
+          update_ms = 2000;
+        };
       };
+      zellij.enable = true;
     };
   };
 }

@@ -12,6 +12,7 @@
     devel = {
       aesth.enable = true;
       git.enable = true;
+      intelli.enable = true;
     };
     nixvim.enable = true;
     shell = {

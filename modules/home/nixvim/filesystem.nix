@@ -61,22 +61,6 @@ in
           };
         };
       };
-      claude-code = {
-        enable = true;
-        settings = {
-          window.position = "float";
-          start_in_normal_mode = true;
-          shell = {
-            separator = ";";
-            pushd_cmd = "use std/dirs; dirs add";
-            popd_cmd = "dirs drop";
-          };
-          keymaps.toggle = {
-            normal = "<C-a>";
-            terminal = "<C-a>";
-          };
-        };
-      };
       web-devicons.enable = true;
     };
 
@@ -130,13 +114,11 @@ in
     dependencies = {
       fzf.enable = false;
       git.enable = false;
-      claude-code.enable = false;
     };
   };
 
   programs = {
     fzf.enable = true;
     ripgrep.enable = true;
-    claude-code.enable = true;
   };
 }
