@@ -30,7 +30,10 @@ in
       servers.nixd = {
         enable = true;
         package = null;
-        config.formattings.command = [ "nixfmt" ];
+        config = {
+          nixpkgs.expr = "import <nixpkgs> { }";
+          formattings.command = [ "nixfmt" ];
+        };
       };
     };
 

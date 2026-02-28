@@ -65,6 +65,7 @@ in
         confirm-close-surface = false;
         macos-option-as-alt = true;
         maximize = pkgs.stdenv.isDarwin;
+        command = "direct:zellij";
         keybind = [
             "cmd+c=copy_to_clipboard"
             "cmd+v=paste_from_clipboard"

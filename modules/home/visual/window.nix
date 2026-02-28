@@ -179,7 +179,6 @@ in
         binds = with config.lib.niri.actions; {
           "Mod+T".action = spawn "ghostty";
           "Mod+B".action = spawn "firefox";
-          "Mod+X".action = close-window;
           "Mod+Q".action.quit.skip-confirmation = true;
           "Mod+P".action.screenshot.show-pointer = false;
           "Mod+W".action.screenshot-window.write-to-disk = true;
