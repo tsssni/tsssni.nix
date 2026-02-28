@@ -11,7 +11,13 @@ in
     plugins = {
       toggleterm = {
         enable = true;
-        settings.direction = "float";
+        settings = {
+          direction = "float";
+          float_opts = {
+            width.__raw = "math.floor(vim.o.columns * 0.85)";
+            height.__raw = "math.floor(vim.o.lines * 0.85)";
+          };
+        };
       };
     };
 
