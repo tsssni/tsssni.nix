@@ -13,7 +13,6 @@ in
     ./filesystem.nix
     ./session.nix
     ./statusline.nix
-    ./terminal.nix
     ./option.nix
     ./visual.nix
     ./window.nix
