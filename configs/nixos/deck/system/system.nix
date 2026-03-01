@@ -10,6 +10,7 @@
       efiSysMountPoint = "/efi";
     };
   };
+  services.displayManager.sddm.wayland.enable = true;
 
   users.users.deck = {
     name = "deck";

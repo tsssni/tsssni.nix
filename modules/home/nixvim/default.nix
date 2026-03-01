@@ -11,11 +11,9 @@ in
   imports = [
     ./compiler.nix
     ./filesystem.nix
-    ./session.nix
     ./statusline.nix
     ./option.nix
     ./visual.nix
-    ./window.nix
   ];
 
   options.tsssni.nixvim = {

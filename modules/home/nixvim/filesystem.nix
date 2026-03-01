@@ -62,6 +62,17 @@ in
         };
       };
       web-devicons.enable = true;
+      auto-session.enable = true;
+    };
+
+    dependencies = {
+      fzf.enable = false;
+      git.enable = false;
+    };
+
+    globals = {
+      mapleader = " ";
+      localmapleader = " ";
     };
 
     keymaps = [
@@ -110,11 +121,6 @@ in
         action = ":bd!<CR>";
       }
     ];
-
-    dependencies = {
-      fzf.enable = false;
-      git.enable = false;
-    };
   };
 
   programs = {

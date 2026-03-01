@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
   buildInputs = [ apple-sdk_26 ];
 
   postUnpack = ''
-    cp ${./CMakeLists.txt} $sourceRoot/CMakeLists.txt                               
-    cp ${./metal-cpp-config.cmake.in} $sourceRoot/metal-cpp-config.cmake.in         
+    cp ${./CMakeLists.txt} $sourceRoot/CMakeLists.txt
+    cp ${./metal-cpp-config.cmake.in} $sourceRoot/metal-cpp-config.cmake.in
   '';
 
   meta = {

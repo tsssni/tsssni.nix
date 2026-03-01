@@ -56,6 +56,7 @@ let
             (final: prev: {
               agenix = agenix.packages.${tsssni.system}.default;
             })
+            niri.overlays.niri
           ]
           ++ (import ../pkgs lib)
         );
