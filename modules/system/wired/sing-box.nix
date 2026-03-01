@@ -96,6 +96,7 @@ in
           {
             type = "direct";
             tag = "direct";
+            domain_resolver = "local";
           }
         ];
         route = {

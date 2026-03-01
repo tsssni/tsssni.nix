@@ -18,6 +18,7 @@ in
     programs = {
       nushell = {
         enable = true;
+        package = if homeCfg.standalone then null else pkgs.nushell;
         settings = {
           show_banner = false;
           edit_mode = "vi";
@@ -39,6 +40,9 @@ in
           QT_QPA_PLATFORMTHEME = "qt5ct";
           XDG_SESSION_TYPE = "wayland";
         };
+        envFile.text = lib.optionalString homeCfg.standalone ''
+          $env.PATH = ($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")
+        '';
         configFile.text =
           let
             nuScriptsPath = "${pkgs.nu_scripts}/share/nu_scripts/";
