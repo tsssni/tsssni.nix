@@ -70,8 +70,12 @@ in
   config = lib.mkIf cfg.enable {
     programs.niri = {
       enable = true;
-      package = pkgs.niri;
+      package = pkgs.niri-unstable;
       settings = {
+        xwayland-satellite = {
+          enable = true;
+          path = "${lib.getExe pkgs.xwayland-satellite-unstable}";
+        };
         input = {
           keyboard.xkb = {
             layout = "us";
@@ -185,6 +189,7 @@ in
           "Mod+O".action = toggle-overview;
           "Mod+M".action = maximize-column;
           "Mod+F".action = fullscreen-window;
+          "Mod+X".action = close-window;
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;
@@ -227,7 +232,6 @@ in
       packages = with pkgs; [
         swww
         wl-clipboard
-        xwayland-satellite
       ];
     };
   };
