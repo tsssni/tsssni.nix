@@ -10,7 +10,10 @@
 
   tsssni = {
     home.standalone = true;
-    devel.intelli.enable = true;
+    devel = {
+      git.enable = true;
+      intelli.enable = true;
+    };
     nixvim.enable = true;
     shell = {
       fetch.enable = true;
