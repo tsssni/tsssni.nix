@@ -22,7 +22,7 @@ let
     "#a78dd4"
     "#7dd5d5"
     "#bebad9"
-    "#645e8c"
+    "#514c73"
     "#ff8d7c"
     "#a8e5af"
     "#f5dba8"
