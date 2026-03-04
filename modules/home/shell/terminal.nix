@@ -69,8 +69,10 @@ in
         maximize = pkgs.stdenv.isDarwin;
         command = lib.optional shellCfg.enable "direct:${lib.getExe zellijCfg.package}";
         keybind = [
-            "cmd+c=copy_to_clipboard"
-            "cmd+v=paste_from_clipboard"
+          "cmd+c=copy_to_clipboard"
+          "cmd+v=paste_from_clipboard"
+          "ctrl+equal=increase_font_size:1"
+          "ctrl+minus=decrease_font_size:1"
         ];
       }
       // cfg.extraSettings;
