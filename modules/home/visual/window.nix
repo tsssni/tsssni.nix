@@ -8,7 +8,7 @@ let
   cfg = config.tsssni.visual.window;
   widgetCfg = config.tsssni.visual.widget;
   imeCfg = config.tsssni.visual.ime;
-  color = config.tsssni.visual.color;
+  colorCfg = config.tsssni.visual.color;
   settingsType =
     with lib.types;
     let
@@ -108,15 +108,15 @@ in
           border = {
             enable = true;
             width = 2;
-            active.color = color.lightBlack;
-            inactive.color = color.lightBlack;
-            urgent.color = color.lightBlack;
+            active.color = colorCfg.lightBlack;
+            inactive.color = colorCfg.lightBlack;
+            urgent.color = colorCfg.lightBlack;
           };
           focus-ring =
             let
               gradient = {
-                from = color.lightBlue;
-                to = color.lightCyan;
+                from = colorCfg.lightBlue;
+                to = colorCfg.lightCyan;
                 angle = 180;
                 relative-to = "workspace-view";
               };

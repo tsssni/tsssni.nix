@@ -9,8 +9,8 @@ let
   homeCfg = config.tsssni.home;
   shellCfg = config.tsssni.shell.shell;
   zellijCfg = config.programs.zellij;
-  color = config.tsssni.visual.color;
-  font = config.tsssni.visual.font;
+  colorCfg = config.tsssni.visual.color;
+  fontCfg = config.tsssni.visual.font;
   keyValueSettings = {
     listsAsDuplicateKeys = true;
     mkKeyValue = lib.generators.mkKeyValueDefault { } " = ";
@@ -58,10 +58,10 @@ in
       settings = {
         theme = "plana";
         font-family = [
-          font.nerdFont.name
-          font.latinFont.name
+          fontCfg.nerdFont.name
+          fontCfg.latinFont.name
         ];
-        font-size = font.nerdFont.size;
+        font-size = fontCfg.nerdFont.size;
         window-decoration = "none";
         window-inherit-working-directory = false;
         confirm-close-surface = false;
@@ -77,12 +77,12 @@ in
       }
       // cfg.extraSettings;
       themes.plana = {
-        palette = builtins.genList (i: "${toString i}=${builtins.elemAt color.palette i}") 16;
-        foreground = color.foreground;
-        background = color.background;
-        selection-background = color.lightBlack;
-        cursor-color = color.lightBlack;
-        cursor-text = color.lightWhite;
+        palette = builtins.genList (i: "${toString i}=${builtins.elemAt colorCfg.palette i}") 16;
+        foreground = colorCfg.foreground;
+        background = colorCfg.background;
+        selection-background = colorCfg.lightBlack;
+        cursor-color = colorCfg.lightBlack;
+        cursor-text = colorCfg.lightWhite;
       };
     };
   };
