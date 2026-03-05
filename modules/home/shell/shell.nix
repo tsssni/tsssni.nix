@@ -7,7 +7,7 @@
 let
   cfg = config.tsssni.shell.shell;
   homeCfg = config.tsssni.home;
-  visualCfg = config.tsssni.visual;
+  guiCfg = config.tsssni.visual.gui;
 in
 {
   options.tsssni.shell.shell = {
@@ -34,7 +34,7 @@ in
         environmentVariables = {
           EDITOR = "nvim";
         }
-        // lib.optionalAttrs visualCfg.gui.enable {
+        // lib.optionalAttrs guiCfg.enable {
           XCURSOR_SIZE = 24;
           XCURSOR_THEME = "macOS";
           QT_QPA_PLATFORMTHEME = "qt5ct";

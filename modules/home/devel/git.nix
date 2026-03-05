@@ -7,7 +7,7 @@
 let
   cfg = config.tsssni.devel.git;
   homeCfg = config.tsssni.home;
-  color = config.tsssni.visual.color;
+  colorCfg = config.tsssni.visual.color;
 in
 {
   options.tsssni.devel.git = {
@@ -29,7 +29,7 @@ in
     programs.lazygit = {
       enable = true;
       package = if homeCfg.standalone then null else pkgs.lazygit;
-      settings.gui.theme.selectedLineBgColor = [ color.lightBlack ];
+      settings.gui.theme.selectedLineBgColor = [ colorCfg.lightBlack ];
     };
   };
 }
