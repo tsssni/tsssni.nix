@@ -6,7 +6,6 @@
     ./gui.nix
     ./ime.nix
     ./media.nix
-    ./widget.nix
     ./window.nix
   ];
 }

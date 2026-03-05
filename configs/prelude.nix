@@ -53,10 +53,11 @@ let
         with tsssni.inputs;
         (
           [
+            niri.overlays.niri
             (final: prev: {
               agenix = agenix.packages.${tsssni.system}.default;
+              tsssni-shell = shell.packages.${tsssni.system}.default;
             })
-            niri.overlays.niri
           ]
           ++ (import ../pkgs lib)
         );

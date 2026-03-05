@@ -30,7 +30,6 @@
         type = "fcitx5";
       };
       media.enable = true;
-      widget.enable = true;
       window = {
         enable = true;
         monitors = {
@@ -42,7 +41,7 @@
             };
           };
         };
-        wallpaper = ./config/niri/wallpaper/plana.jpeg;
+        wallpaper = ./config/niri/wallpaper/chainsaw.jpg;
       };
     };
     wired = {

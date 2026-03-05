@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.tsssni.visual.window;
-  widgetCfg = config.tsssni.visual.widget;
   imeCfg = config.tsssni.visual.ime;
   colorCfg = config.tsssni.visual.color;
   settingsType =
@@ -169,16 +168,13 @@ in
             }
           ];
         spawn-at-startup =
-          [ ]
+          [ { command = [ "${lib.getExe pkgs.tsssni-shell}" ]; } ]
           ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
-            { command = [ "swww-daemon" ]; }
-            { command = [ "swww img ${cfg.wallpaper} --transition-type none" ]; }
-          ]
-          ++ lib.optionals widgetCfg.enable [
-            { command = [ "plana-astal" ]; }
+            { command = [ "${pkgs.swww}/bin/swww-daemon" ]; }
+            { command = [ "${pkgs.swww}/bin/swww img ${cfg.wallpaper} --transition-type none" ]; }
           ]
           ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
-            { command = [ "fcitx5" ]; }
+            { command = [ "${lib.getExe pkgs.fcitx5}" ]; }
           ];
         binds = with config.lib.niri.actions; {
           "Mod+T".action = spawn "ghostty";
@@ -190,6 +186,7 @@ in
           "Mod+M".action = maximize-column;
           "Mod+F".action = fullscreen-window;
           "Mod+X".action = close-window;
+          "Mod+Z".action = spawn-sh "${lib.getExe pkgs.tsssni-shell} ipc call toggleBlurryPlayer toggle";
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;

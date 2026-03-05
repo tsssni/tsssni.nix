@@ -34,7 +34,7 @@ in
       };
       iconTheme = {
         name = "Fluent";
-        package = pkgs.fluent-icon-theme;
+        package = pkgs.hicolor-icon-theme;
       };
       font = config.tsssni.visual.font.latinFont;
       colorScheme = "dark";
