@@ -11,6 +11,7 @@
   tsssni = {
     devel = {
       aesth.enable = true;
+      env.enable = true;
       git.enable = true;
       intelli.enable = true;
     };

@@ -11,6 +11,7 @@
   tsssni = {
     home.standalone = true;
     devel = {
+      env.enable = true;
       git.enable = true;
       intelli.enable = true;
     };
