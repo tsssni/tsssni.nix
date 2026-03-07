@@ -31,7 +31,7 @@
             path = "/efi";
           }
         ];
-        theme = pkgs.plana-grub;
+        theme = pkgs.hyperfluent-grub-theme;
         configurationLimit = 5;
       };
       efi = {
