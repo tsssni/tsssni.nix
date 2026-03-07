@@ -9,14 +9,14 @@ let
 in
 {
   options.tsssni.devel.env = {
-    enable = lib.mkEnableOption "tsssni.shell.shell";
+    enable = lib.mkEnableOption "tsssni.devel.env";
   };
 
   config = lib.mkIf cfg.enable {
     programs.direnv = {
       enable = true;
-      enableNushellIntegration = true;
-      nix-direnv.enable = shellCfg.enable;
+      enableNushellIntegration = shellCfg.enable;
+      nix-direnv.enable = true;
     };
   };
 }

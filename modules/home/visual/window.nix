@@ -8,6 +8,8 @@ let
   cfg = config.tsssni.visual.window;
   imeCfg = config.tsssni.visual.ime;
   colorCfg = config.tsssni.visual.color;
+  shellCfg = config.tsssni.shell.shell;
+  zellijCfg = config.programs.zellij;
   settingsType =
     with lib.types;
     let
@@ -167,18 +169,25 @@ in
               place-within-backdrop = true;
             }
           ];
-        spawn-at-startup =
-          [ { command = [ "${lib.getExe pkgs.tsssni-shell}" ]; } ]
-          ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
-            { command = [ "${pkgs.swww}/bin/swww-daemon" ]; }
-            { command = [ "${pkgs.swww}/bin/swww img ${cfg.wallpaper} --transition-type none" ]; }
-          ]
-          ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
-            { command = [ "${lib.getExe pkgs.fcitx5}" ]; }
-          ];
+        spawn-at-startup = [
+          { command = [ "${lib.getExe pkgs.tsssni-shell}" ]; }
+        ]
+        ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
+          { command = [ "${pkgs.swww}/bin/swww-daemon" ]; }
+          { command = [ "${pkgs.swww}/bin/swww img ${cfg.wallpaper} --transition-type none" ]; }
+        ]
+        ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
+          { command = [ "${lib.getExe pkgs.fcitx5}" ]; }
+        ];
         binds = with config.lib.niri.actions; {
-          "Mod+T".action = spawn "ghostty";
-          "Mod+B".action = spawn "firefox";
+          "Mod+T".action.spawn = [
+            "ghostty"
+          ]
+          ++ lib.optionals shellCfg.enable [
+            "-e"
+            "${lib.getExe zellijCfg.package}"
+          ];
+          "Mod+B".action.spawn = [ "firefox" ];
           "Mod+Q".action.quit.skip-confirmation = true;
           "Mod+P".action.screenshot.show-pointer = false;
           "Mod+W".action.screenshot-window.write-to-disk = true;
@@ -186,7 +195,7 @@ in
           "Mod+M".action = maximize-column;
           "Mod+F".action = fullscreen-window;
           "Mod+X".action = close-window;
-          "Mod+Z".action = spawn-sh "${lib.getExe pkgs.tsssni-shell} ipc call toggleBlurryPlayer toggle";
+          "Mod+Z".action.spawn-sh = [ "${lib.getExe pkgs.tsssni-shell} ipc call toggleBlurryPlayer toggle" ];
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;

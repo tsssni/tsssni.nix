@@ -33,7 +33,7 @@ in
         package = pkgs.fluent-gtk-theme;
       };
       iconTheme = {
-        name = "Fluent";
+        name = "Hicolor";
         package = pkgs.hicolor-icon-theme;
       };
       font = config.tsssni.visual.font.latinFont;

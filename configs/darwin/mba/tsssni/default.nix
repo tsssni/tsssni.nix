@@ -23,6 +23,7 @@
     };
     visual = {
       color.enable = true;
+      file.enable = true;
       font.enable = true;
       ime = {
         enable = true;

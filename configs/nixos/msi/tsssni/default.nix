@@ -24,6 +24,7 @@
     };
     visual = {
       color.enable = true;
+      file.enable = true;
       font.enable = true;
       gui.enable = true;
       ime = {
