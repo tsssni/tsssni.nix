@@ -7,8 +7,6 @@
 let
   cfg = config.tsssni.shell.terminal;
   homeCfg = config.tsssni.home;
-  shellCfg = config.tsssni.shell.shell;
-  zellijCfg = config.programs.zellij;
   colorCfg = config.tsssni.visual.color;
   fontCfg = config.tsssni.visual.font;
   keyValueSettings = {
@@ -67,7 +65,6 @@ in
         confirm-close-surface = false;
         macos-option-as-alt = true;
         maximize = pkgs.stdenv.isDarwin;
-        command = lib.optional shellCfg.enable "direct:${lib.getExe zellijCfg.package}";
         keybind = [
           "cmd+c=copy_to_clipboard"
           "cmd+v=paste_from_clipboard"
