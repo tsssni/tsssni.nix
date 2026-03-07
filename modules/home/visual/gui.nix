@@ -33,8 +33,8 @@ in
         package = pkgs.fluent-gtk-theme;
       };
       iconTheme = {
-        name = "Hicolor";
-        package = pkgs.hicolor-icon-theme;
+        name = "Adwaita";
+        package = pkgs.adwaita-icon-theme;
       };
       font = config.tsssni.visual.font.latinFont;
       colorScheme = "dark";
