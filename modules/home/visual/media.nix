@@ -19,7 +19,7 @@ in
       go-musicfox
       tev
     ];
-    xdg.mimeApps = {
+    xdg.mimeApps = lib.optionalAttrs pkgs.stdenv.isLinux {
       enable = true;
       defaultApplications =
         let

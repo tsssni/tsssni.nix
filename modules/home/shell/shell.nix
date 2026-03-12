@@ -40,9 +40,17 @@ in
           QT_QPA_PLATFORMTHEME = "qt5ct";
           XDG_SESSION_TYPE = "wayland";
         };
-        envFile.text = lib.optionalString homeCfg.standalone ''
-          $env.PATH = ($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")
-        '';
+        envFile.text =
+          if homeCfg.standalone then
+            ''
+              $env.PATH = ($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")
+            ''
+          else if pkgs.stdenv.isDarwin then
+            ''
+              $env.PATH = ($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")
+            ''
+          else
+            "";
         configFile.text =
           let
             nuScriptsPath = "${pkgs.nu_scripts}/share/nu_scripts/";
