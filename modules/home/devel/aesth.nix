@@ -7,7 +7,8 @@
 
 let
   cfg = config.tsssni.devel.aesth;
-  nixvimConfig = config.programs.nixvim;
+  intelliCfg = config.tsssni.devel.intelli;
+  nixvimCfg = config.programs.nixvim;
 in
 {
   options.tsssni.devel.aesth = {
@@ -20,7 +21,21 @@ in
       gimp3
       (unityhub.override {
         # without available editor unity refuse to generate csproj
-        extraLibs = (pkgs: [ nixvimConfig.build.package ]);
+        extraLibs = (
+          pkgs:
+          [
+            nixvimCfg.build.package
+          ]
+          ++ (lib.optionals intelliCfg.enable (
+            with pkgs;
+            [
+              claude-code
+              python314
+              uv
+              xterm
+            ]
+          ))
+        );
       })
     ];
   };
