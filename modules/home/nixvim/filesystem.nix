@@ -40,7 +40,6 @@ in
           "<Leader>f" = "files";
           "<Leader>g" = "live_grep";
           "<Leader>h" = "helptags";
-          "<Leader>j" = "jumps";
           "<Leader>r" = "lsp_references";
           "<Leader>s" = "resume";
         };
@@ -54,8 +53,17 @@ in
           fzf_colors = true;
           fzf_opts = {
             "--cycle" = true;
+            "--multi" = true;
           };
           winopts.wrap = true;
+          actions.files = {
+            "__unkeyed_1" = true;
+            "ctrl-y".__raw = ''
+              function(selected)
+                vim.fn.setreg('+', table.concat(selected, '\n'))
+              end
+            '';
+          };
           grep = {
             rg_opts = "--column -n --no-heading --color=always -S -U -M=4096 -e";
           };
