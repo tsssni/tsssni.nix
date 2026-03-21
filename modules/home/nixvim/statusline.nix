@@ -26,8 +26,9 @@ in
           sections = {
             lualine_a = [
               {
-                __unkeyed-1 = "mode";
-                icon = "󱄅";
+                __unkeyed-1 = "lsp_status";
+                icon = " LSP:";
+                symbols.done = "";
               }
             ];
             lualine_b = [
@@ -37,13 +38,7 @@ in
               }
               "progress"
             ];
-            lualine_c = [
-              {
-                __unkeyed-1 = "lsp_status";
-                icon = " LSP:";
-                symbols.done = "";
-              }
-            ];
+            lualine_c = [ "" ];
             lualine_x = [ "" ];
             lualine_y = [ "" ];
             lualine_z = [
