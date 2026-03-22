@@ -3,13 +3,13 @@ vim.lsp.config('nixd', {
     nixd = {
       options = {
         nixos = {
-          expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.msi.options',
+          expr = '(builtins.getFlake (toString ./.)).nixosConfigurations.msi.options',
         },
         darwin = {
-          expr = '(builtins.getFlake ("git+file://" + toString ./.)).darwinConfigurations.mba.options',
+          expr = '(builtins.getFlake (toString ./.)).darwinConfigurations.mba.options',
         },
         home = {
-          expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations.user.options',
+          expr = '(builtins.getFlake (toString ./.)).homeConfigurations.user.options',
         },
       },
     },
