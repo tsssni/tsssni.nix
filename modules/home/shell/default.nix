@@ -1,9 +1,10 @@
-{ ... }:
 {
-  imports = [
-    ./fetch.nix
-    ./prompt.nix
-    ./shell.nix
-    ./terminal.nix
-  ];
+  lib,
+  ...
+}:
+let
+  lib' = import ../../../lib { inherit lib; };
+in
+{
+  imports = lib'.importDir ./.;
 }

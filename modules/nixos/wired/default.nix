@@ -1,7 +1,7 @@
-{ ... }:
+{ lib, ... }:
+let
+  lib' = import ../../../lib { inherit lib; };
+in
 {
-  imports = [
-    ./network.nix
-    ./ssh.nix
-  ];
+  imports = lib'.importDir ./.;
 }

@@ -8,5 +8,4 @@ let
 in
 {
   "sbx-passwd.age".publicKeys = publicKeys;
-  "sbx-server.age".publicKeys = publicKeys;
 }

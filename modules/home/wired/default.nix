@@ -1,8 +1,10 @@
-{ ... }:
 {
-  imports = [
-    ./browser.nix
-    ./cloud.nix
-    ./ssh.nix
-  ];
+  lib,
+  ...
+}:
+let
+  lib' = import ../../../lib { inherit lib; };
+in
+{
+  imports = lib'.importDir ./.;
 }

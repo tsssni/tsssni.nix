@@ -1,15 +1,9 @@
+{ lib, ... }:
+let
+  lib' = import ../../lib { inherit lib; };
+in
 {
-  lib,
-  ...
-}:
-{
-  imports = [
-    ./devel
-    ./nixvim
-    ./shell
-    ./visual
-    ./wired
-  ];
+  imports = lib'.importDir ./.;
 
   options.tsssni.home = {
     standalone = lib.mkOption {

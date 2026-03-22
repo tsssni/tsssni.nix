@@ -1,9 +1,10 @@
-{ ... }:
 {
-  imports = [
-    ./aesth.nix
-    ./env.nix
-    ./git.nix
-    ./intelli.nix
-  ];
+  lib,
+  ...
+}:
+let
+  lib' = import ../../../lib { inherit lib; };
+in
+{
+  imports = lib'.importDir ./.;
 }

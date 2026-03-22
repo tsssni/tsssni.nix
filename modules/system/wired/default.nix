@@ -1,6 +1,7 @@
-{ ... }:
+{ lib, ... }:
+let
+  lib' = import ../../../lib { inherit lib; };
+in
 {
-  imports = [
-    ./sing-box.nix
-  ];
+  imports = lib'.importDir ./.;
 }

@@ -1,12 +1,10 @@
-{ ... }:
 {
-  imports = [
-    ./color.nix
-    ./file.nix
-    ./font.nix
-    ./gui.nix
-    ./ime.nix
-    ./media.nix
-    ./window.nix
-  ];
+  lib,
+  ...
+}:
+let
+  lib' = import ../../../lib { inherit lib; };
+in
+{
+  imports = lib'.importDir ./.;
 }
