@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  tsssni,
   ...
 }:
 let
@@ -33,6 +34,7 @@ in
         };
         environmentVariables = {
           EDITOR = "nvim";
+          NIX_PATH = "nixpkgs=${tsssni.inputs.nixpkgs}";
         }
         // lib.optionalAttrs guiCfg.enable {
           XCURSOR_SIZE = 24;
