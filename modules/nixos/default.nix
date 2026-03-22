@@ -1,7 +1,7 @@
-{ ... }:
+{ lib, ... }:
+let
+  lib' = import ../../lib { inherit lib; };
+in
 {
-  imports = [
-    ../system
-    ./wired
-  ];
+  imports = lib'.importDir ./. ++ [ ../system ];
 }

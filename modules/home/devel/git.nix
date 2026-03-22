@@ -17,6 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = lib.optionalAttrs (!homeCfg.standalone) {
       enable = true;
+      signing.format = null;
       settings = {
         user = {
           name = "tsssni";

@@ -6,15 +6,10 @@
 }:
 let
   cfg = config.tsssni.nixvim;
+  lib' = import ../../../lib { inherit lib; };
 in
 {
-  imports = [
-    ./compiler.nix
-    ./filesystem.nix
-    ./statusline.nix
-    ./option.nix
-    ./visual.nix
-  ];
+  imports = lib'.importDir ./.;
 
   options.tsssni.nixvim = {
     enable = lib.mkEnableOption "tsssni.nixvim";

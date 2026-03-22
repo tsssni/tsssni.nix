@@ -6,6 +6,16 @@
 }:
 let
   cfg = config.tsssni.wired.sing-box;
+  geoip = [
+    "geoip-cn"
+  ];
+  geosite = [
+    "geosite-cn"
+    "geosite-geolocation-cn"
+    "geosite-steam@cn"
+    "geosite-category-games@cn"
+  ];
+  rule_set = geoip ++ geosite;
 in
 {
   options.tsssni.wired.sing-box = {
@@ -16,10 +26,6 @@ in
     age.secrets = {
       "sbx-passwd" = {
         file = ./config/sbx-passwd.age;
-        mode = "440";
-      };
-      "sbx-server" = {
-        file = ./config/sbx-server.age;
         mode = "440";
       };
     };
@@ -48,12 +54,7 @@ in
           ];
           rules = [
             {
-              rule_set = [
-                "geosite-cn"
-                "geosite-geolocation-cn"
-                "geosite-steam@cn"
-                "geosite-category-games@cn"
-              ];
+              rule_set = geosite;
               server = "local";
             }
             {
@@ -78,27 +79,55 @@ in
             strict_route = false;
           }
         ];
-        outbounds = [
-          {
-            type = "hysteria2";
-            tag = "wired";
-            server._secret = config.age.secrets."sbx-server".path;
-            server_port = 8080;
-            up_mbps = 100;
-            down_mbps = 100;
-            password._secret = config.age.secrets."sbx-passwd".path;
-            domain_resolver = "local";
-            tls = {
-              enabled = true;
-              server_name._secret = config.age.secrets."sbx-server".path;
-            };
-          }
-          {
-            type = "direct";
-            tag = "direct";
-            domain_resolver = "local";
-          }
-        ];
+        outbounds =
+          let
+            mkOutbound =
+              attr: with attr; {
+                inherit tag type server;
+                server_port = if type == "hysteria2" then 8080 else 8443;
+                password._secret = config.age.secrets."sbx-passwd".path;
+                domain_resolver = "local";
+                tls = {
+                  enabled = true;
+                  server_name = server;
+                };
+              };
+            mkOutbounds =
+              attrs:
+              [
+                {
+                  type = "selector";
+                  tag = "wired";
+                  outbounds = (map (attr: attr.tag) attrs) ++ [ "direct" ];
+                  default = "hy2";
+                }
+              ]
+              ++ map (attr: mkOutbound attr) attrs
+              ++ [
+                {
+                  type = "direct";
+                  tag = "direct";
+                  domain_resolver = "local";
+                }
+              ];
+          in
+          mkOutbounds [
+            {
+              tag = "hy1";
+              type = "trojan";
+              server = "tsssni.top";
+            }
+            {
+              tag = "hy2";
+              type = "hysteria2";
+              server = "tsssni.top";
+            }
+            {
+              tag = "hy3";
+              type = "hysteria2";
+              server = "tsssni.biz";
+            }
+          ];
         route = {
           rules = [
             {
@@ -113,13 +142,7 @@ in
               outbound = "direct";
             }
             {
-              rule_set = [
-                "geoip-cn"
-                "geosite-cn"
-                "geosite-geolocation-cn"
-                "geosite-steam@cn"
-                "geosite-category-games@cn"
-              ];
+              inherit rule_set;
               outbound = "direct";
             }
             {
@@ -154,39 +177,22 @@ in
               outbound = "direct";
             }
           ];
-          rule_set = [
-            {
-              type = "local";
-              tag = "geoip-cn";
-              format = "binary";
-              path = "${pkgs.sing-geoip}/share/sing-box/rule-set/geoip-cn.srs";
-            }
-            {
-              type = "local";
-              tag = "geosite-cn";
-              format = "binary";
-              path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-cn.srs";
-            }
-            {
-              type = "local";
-              tag = "geosite-geolocation-cn";
-              format = "binary";
-              path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-geolocation-cn.srs";
-            }
-            {
-              type = "local";
-              tag = "geosite-category-games@cn";
-              format = "binary";
-              path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-category-games@cn.srs";
-            }
-            {
-              type = "local";
-              tag = "geosite-steam@cn";
-              format = "binary";
-              path = "${pkgs.sing-geosite}/share/sing-box/rule-set/geosite-steam@cn.srs";
-            }
-          ];
+          rule_set = map (tag: {
+            type = "local";
+            inherit tag;
+            format = "binary";
+            path = "${
+              if lib.hasPrefix "geoip" tag then pkgs.sing-geoip else pkgs.sing-geosite
+            }/share/sing-box/rule-set/${tag}.srs";
+          }) rule_set;
           auto_detect_interface = true;
+          final = "wired";
+        };
+        experimental = {
+          clash_api = {
+            external_controller = "127.0.0.1:9090";
+            external_ui = "${pkgs.metacubexd}";
+          };
         };
       };
     };
