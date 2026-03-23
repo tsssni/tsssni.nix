@@ -26,7 +26,7 @@ let
 in
 {
   # genJqSecretsReplacementSnippet pkgs settings outputPath
-  genJqSecretsReplacementSnippet =
+  genJqSecretsScript =
     pkgs: set: output:
     let
       secrets = recursiveGetAttrWithJqPrefix "_secret" set;

@@ -8,7 +8,6 @@
 let
   cfg = config.services.sing-box;
   settingsFormat = pkgs.formats.json { };
-  lib' = import ../../../../lib { inherit lib; };
 in
 {
   options.services.sing-box = {
@@ -45,7 +44,7 @@ in
         script = ''
           mkdir -p /run/sing-box /var/log/sing-box
           /usr/sbin/ipconfig waitall
-          ${lib'.genJqSecretsReplacementSnippet pkgs cfg.settings "/run/sing-box/config.json"}
+          ${lib.genJqSecretsScript pkgs cfg.settings "/run/sing-box/config.json"}
           ${lib.getExe cfg.package} -C /run/sing-box run
         '';
         serviceConfig = {

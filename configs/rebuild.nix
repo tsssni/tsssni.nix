@@ -8,7 +8,7 @@
   config ? { },
 }:
 let
-  lib = inputs.nixpkgs.lib;
+  lib = inputs.nixpkgs.lib.extend (final: prev: import ../lib { lib = prev; });
   folder = "${distro}/${func}";
   pkgs = import inputs.nixpkgs {
     inherit system;
@@ -60,12 +60,12 @@ in
 eval (
   if (distro != "home") then
     {
-      inherit system specialArgs;
+      inherit lib system specialArgs;
       modules = systemModules;
     }
   else
     {
-      inherit pkgs;
+      inherit lib pkgs;
       extraSpecialArgs = specialArgs;
       modules = homeModules "${folder}";
     }
