@@ -1,7 +1,4 @@
 { lib, ... }:
-let
-  lib' = import ../../lib { inherit lib; };
-in
 {
-  imports = lib'.importDir ./. ++ [ ../system ];
+  imports = lib.importDir ./. ++ [ ../system ];
 }
