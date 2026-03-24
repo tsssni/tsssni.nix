@@ -16,7 +16,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      # blender
+      blender
       gimp3
       (unityhub.override {
         # without available editor unity nvim plugin refuse to generate csproj

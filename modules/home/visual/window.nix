@@ -10,6 +10,8 @@ let
   colorCfg = config.tsssni.visual.color;
   shellCfg = config.tsssni.shell.shell;
   zellijCfg = config.programs.zellij;
+  monitorName = key: monitor: if monitor.name != null then monitor.name else key;
+  hasWallpaper = lib.any (monitor: monitor.wallpaper != null) (lib.attrValues cfg.monitors);
   settingsType =
     with lib.types;
     let
@@ -33,26 +35,107 @@ in
   options.tsssni.visual.window = {
     enable = lib.mkEnableOption "tsssni.visual.window";
     monitors = lib.mkOption {
-      type = settingsType;
+      type =
+        with lib.types;
+        attrsOf (submodule {
+          options = {
+            name = lib.mkOption {
+              type = nullOr str;
+              default = null;
+              description = "Output name. Defaults to the attribute key.";
+            };
+            width = lib.mkOption {
+              type = nullOr int;
+              default = null;
+              description = "Output resolution width in pixels.";
+            };
+            height = lib.mkOption {
+              type = nullOr int;
+              default = null;
+              description = "Output resolution height in pixels.";
+            };
+            refresh = lib.mkOption {
+              type = nullOr float;
+              default = null;
+              description = "Output refresh rate. When null, picks the highest available.";
+            };
+            scale = lib.mkOption {
+              type = nullOr float;
+              default = null;
+              description = "Output scale. Represents how many physical pixels fit in one logical pixel.";
+            };
+            transform = {
+              flipped = lib.mkOption {
+                type = bool;
+                default = false;
+                description = "Whether to flip this output vertically.";
+              };
+              rotation = lib.mkOption {
+                type = enum [
+                  0
+                  90
+                  180
+                  270
+                ];
+                default = 0;
+                description = "Counter-clockwise rotation of this output in degrees.";
+              };
+            };
+            position = lib.mkOption {
+              type = nullOr (submodule {
+                options = {
+                  x = lib.mkOption { type = int; };
+                  y = lib.mkOption { type = int; };
+                };
+              });
+              default = null;
+              description = "Position in global coordinate space. Affects directional monitor actions and cursor movement.";
+            };
+            wallpaper = lib.mkOption {
+              type = nullOr path;
+              default = null;
+              description = "Wallpaper image path for this output.";
+            };
+          };
+        });
       default = { };
-      description = ''
-        window manager monitors
-      '';
-      example = lib.literalExpression ''
-        {
-          "eDP-1".scale = 2.0;
-        }
-      '';
     };
-    wallpaper = lib.mkOption {
-      type = with lib.types; nullOr path;
-      default = null;
-      description = ''
-        window manager wallpaper
-      '';
-      example = lib.literalExpression ''
-        .config/niri/wallpaper/plana.jpeg
-      '';
+    sunset = {
+      enable = lib.mkEnableOption "tsssni.visual.window.sunset";
+      coordinate = {
+        latitude = lib.mkOption {
+          type = lib.types.float;
+          default = 35.6620;
+          description = ''
+            Your current latitude, between `-90.0` and `90.0`.
+          '';
+        };
+        longitude = lib.mkOption {
+          type = lib.types.float;
+          default = 139.7038;
+          description = ''
+            Your current longitude, between `-180.0` and `180.0`.
+          '';
+        };
+      };
+      temperature = {
+        day = lib.mkOption {
+          type = lib.types.int;
+          default = 6504;
+          description = ''
+            Colour temperature to use during the day, in Kelvin (K).
+            This value must be greater than `temperature.night`.
+          '';
+        };
+        night = lib.mkOption {
+          type = lib.types.int;
+          default = 3450;
+          description = ''
+            Colour temperature to use during the night, in Kelvin (K).
+            This value must be smaller than `temperature.day`.
+          '';
+        };
+      };
     };
     extraSettings = lib.mkOption {
       type = settingsType;
@@ -88,7 +171,15 @@ in
           };
           power-key-handling.enable = false;
         };
-        outputs = cfg.monitors;
+        outputs = lib.mapAttrs' (
+          key: monitor:
+          lib.nameValuePair (monitorName key monitor) {
+            inherit (monitor) scale transform position;
+            mode = {
+              inherit (monitor) width height refresh;
+            };
+          }
+        ) cfg.monitors;
         gestures = {
           hot-corners.enable = false;
         };
@@ -161,10 +252,10 @@ in
         prefer-no-csd = true;
         layer-rules =
           [ ]
-          ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
+          ++ lib.optionals hasWallpaper [
             {
               matches = [
-                { namespace = "^swww-daemon$"; }
+                { namespace = "^swww"; }
               ];
               place-within-backdrop = true;
             }
@@ -172,13 +263,12 @@ in
         spawn-at-startup = [
           { command = [ "${lib.getExe pkgs.tsssni-shell}" ]; }
         ]
-        ++ lib.optionals (config.tsssni.visual.window.wallpaper != null) [
-          { command = [ "${pkgs.swww}/bin/swww-daemon" ]; }
-          { command = [ "${pkgs.swww}/bin/swww img ${cfg.wallpaper} --transition-type none" ]; }
-        ]
         ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
           { command = [ "${lib.getExe pkgs.fcitx5}" ]; }
-        ];
+        ]
+        ++ lib.optionals hasWallpaper lib.mapAttrsToList (monitor: value: {
+            command = [ "swww img ${value.wallpaper} -o ${monitor}" ];
+        }) cfg.monitors;
         binds = with config.lib.niri.actions; {
           "Mod+T".action.spawn = [
             "ghostty"
@@ -226,19 +316,16 @@ in
       // cfg.extraSettings;
     };
 
-    home = {
-      file.".tsssnirc" = {
-        text = lib.strings.trim ''
-          #!/usr/bin/env nu
-          openrgb -p tsssni
-          niri-session
-        '';
-        executable = true;
-      };
-      packages = with pkgs; [
-        swww
-        wl-clipboard
-      ];
+    services = {
+      swww.enable = hasWallpaper;
+      wlsunset = {
+        inherit (cfg.sunset) enable temperature;
+      }
+      // cfg.sunset.coordinate;
     };
+
+    home.packages = with pkgs; [
+      wl-clipboard
+    ];
   };
 }

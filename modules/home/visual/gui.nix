@@ -26,7 +26,7 @@ in
       };
     };
 
-    gtk = {
+    gtk = rec {
       enable = true;
       theme = {
         name = "Fluent";
@@ -40,7 +40,10 @@ in
       colorScheme = "dark";
       gtk2.extraConfig = "gtk-application-prefer-dark-theme = 1";
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-      gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      gtk4 = {
+        theme = theme;
+        extraConfig.gtk-application-prefer-dark-theme = 1;
+      };
     };
 
     qt = {
