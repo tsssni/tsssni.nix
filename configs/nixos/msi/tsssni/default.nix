@@ -35,15 +35,14 @@
       window = {
         enable = true;
         monitors = {
-          "HDMI-A-1" = {
+          HDMI-A-1 = {
             scale = 1.5;
-            mode = {
-              width = 3840;
-              height = 2160;
-            };
+            width = 3840;
+            height = 2160;
+            wallpaper = ./config/niri/wallpaper/chainsaw.jpg;
           };
         };
-        wallpaper = ./config/niri/wallpaper/chainsaw.jpg;
+        sunset.enable = true;
       };
     };
     wired = {

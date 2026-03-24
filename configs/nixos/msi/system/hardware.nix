@@ -17,6 +17,7 @@
     hardware.openrgb = {
       enable = true;
       package = pkgs.openrgb-with-all-plugins;
+      startupProfile = "tsssni";
     };
     pipewire = {
       enable = true;
