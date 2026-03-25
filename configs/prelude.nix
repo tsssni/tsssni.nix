@@ -56,6 +56,7 @@ let
             niri.overlays.niri
             (final: prev: {
               agenix = agenix.packages.${tsssni.system}.default;
+              zjstatus = zjstatus.packages.${tsssni.system}.default;
             })
           ]
           ++ (import ../pkgs lib)

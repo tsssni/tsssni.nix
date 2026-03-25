@@ -43,8 +43,21 @@ in
           XDG_SESSION_TYPE = "wayland";
         };
         envFile.text = ''
-            $env.PROMPT_COMMAND = {||}
-            $env.PROMPT_COMMAND_RIGHT = {|| if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset)" } else { "" } }
+          $env.PROMPT_COMMAND = {||}
+          $env.PROMPT_COMMAND_RIGHT = {||
+            let exit_code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
+            let git = try {
+              let branch = (git rev-parse --abbrev-ref HEAD err> /dev/null | str trim)
+              let unstaged = (git diff --quiet | complete).exit_code != 0
+              let staged = (git diff --cached --quiet | complete).exit_code != 0
+              let u = if $unstaged { $"(ansi light_red)~(ansi reset)" } else { "" }
+              let s = if $staged { $"(ansi light_green)+(ansi reset)" } else { "" }
+              let markers = if $unstaged and $staged { $"($u) ($s)" } else { $"($u)($s)" }
+              let suffix = if $markers != "" { $" ($markers)" } else { "" }
+              $"($branch)($suffix) "
+            } catch { "" }
+            $"($git)($exit_code)"
+          }
         ''
         + (
           if homeCfg.standalone then
@@ -74,6 +87,28 @@ in
           theme = "ansi";
           show_startup_tips = false;
           default_mode = "Locked";
+          default_layout = "copilot";
+        };
+        layouts.copilot = {
+          layout._children = [
+            {
+              pane = {
+                size = 1;
+                borderless = true;
+                plugin = {
+                  location = "file://${pkgs.zjstatus}/bin/zjstatus.wasm";
+                  _children = [
+                    { format_left._args = [ " {mode} #[fg=7,bold]{session}{tabs}" ]; }
+                    { mode_normal._args = [ "#[bg=9] " ]; }
+                    { mode_locked._args = [ "#[bg=10] " ]; }
+                    { tab_normal._args = [ "#[fg=7] π" ]; }
+                    { tab_active._args = [ "#[fg=7,bold] λ" ]; }
+                  ];
+                };
+              };
+            }
+            { pane = { }; }
+          ];
         };
       };
       btop = {
