@@ -45,6 +45,7 @@ in
               {
                 __unkeyed-1 = "navic";
                 color_correction = "dynamic";
+                icon = "󰊕 ->";
               }
             ];
           };
@@ -62,7 +63,8 @@ in
         enable = true;
         settings = {
           lsp.auto_attach = true;
-          separator = " -> ";
+          separator = "::";
+          icons.enabled = false;
         };
       };
       gitsigns.enable = true;

@@ -114,16 +114,9 @@ local theme = lush(function(injected_functions)
     WarningMsg     { fg = palette.red }, -- Warning messages
     Whitespace     { fg = palette.light_black }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
     Winseparator   { fg = palette.black }, -- Separator between window splits. Inherts from |hl-VertSplit| by default, which it will replace eventually.
-    WildMenu       { fg = palette.red }, -- Current match in 'wildmenu' completion
+    WildMenu       { fg = palette.light_green }, -- Current match in 'wildmenu' completion
     WinBar         { fg = palette.light_black }, -- Window bar of current window
     WinBarNC       { fg = palette.light_black }, -- Window bar of not-current windows
-    DashboardHeader       { fg = palette.red },
-    DashboardFooter       { fg = palette.black },
-    DashboardProjectTitle { fg = palette.cyan },
-    DashboardMruTitle     { fg = palette.cyan },
-    DashboardShortCut     { fg = palette.cyan },
-    InclineNormal         {},
-    InclineNormalNC       {},
 
     -- Commented-out groups should chain up to their preferred (*) group
     -- by default.
