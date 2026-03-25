@@ -42,7 +42,11 @@ in
           QT_QPA_PLATFORMTHEME = "qt5ct";
           XDG_SESSION_TYPE = "wayland";
         };
-        envFile.text =
+        envFile.text = ''
+            $env.PROMPT_COMMAND = {||}
+            $env.PROMPT_COMMAND_RIGHT = {|| if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset)" } else { "" } }
+        ''
+        + (
           if homeCfg.standalone then
             ''
               $env.PATH = ($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")
@@ -52,7 +56,8 @@ in
               $env.PATH = ($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")
             ''
           else
-            "";
+            ""
+        );
         configFile.text =
           let
             nuScriptsPath = "${pkgs.nu_scripts}/share/nu_scripts/";

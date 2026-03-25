@@ -1,20 +1,13 @@
 {
   pkgs,
+  lib,
   ...
 }:
 let
   build = pkgs.vimUtils.buildVimPlugin;
+  plugins = pkgs.vimPlugins;
 in
-with pkgs;
-{
-  plana-nvim = build {
-    name = "plana.nvim";
-    src = fetchFromGitHub {
-      owner = "tsssni";
-      repo = "plana.nvim";
-      rev = "fff8d85";
-      hash = "sha256-EopEGk3QV6svocKIq4AdQl5eOrJ4kcoazH1emZtzkiY=";
-    };
-    dependencies = [ pkgs.vimPlugins.lush-nvim ];
-  };
-}
+./.
+|> builtins.readDir
+|> lib.filterAttrs (dir: type: type == "directory")
+|> lib.mapAttrs (dir: _: import ./${dir} build plugins)

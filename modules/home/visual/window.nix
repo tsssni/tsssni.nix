@@ -261,7 +261,7 @@ in
             }
           ];
         spawn-at-startup = [
-          { command = [ "${lib.getExe pkgs.tsssni-shell}" ]; }
+          { command = [ "${lib.getExe pkgs.april-shell}" ]; }
         ]
         ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
           { command = [ "${lib.getExe pkgs.fcitx5}" ]; }
@@ -285,7 +285,7 @@ in
           "Mod+M".action = maximize-column;
           "Mod+F".action = fullscreen-window;
           "Mod+X".action = close-window;
-          "Mod+Z".action.spawn-sh = [ "${lib.getExe pkgs.tsssni-shell} ipc call toggleBlurryPlayer toggle" ];
+          "Mod+Z".action.spawn-sh = [ "${lib.getExe pkgs.april-shell} ipc call toggleBlurryPlayer toggle" ];
 
           "Mod+H".action = focus-column-left;
           "Mod+L".action = focus-column-right;
