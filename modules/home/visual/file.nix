@@ -6,9 +6,34 @@
 }:
 let
   cfg = config.tsssni.visual.file;
-  homeCfg = config.tsssni.home;
-  shellCfg = config.tsssni.shell.shell;
   windowCfg = config.tsssni.visual.window;
+  fzfPicker = lib.getExe (pkgs.writeShellApplication {
+    name = "fzf-picker";
+    runtimeInputs = with pkgs; [ fzf fd coreutils ];
+    text = ''
+      multiple="$1"
+      directory="$2"
+      save="$3"
+      path="$4"
+      out="$5"
+
+      if [ "$save" = "1" ]; then
+        printf '%s' "$path" > "$out"
+        exit
+      fi
+
+      if [ "$directory" = "1" ]; then
+        fd -a --base-directory="$HOME" -td | fzf +m --prompt 'Select directory > ' > "$out"
+      elif [ "$multiple" = "1" ]; then
+        fd -a --base-directory="$HOME" | fzf -m --prompt 'Select files > ' > "$out"
+      else
+        fd -a --base-directory="$HOME" | fzf +m --prompt 'Select file > ' > "$out"
+      fi
+    '';
+  });
+  fzfWrapper = pkgs.writeShellScript "fzf-wrapper.sh" ''
+    ${lib.getExe pkgs.ghostty} -e ${fzfPicker} "$@"
+  '';
 in
 {
   options.tsssni.visual.file = {
@@ -16,17 +41,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.yazi = {
-      enable = true;
-      package = if homeCfg.standalone then null else pkgs.yazi.override { optionalDeps = [ ]; };
-      enableNushellIntegration = shellCfg.enable;
-      shellWrapperName = "yy";
-    };
     xdg = lib.optionalAttrs windowCfg.enable {
       configFile."xdg-desktop-portal-termfilechooser/config".text = ''
         [filechooser]
-        cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
-        env=TERMCMD=ghostty -e
+        cmd=${fzfWrapper}
       '';
       portal = {
         config.niri."org.freedesktop.impl.portal.FileChooser" = "termfilechooser";
