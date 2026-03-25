@@ -20,7 +20,7 @@ let
       fcitx5-mozc
       (fcitx5-rime.override {
         rimeDataPkgs = [
-          rime-tsssni
+          rime-arisa
         ];
       })
     ];
@@ -89,7 +89,7 @@ in
       in
       lib.optionalAttrs (homeCfg.standalone || pkgs.stdenv.isDarwin) {
         "${path}" = {
-          source = "${pkgs.rime-tsssni}/share/rime-data";
+          source = "${pkgs.rime-arisa}/share/rime-data";
           recursive = true;
           force = true;
         };

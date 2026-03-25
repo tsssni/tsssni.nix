@@ -7,7 +7,7 @@
   rime-data,
 }:
 buildEnv {
-  name = "rime-tsssni";
+  name = "rime-arisa";
   paths = [
     rime-ice
     rime-zhwiki
