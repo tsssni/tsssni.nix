@@ -50,11 +50,9 @@ in
               let branch = (git rev-parse --abbrev-ref HEAD err> /dev/null | str trim)
               let unstaged = (git diff --quiet | complete).exit_code != 0
               let staged = (git diff --cached --quiet | complete).exit_code != 0
-              let u = if $unstaged { $"(ansi light_red)~(ansi reset)" } else { "" }
-              let s = if $staged { $"(ansi light_green)+(ansi reset)" } else { "" }
-              let markers = if $unstaged and $staged { $"($u) ($s)" } else { $"($u)($s)" }
+              let markers = [(if $unstaged { $"(ansi light_red)~(ansi reset)" }) (if $staged { $"(ansi light_green)+(ansi reset)" })] | compact | str join " "
               let suffix = if $markers != "" { $" ($markers)" } else { "" }
-              $"($branch)($suffix) "
+              $"(ansi light_blue)($branch)(ansi reset)($suffix) "
             } catch { "" }
             $"($git)($exit_code)"
           }
