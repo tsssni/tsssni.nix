@@ -42,7 +42,7 @@ in
       shiftround = true;
       shiftwidth = 4;
       showmode = false;
-      shortmess = "ctFTW";
+      shortmess = "ctIFTW";
       showtabline = 2;
       sidescrolloff = 8;
       signcolumn = "yes";
