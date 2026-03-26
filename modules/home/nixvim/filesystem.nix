@@ -43,31 +43,43 @@ in
           "<Leader>r" = "lsp_references";
           "<Leader>s" = "resume";
         };
-        settings = {
-          keymap = {
-            builtin = {
-              "<C-u>" = "preview-page-up";
-              "<C-d>" = "preview-page-down";
+        settings =
+          let
+            toggle = {
+              "ctrl-i".__raw = "require('fzf-lua').actions.toggle_ignore";
+              "ctrl-h".__raw = "require('fzf-lua').actions.toggle_hidden";
+            };
+            copy = {
+              "ctrl-y".__raw = ''
+                function(selected)
+                  vim.fn.setreg('+', table.concat(selected, '\n'))
+                end
+              '';
+            };
+          in
+          {
+            keymap = {
+              builtin = {
+                "<C-u>" = "preview-page-up";
+                "<C-d>" = "preview-page-down";
+              };
+            };
+            fzf_colors = true;
+            fzf_opts = {
+              "--cycle" = true;
+              "--multi" = true;
+            };
+            winopts.wrap = true;
+            actions.files = {
+              "__unkeyed_1" = true;
+            }
+            // copy;
+            files.actions = toggle;
+            grep = {
+              rg_opts = "--column -n --no-heading --color=always -S -U -M=4096 -e";
+              actions = toggle;
             };
           };
-          fzf_colors = true;
-          fzf_opts = {
-            "--cycle" = true;
-            "--multi" = true;
-          };
-          winopts.wrap = true;
-          actions.files = {
-            "__unkeyed_1" = true;
-            "ctrl-y".__raw = ''
-              function(selected)
-                vim.fn.setreg('+', table.concat(selected, '\n'))
-              end
-            '';
-          };
-          grep = {
-            rg_opts = "--column -n --no-heading --color=always -S -U -M=4096 -e";
-          };
-        };
       };
       web-devicons.enable = true;
       auto-session.enable = true;
