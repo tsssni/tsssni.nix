@@ -57,7 +57,8 @@ in
             $env.PROMPT_COMMAND_RIGHT = {||
               let exit_code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
               let git = try {
-                let branch = (git rev-parse --abbrev-ref HEAD err> /dev/null | str trim)
+                let bookmark = try { jj log -r '@ | @-' --no-graph -T 'local_bookmarks' err> /dev/null | str trim }
+                let branch = if ($bookmark | is-not-empty) { $bookmark } else { git rev-parse --abbrev-ref HEAD err> /dev/null | str trim }
                 let unstaged = (git diff --quiet | complete).exit_code != 0
                 let staged = (git diff --cached --quiet | complete).exit_code != 0
                 let markers = [(if $unstaged { $"(ansi light_red)~(ansi reset)" }) (if $staged { $"(ansi light_green)+(ansi reset)" })] | compact | str join " "
