@@ -204,7 +204,7 @@ in
                 pane size=1 borderless=true {
                     ${zjstatusPlugin} {
                         format_left "{tabs}"
-                        tab_normal "#[fg=7]λ"
+                        tab_normal "#[fg=7]π"
                         tab_active "#[fg=7,bold]λ"
                     }
                 }
