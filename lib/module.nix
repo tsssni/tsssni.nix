@@ -1,4 +1,6 @@
-{ lib }:
+{
+  lib,
+}:
 {
   importDir =
     dir:

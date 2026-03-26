@@ -1,4 +1,6 @@
-{ lib }:
+{
+  lib,
+}:
 let
   entries = builtins.readDir ./.;
 in
