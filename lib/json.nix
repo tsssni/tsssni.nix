@@ -1,4 +1,6 @@
-{ lib }:
+{
+  lib,
+}:
 let
   recursiveGetAttrWithJqPrefix =
     attr: item:
@@ -51,7 +53,7 @@ in
     + "${pkgs.jq}/bin/jq >'${output}' "
     + lib.escapeShellArg (
       stringOrDefault (lib.concatStringsSep " | " (
-        lib.imap1 (index: name: ''${name} = $ENV.secret${toString index}'') (lib.attrNames secrets)
+        lib.imap1 (index: name: "${name} = $ENV.secret${toString index}") (lib.attrNames secrets)
       )) "."
     )
     + ''

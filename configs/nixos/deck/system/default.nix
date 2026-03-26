@@ -1,9 +1,7 @@
-{ ... }:
 {
-  imports = [
-    ./disko.nix
-    ./jovian.nix
-    ./system.nix
-    ./wired.nix
-  ];
+  lib,
+  ...
+}:
+{
+  imports = lib.importDir ./.;
 }
