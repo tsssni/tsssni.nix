@@ -72,11 +72,16 @@ in
           let
             nuScriptsPath = "${pkgs.nu_scripts}/share/nu_scripts/";
             completionsPath = nuScriptsPath + "custom-completions/";
+            completions =
+              arr:
+              arr |> map (x: "source ${completionsPath}/${x}/${x}-completions.nu") |> lib.concatStringsSep "\n";
           in
-          ''
-            source ${completionsPath}/git/git-completions.nu
-            source ${completionsPath}/nix/nix-completions.nu
-          '';
+          completions [
+            "git"
+            "jj"
+            "nix"
+            "zellij"
+          ];
       };
       zellij = {
         enable = true;
