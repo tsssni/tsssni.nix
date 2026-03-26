@@ -9,7 +9,7 @@
   programs.home-manager.enable = true;
 
   tsssni = {
-    devel.git.enable = true;
+    devel.version.enable = true;
     nixvim.enable = true;
     shell = {
       fetch.enable = true;

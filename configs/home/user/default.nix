@@ -11,9 +11,9 @@
   tsssni = {
     home.standalone = true;
     devel = {
-      env.enable = true;
-      git.enable = true;
       intelli.enable = true;
+      script.enable = true;
+      version.enable = true;
     };
     nixvim.enable = true;
     shell = {
