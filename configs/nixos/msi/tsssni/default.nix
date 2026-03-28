@@ -41,6 +41,7 @@
             wallpaper = ./config/niri/wallpaper/chainsaw.jpg;
           };
         };
+        shell.enable = true;
         sunset.enable = true;
       };
     };

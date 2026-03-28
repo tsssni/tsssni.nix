@@ -46,7 +46,7 @@ in
         settings =
           let
             toggle = {
-              "ctrl-i".__raw = "require('fzf-lua').actions.toggle_ignore";
+              "ctrl-g".__raw = "require('fzf-lua').actions.toggle_ignore";
               "ctrl-h".__raw = "require('fzf-lua').actions.toggle_hidden";
             };
             copy = {

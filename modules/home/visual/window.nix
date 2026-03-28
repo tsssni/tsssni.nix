@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.tsssni.visual.window;
-  imeCfg = config.tsssni.visual.ime;
   colorCfg = config.tsssni.visual.color;
   shellCfg = config.tsssni.shell.shell;
   zellijCfg = config.programs.zellij;
@@ -137,6 +136,7 @@ in
         };
       };
     };
+    shell.enable = lib.mkEnableOption "tsssni.visual.window.shell";
     extraSettings = lib.mkOption {
       type = settingsType;
       default = { };
@@ -250,24 +250,16 @@ in
           }
         ];
         prefer-no-csd = true;
-        layer-rules =
-          [ ]
-          ++ lib.optionals hasWallpaper [
-            {
-              matches = [
-                { namespace = "^swww"; }
-              ];
-              place-within-backdrop = true;
-            }
-          ];
-        spawn-at-startup = [
-          { command = [ "${lib.getExe pkgs.april-shell}" ]; }
-        ]
-        ++ lib.optionals (imeCfg.enable && (imeCfg.type == "fcitx5")) [
-          { command = [ "${lib.getExe pkgs.fcitx5}" ]; }
-        ]
-        ++ lib.optionals hasWallpaper lib.mapAttrsToList (monitor: value: {
-            command = [ "swww img ${value.wallpaper} -o ${monitor}" ];
+        layer-rules = lib.optionals hasWallpaper [
+          {
+            matches = [
+              { namespace = "^swww"; }
+            ];
+            place-within-backdrop = true;
+          }
+        ];
+        spawn-at-startup = lib.optionals hasWallpaper lib.mapAttrsToList (monitor: value: {
+          command = [ "swww img ${value.wallpaper} -o ${monitor}" ];
         }) cfg.monitors;
         binds = with config.lib.niri.actions; {
           "Mod+T".action.spawn = [
@@ -322,6 +314,21 @@ in
         inherit (cfg.sunset) enable temperature;
       }
       // cfg.sunset.coordinate;
+    };
+
+    systemd.user.services = lib.mkIf cfg.shell.enable {
+      april-shell = {
+        Unit = {
+          Description = "april-shell";
+          After = [ "graphical-session.target" ];
+          PartOf = [ "graphical-session.target" ];
+        };
+        Service = {
+          ExecStart = "${lib.getExe pkgs.april-shell}";
+          Restart = "on-failure";
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
     };
 
     home.packages = with pkgs; [
