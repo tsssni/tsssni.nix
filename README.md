@@ -26,18 +26,27 @@ inputs = {
 
 ### modules
 
-Provide modules in `tsssni.${platform}Modules.tsssni`. Include in corresponiding options.
+Provide modules in `tsssni.${platform}Modules.tsssni`. Include in corresponiding options and extend `lib` with `tsssni.lib`.
 
 ```nix
-nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
-  modules = [ tsssni.nixosModules.tsssni ];
-};
-darwinConfigurations.tsssni = nix-darwin.lib.darwinSystem {
-  modules = [ tsssni.darwinModules.tsssni ];
-};
+let
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+  };
+  lib = inputs.nixpkgs.lib.extend (final: prev: tsssni.lib);
+in
 {
-  home-manager.users.tsssni = { ... }: {
-    imports = [ tsssni.homeModules.tsssni ];
+  nixosConfigurations.tsssni = nixpkgs.lib.nixosSystem {
+    inherit lib;
+    modules = [ tsssni.nixosModules.tsssni ];
+  };
+  darwinConfigurations.tsssni = nix-darwin.lib.darwinSystem {
+    inherit lib;
+    modules = [ tsssni.darwinModules.tsssni ];
+  };
+  homeConfigurations.tsssni = home-manager.lib.homeManagerConfiguration {
+    inherit lib pkgs;
+    modules = [ tsssni.homeModules.tsssni ];
   };
 }
 ```
