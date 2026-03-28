@@ -88,6 +88,7 @@
     in
     {
       pkgs = import ./pkgs lib;
+      lib = import ./lib lib;
       nixosModules = {
         tsssni = import ./modules/nixos;
         default = self.nixosModules.tsssni;
