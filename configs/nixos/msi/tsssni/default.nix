@@ -22,15 +22,15 @@
       terminal.enable = true;
     };
     visual = {
-      color.enable = true;
-      file.enable = true;
-      font.enable = true;
-      gui.enable = true;
       ime = {
         enable = true;
         type = "fcitx5";
       };
       media.enable = true;
+      theme = {
+        gui.enable = true;
+        tui.enable = true;
+      };
       window = {
         enable = true;
         monitors = {
@@ -43,6 +43,7 @@
         };
         shell.enable = true;
         sunset.enable = true;
+        file.enable = true;
       };
     };
     wired = {

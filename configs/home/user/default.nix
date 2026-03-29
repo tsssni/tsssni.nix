@@ -22,12 +22,11 @@
       terminal.enable = true;
     };
     visual = {
-      color.enable = true;
-      font.enable = true;
       ime = {
         enable = true;
         type = "ibus";
       };
+      theme.tui.enable = true;
     };
   };
 }

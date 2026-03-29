@@ -6,29 +6,53 @@
 }:
 let
   cfg = config.tsssni.visual.window;
-  colorCfg = config.tsssni.visual.color;
+  tuiCfg = config.tsssni.visual.theme.tui;
+  colorCfg = tuiCfg.color;
   shellCfg = config.tsssni.shell.shell;
   zellijCfg = config.programs.zellij;
+
   monitorName = key: monitor: if monitor.name != null then monitor.name else key;
   hasWallpaper = lib.any (monitor: monitor.wallpaper != null) (lib.attrValues cfg.monitors);
-  settingsType =
-    with lib.types;
-    let
-      valueType =
-        nullOr (oneOf [
-          bool
-          int
-          float
-          str
-          path
-          (attrsOf valueType)
-          (listOf valueType)
-        ])
-        // {
-          description = "window manager configuration value";
-        };
-    in
-    valueType;
+  gradient = {
+    from = colorCfg.lightBlue;
+    to = colorCfg.lightCyan;
+    angle = 180;
+    relative-to = "workspace-view";
+  };
+
+  fzfPicker = lib.getExe (
+    pkgs.writeShellApplication {
+      name = "fzf-picker";
+      runtimeInputs = with pkgs; [
+        fzf
+        fd
+        coreutils
+      ];
+      text = ''
+        multiple="$1"
+        directory="$2"
+        save="$3"
+        path="$4"
+        out="$5"
+
+        if [ "$save" = "1" ]; then
+          printf '%s' "$path" > "$out"
+          exit
+        fi
+
+        if [ "$directory" = "1" ]; then
+          fd -a --base-directory="$HOME" -td | fzf +m --prompt 'Select directory > ' > "$out"
+        elif [ "$multiple" = "1" ]; then
+          fd -a --base-directory="$HOME" | fzf -m --prompt 'Select files > ' > "$out"
+        else
+          fd -a --base-directory="$HOME" | fzf +m --prompt 'Select file > ' > "$out"
+        fi
+      '';
+    }
+  );
+  fzfWrapper = pkgs.writeShellScript "fzf-wrapper.sh" ''
+    ${lib.getExe pkgs.ghostty} -e ${fzfPicker} "$@"
+  '';
 in
 {
   options.tsssni.visual.window = {
@@ -137,18 +161,7 @@ in
       };
     };
     shell.enable = lib.mkEnableOption "tsssni.visual.window.shell";
-    extraSettings = lib.mkOption {
-      type = settingsType;
-      default = { };
-      description = ''
-        window manager extra configurations
-      '';
-      example = lib.literalExpression ''
-        {
-          outputs."eDP-1".scale = 2.0;
-        }
-      '';
-    };
+    file.enable = lib.mkEnableOption "tsssni.visual.window.file";
   };
 
   config = lib.mkIf cfg.enable {
@@ -200,26 +213,21 @@ in
           border = {
             enable = true;
             width = 2;
+          }
+          // lib.optionalAttrs tuiCfg.enable {
             active.color = colorCfg.lightBlack;
             inactive.color = colorCfg.lightBlack;
             urgent.color = colorCfg.lightBlack;
           };
-          focus-ring =
-            let
-              gradient = {
-                from = colorCfg.lightBlue;
-                to = colorCfg.lightCyan;
-                angle = 180;
-                relative-to = "workspace-view";
-              };
-            in
-            {
-              enable = true;
-              width = 5;
-              active.gradient = gradient;
-              inactive.gradient = gradient;
-              urgent.gradient = gradient;
-            };
+          focus-ring = {
+            enable = true;
+            width = 5;
+          }
+          // lib.optionalAttrs tuiCfg.enable {
+            active.gradient = gradient;
+            inactive.gradient = gradient;
+            urgent.gradient = gradient;
+          };
           shadow.enable = false;
           background-color = "transparent";
         };
@@ -304,8 +312,7 @@ in
           "Mod+WheelScrollUp".action = focus-column-left;
           "Mod+WheelScrollDown".action = focus-column-right;
         };
-      }
-      // cfg.extraSettings;
+      };
     };
 
     services = {
@@ -328,6 +335,17 @@ in
           Restart = "on-failure";
         };
         Install.WantedBy = [ "graphical-session.target" ];
+      };
+    };
+
+    xdg = lib.optionalAttrs cfg.file.enable {
+      configFile."xdg-desktop-portal-termfilechooser/config".text = ''
+        [filechooser]
+        cmd=${fzfWrapper}
+      '';
+      portal = {
+        config.niri."org.freedesktop.impl.portal.FileChooser" = "termfilechooser";
+        extraPortals = [ pkgs.xdg-desktop-portal-termfilechooser ];
       };
     };
 

@@ -15,10 +15,7 @@
       fetch.enable = true;
       shell.enable = true;
     };
-    visual = {
-      color.enable = true;
-      font.enable = true;
-    };
+    visual.theme.tui.enable = true;
     wired.ssh.enable = true;
   };
 }
