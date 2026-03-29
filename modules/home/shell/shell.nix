@@ -8,7 +8,15 @@
 let
   cfg = config.tsssni.shell.shell;
   homeCfg = config.tsssni.home;
-  guiCfg = config.tsssni.visual.gui;
+  guiCfg = config.tsssni.visual.theme.gui;
+  cursorCfg = guiCfg.cursor;
+  zjstatusPlugin = ''plugin location="file://${pkgs.zjstatus}/bin/zjstatus.wasm"'';
+  scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
+  completions =
+    arr:
+    arr
+    |> map (x: "source ${scriptsPath}/custom-completions/${x}/${x}-completions.nu")
+    |> lib.concatStringsSep "\n";
 in
 {
   options.tsssni.shell.shell = {
@@ -35,26 +43,9 @@ in
         environmentVariables = {
           EDITOR = "nvim";
           NIX_PATH = "nixpkgs=${tsssni.inputs.nixpkgs}";
-        }
-        // lib.optionalAttrs guiCfg.enable {
-          XCURSOR_SIZE = 24;
-          XCURSOR_THEME = "macOS";
-          QT_QPA_PLATFORMTHEME = "qt5ct";
-          XDG_SESSION_TYPE = "wayland";
-        };
-        envFile.text =
-          let
-            pathSetup =
-              if homeCfg.standalone then
-                ''$env.PATH = ($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")''
-              else if pkgs.stdenv.isDarwin then
-                ''$env.PATH = ($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")''
-              else
-                "";
-          in
-          ''
-            $env.PROMPT_COMMAND = {||}
-            $env.PROMPT_COMMAND_RIGHT = {||
+          PROMPT_COMMAND = lib.hm.nushell.mkNushellInline "{||}";
+          PROMPT_COMMAND_RIGHT = lib.hm.nushell.mkNushellInline ''
+            {||
               let exit_code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
               let git = try {
                 let bookmark = try { jj log -r '@ | @-' --no-graph -T 'local_bookmarks' err> /dev/null | str trim }
@@ -67,22 +58,28 @@ in
               } catch { "" }
               $"($git)($exit_code)"
             }
-            ${pathSetup}
           '';
-        configFile.text =
-          let
-            nuScriptsPath = "${pkgs.nu_scripts}/share/nu_scripts/";
-            completionsPath = nuScriptsPath + "custom-completions/";
-            completions =
-              arr:
-              arr |> map (x: "source ${completionsPath}/${x}/${x}-completions.nu") |> lib.concatStringsSep "\n";
-          in
-          completions [
-            "git"
-            "jj"
-            "nix"
-            "zellij"
-          ];
+        }
+        // (
+          lib.optionalAttrs guiCfg.enable {
+            XCURSOR_SIZE = cursorCfg.size;
+            XCURSOR_THEME = cursorCfg.name;
+            QT_QPA_PLATFORMTHEME = "qt5ct";
+            XDG_SESSION_TYPE = "wayland";
+          }
+        )
+        // (lib.optionalAttrs homeCfg.standalone {
+          PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")'';
+        })
+        // (lib.optionalAttrs pkgs.stdenv.isDarwin {
+          PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")'';
+        });
+        configFile.text = completions [
+          "git"
+          "jj"
+          "nix"
+          "zellij"
+        ];
       };
       zellij = {
         enable = true;
@@ -201,22 +198,18 @@ in
               }
           }
         '';
-        layouts.copilot =
-          let
-            zjstatusPlugin = ''plugin location="file://${pkgs.zjstatus}/bin/zjstatus.wasm"'';
-          in
-          ''
-            layout split_direction="Vertical" {
-                pane size=1 borderless=true {
-                    ${zjstatusPlugin} {
-                        format_left "{tabs}"
-                        tab_normal "#[fg=7]π"
-                        tab_active "#[fg=7,bold]λ"
-                    }
-                }
-                pane
-            }
-          '';
+        layouts.copilot = ''
+          layout split_direction="Vertical" {
+              pane size=1 borderless=true {
+                  ${zjstatusPlugin} {
+                      format_left "{tabs}"
+                      tab_normal "#[fg=7]π"
+                      tab_active "#[fg=7,bold]λ"
+                  }
+              }
+              pane
+          }
+        '';
       };
       btop = {
         enable = true;

@@ -21,14 +21,12 @@
       terminal.enable = true;
     };
     visual = {
-      color.enable = true;
-      file.enable = true;
-      font.enable = true;
       ime = {
         enable = true;
         type = "squirrel";
       };
       media.enable = true;
+      theme.tui.enable = true;
     };
     wired.ssh.enable = true;
   };

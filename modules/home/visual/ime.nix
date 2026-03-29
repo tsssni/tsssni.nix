@@ -13,7 +13,8 @@ let
     "ibus"
     "squirrel"
   ];
-  font = config.tsssni.visual.font;
+  tuiCfg = config.tsssni.visual.theme.tui;
+  fontCfg = tuiCfg.font;
   fcitx5Cfg = {
     addons = with pkgs; [
       fcitx5-fluent
@@ -29,9 +30,9 @@ let
       addons = {
         classicui.globalSection =
           let
-            uiFont = font.nerdFont.name + " 10";
+            uiFont = fontCfg.nerdFont.name + " 10";
           in
-          {
+          lib.optionalAttrs tuiCfg.enable {
             Font = uiFont;
             MenuFont = uiFont;
             TrayFont = uiFont;
@@ -69,7 +70,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni.visual.font.enable = true;
     i18n.inputMethod = lib.optionalAttrs (!homeCfg.standalone && pkgs.stdenv.isLinux) {
       enable = true;
       type = "fcitx5";
