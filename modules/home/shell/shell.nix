@@ -8,10 +8,20 @@
 let
   cfg = config.tsssni.shell.shell;
   homeCfg = config.tsssni.home;
+  imeCfg = config.tsssni.visual.ime;
   guiCfg = config.tsssni.visual.theme.gui;
   cursorCfg = guiCfg.cursor;
   zjstatusPlugin = ''plugin location="file://${pkgs.zjstatus}/bin/zjstatus.wasm"'';
   scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
+  homeEnvs = {
+    PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")'';
+  }
+  // lib.optionalAttrs (imeCfg.enable && imeCfg.type == "ibus") {
+    IBUS_COMPONENT_PATH = "/usr/share/ibus/component:${pkgs.ibus-engines.rime.override { rimeDataPkgs = [ pkgs.rime-arisa ]; }}/share/ibus/component";
+  };
+  darwinEnvs = {
+    PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")'';
+  };
   completions =
     arr:
     arr
@@ -68,12 +78,8 @@ in
             XDG_SESSION_TYPE = "wayland";
           }
         )
-        // (lib.optionalAttrs homeCfg.standalone {
-          PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")'';
-        })
-        // (lib.optionalAttrs pkgs.stdenv.isDarwin {
-          PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")'';
-        });
+        // (lib.optionalAttrs homeCfg.standalone homeEnvs)
+        // (lib.optionalAttrs pkgs.stdenv.isDarwin darwinEnvs);
         configFile.text = completions [
           "git"
           "jj"
