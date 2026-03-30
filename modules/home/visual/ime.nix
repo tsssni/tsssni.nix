@@ -8,13 +8,23 @@
 let
   cfg = config.tsssni.visual.ime;
   homeCfg = config.tsssni.home;
-  allowedTypes = lib.types.enum [
-    "fcitx5"
-    "ibus"
-    "squirrel"
-  ];
+  allowedTypes = lib.types.enum (
+    if pkgs.stdenv.isLinux then [
+      "fcitx5"
+      "ibus"
+    ]
+    else if pkgs.stdenv.isDarwin then [
+      "squirrel"
+    ]
+    else [ ]
+  );
   tuiCfg = config.tsssni.visual.theme.tui;
   fontCfg = tuiCfg.font;
+  ibusRime = pkgs.ibus-engines.rime.override {
+    rimeDataPkgs = [
+      pkgs.rime-arisa
+    ];
+  };
   fcitx5Cfg = {
     addons = with pkgs; [
       fcitx5-fluent
@@ -70,24 +80,27 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    i18n.inputMethod = lib.optionalAttrs (!homeCfg.standalone && pkgs.stdenv.isLinux) {
+    i18n.inputMethod = lib.optionalAttrs (!homeCfg.standalone) ({
       enable = true;
-      type = "fcitx5";
-      fcitx5 = lib.optionalAttrs (cfg.type == "fcitx5") fcitx5Cfg;
-    };
+      type = cfg.type;
+    }
+    // lib.optionalAttrs (cfg.type == "fcitx5") {
+      fcitx5 = fcitx5Cfg;
+    }
+    // lib.optionalAttrs (cfg.type == "ibus") {
+      ibus.engines = [ ibusRime ];
+    });
     home.file =
       let
         path =
-          if (pkgs.stdenv.isDarwin && cfg.type == "squirrel") then
+          if (cfg.type == "squirrel") then
             "Library/Rime"
           else if (cfg.type == "fcitx5") then
             ".local/share/fcitx5/rime"
-          else if (cfg.type == "ibus") then
-            ".config/ibus/rime"
           else
-            throw "ime type not supported";
+            null;
       in
-      lib.optionalAttrs (homeCfg.standalone || pkgs.stdenv.isDarwin) {
+      lib.optionalAttrs (path != null && (homeCfg.standalone || pkgs.stdenv.isDarwin)) {
         "${path}" = {
           source = "${pkgs.rime-arisa}/share/rime-data";
           recursive = true;
