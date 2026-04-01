@@ -80,7 +80,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    i18n.inputMethod = lib.optionalAttrs (!homeCfg.standalone) ({
+    i18n.inputMethod = lib.optionalAttrs pkgs.stdenv.isLinux ({
       enable = true;
       type = cfg.type;
     }
