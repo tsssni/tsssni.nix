@@ -57,6 +57,14 @@ let
             (final: prev: {
               agenix = agenix.packages.${tsssni.system}.default;
               zjstatus = zjstatus.packages.${tsssni.system}.default;
+              small = import nixpkgs-small {
+                inherit (tsssni) system;
+                config = final.config;
+              };
+              master = import nixpkgs-master {
+                inherit (tsssni) system;
+                config = final.config;
+              };
             })
           ]
           ++ (import ../pkgs lib)
@@ -71,7 +79,4 @@ let
     home.packages = packages;
   };
 in
-if (tsssni.distro == "home") then
-  standloneCfg
-else
-  systemCfg
+if (tsssni.distro == "home") then standloneCfg else systemCfg
