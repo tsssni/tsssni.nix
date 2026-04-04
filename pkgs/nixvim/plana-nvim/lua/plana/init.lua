@@ -87,14 +87,14 @@ local theme = lush(function(injected_functions)
     -- FloatTitle     { }, -- Title of floating windows.
     -- NormalNC       { }, -- normal text in non-current windows
     -- point
-    Pmenu          { fg = palette.red, bg = palette.back }, -- Popup menu: Normal item.
-    PmenuSel       { fg = palette.light_white, bg = palette.light_black }, -- Popup menu: Selected item.
+    Pmenu          { fg = palette.light_white, bg = palette.back }, -- Popup menu: Normal item.
+    PmenuSel       { bg = palette.light_black }, -- Popup menu: Selected item.
     -- PmenuKind      { }, -- Popup menu: Normal item "kind"
     -- PmenuKindSel   { }, -- Popup menu: Selected item "kind" 
     -- PmenuExtra     { }, -- Popup menu: Normal item "extra text" 
     -- PmenuExtraSel  { }, -- Popup menu: Selected item "extra text" 
     PmenuSbar      { fg = palette.light_black, bg = palette.black }, -- Popup menu: Scrollbar.
-    PmenuThumb     { fg = palette.black, bg = palette.red }, -- Popup menu: Thumb of the scrollbar. l
+    PmenuThumb     { fg = palette.black, bg = palette.light_black }, -- Popup menu: Thumb of the scrollbar. l
     Question       { fg = palette.green }, -- |hit-enter| prompt and yes/no questions
     QuickFixLine   { fg = palette.black, bg = palette.light_magenta }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
     Search         { fg = palette.black, bg = palette.light_magenta }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
@@ -208,6 +208,33 @@ local theme = lush(function(injected_functions)
     -- DiagnosticSignInfo         { } , -- Used for "Info" signs in sign column.
     -- DiagnosticSignHint         { } , -- Used for "Hint" signs in sign column.
     -- DiagnosticSignOk           { } , -- Used for "Ok" signs in sign column.
+
+    BlinkCmpKind               { fg = palette.front },
+    BlinkCmpKindFunction       { fg = palette.blue },
+    BlinkCmpKindMethod         { fg = palette.blue },
+    BlinkCmpKindConstructor    { fg = palette.blue },
+    BlinkCmpKindVariable       { fg = palette.light_white },
+    BlinkCmpKindField          { fg = palette.cyan },
+    BlinkCmpKindProperty       { fg = palette.cyan },
+    BlinkCmpKindClass          { fg = palette.red },
+    BlinkCmpKindInterface      { fg = palette.red },
+    BlinkCmpKindStruct         { fg = palette.red },
+    BlinkCmpKindModule         { fg = palette.light_white },
+    BlinkCmpKindEnum           { fg = palette.red },
+    BlinkCmpKindEnumMember     { fg = palette.light_green },
+    BlinkCmpKindKeyword        { fg = palette.green },
+    BlinkCmpKindConstant       { fg = palette.light_green },
+    BlinkCmpKindSnippet        { fg = palette.light_magenta },
+    BlinkCmpKindText           { fg = palette.white },
+    BlinkCmpKindValue          { fg = palette.light_green },
+    BlinkCmpKindUnit           { fg = palette.light_green },
+    BlinkCmpKindColor          { fg = palette.yellow },
+    BlinkCmpKindFile           { fg = palette.light_red },
+    BlinkCmpKindFolder         { fg = palette.light_red },
+    BlinkCmpKindReference      { fg = palette.magenta },
+    BlinkCmpKindEvent          { fg = palette.yellow },
+    BlinkCmpKindOperator       { fg = palette.green },
+    BlinkCmpKindTypeParameter  { fg = palette.red },
 
     Headline                   { fg = palette.red, bold = true } ,
     Headline1                  { fg = palette.red, bold = true } ,
