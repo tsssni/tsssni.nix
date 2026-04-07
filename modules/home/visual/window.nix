@@ -261,13 +261,13 @@ in
         layer-rules = lib.optionals hasWallpaper [
           {
             matches = [
-              { namespace = "^swww"; }
+              { namespace = "^awww"; }
             ];
             place-within-backdrop = true;
           }
         ];
         spawn-at-startup = lib.optionals hasWallpaper lib.mapAttrsToList (monitor: value: {
-          command = [ "swww img ${value.wallpaper} -o ${monitor}" ];
+          command = [ "awww img ${value.wallpaper} -o ${monitor}" ];
         }) cfg.monitors;
         binds = with config.lib.niri.actions; {
           "Mod+T".action.spawn = [
@@ -316,7 +316,7 @@ in
     };
 
     services = {
-      swww.enable = hasWallpaper;
+      awww.enable = hasWallpaper;
       wlsunset = {
         inherit (cfg.sunset) enable temperature;
       }

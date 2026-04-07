@@ -25,7 +25,7 @@ in
       exrc = true;
       fileformats = "unix";
       foldclose = "all";
-      hlsearch = false;
+      hlsearch = true;
       list = true;
       listchars = "tab:>·,space:·";
       mouse = "";

@@ -140,6 +140,11 @@ in
         key = "<C-q>";
         action = ":bd!<CR>";
       }
+      {
+        mode = "n";
+        key = "<C-/>";
+        action = "<cmd>nohlsearch | let @/ = ''<CR>";
+      }
     ];
   };
 
