@@ -37,6 +37,7 @@ in
                 icon = "";
               }
               "progress"
+              "searchcount"
             ];
             lualine_c = [ "" ];
             lualine_x = [ "" ];

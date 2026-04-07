@@ -105,6 +105,7 @@ local theme = lush(function(injected_functions)
     SpellRare      { fg = palette.white, sp = palette.magenta, undercurl = true }, -- Word that is recognized by the spellchecker as one that is hardly ever used. |spell| Combined with the highlighting used otherwise.
     StatusLine     { fg = palette.light_white, bg = palette.back }, -- Status line of current window
     StatusLineNC   { fg = palette.white, bg = palette.back }, -- Status lines of not-current windows. Note: If this is equal to "StatusLine" Vim will use "^^^" in the status line of the current window.
+    SnippetTabstop { },
     -- TabLine        { }, -- Tab pages line, not active tab page label
     -- TabLineFill    { }, -- Tab pages line, where there are no labels
     -- TabLineSel     { }, -- Tab pages line, active tab page label
