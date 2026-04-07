@@ -13,12 +13,6 @@ let
 
   monitorName = key: monitor: if monitor.name != null then monitor.name else key;
   hasWallpaper = lib.any (monitor: monitor.wallpaper != null) (lib.attrValues cfg.monitors);
-  gradient = {
-    from = colorCfg.lightBlue;
-    to = colorCfg.lightCyan;
-    angle = 180;
-    relative-to = "workspace-view";
-  };
 
   fzfPicker = lib.getExe (
     pkgs.writeShellApplication {
@@ -223,11 +217,21 @@ in
             enable = true;
             width = 5;
           }
-          // lib.optionalAttrs tuiCfg.enable {
-            active.gradient = gradient;
-            inactive.gradient = gradient;
-            urgent.gradient = gradient;
-          };
+          // lib.optionalAttrs tuiCfg.enable (
+            let
+              gradient = {
+                from = colorCfg.lightBlue;
+                to = colorCfg.lightCyan;
+                angle = 180;
+                relative-to = "workspace-view";
+              };
+            in
+            {
+              active.gradient = gradient;
+              inactive.gradient = gradient;
+              urgent.gradient = gradient;
+            }
+          );
           shadow.enable = false;
           background-color = "transparent";
         };
@@ -266,9 +270,6 @@ in
             place-within-backdrop = true;
           }
         ];
-        spawn-at-startup = lib.optionals hasWallpaper lib.mapAttrsToList (monitor: value: {
-          command = [ "awww img ${value.wallpaper} -o ${monitor}" ];
-        }) cfg.monitors;
         binds = with config.lib.niri.actions; {
           "Mod+T".action.spawn = [
             "ghostty"
@@ -323,20 +324,38 @@ in
       // cfg.sunset.coordinate;
     };
 
-    systemd.user.services = lib.mkIf cfg.shell.enable {
-      april-shell = {
-        Unit = {
-          Description = "april-shell";
-          After = [ "graphical-session.target" ];
-          PartOf = [ "graphical-session.target" ];
+    systemd.user.services =
+      { }
+      // lib.optionalAttrs hasWallpaper {
+        awww-wallpaper = {
+          Unit = {
+            Description = "awww-wallpaper";
+            After = [ "awww.service" ];
+            Requires = [ "awww.service" ];
+          };
+          Service = {
+            Type = "oneshot";
+            ExecStart = lib.mapAttrsToList (monitor: value:
+              "${lib.getExe pkgs.awww} img ${value.wallpaper} -o ${monitor} --transition-type none"
+            ) (lib.filterAttrs (_: v: v.wallpaper != null) cfg.monitors);
+          };
+          Install.WantedBy = [ "awww.service" ];
         };
-        Service = {
-          ExecStart = "${lib.getExe pkgs.april-shell}";
-          Restart = "on-failure";
+      }
+      // lib.optionalAttrs cfg.shell.enable {
+        april-shell = {
+          Unit = {
+            Description = "april-shell";
+            After = [ "graphical-session.target" ];
+            PartOf = [ "graphical-session.target" ];
+          };
+          Service = {
+            ExecStart = "${lib.getExe pkgs.april-shell}";
+            Restart = "on-failure";
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
         };
-        Install.WantedBy = [ "graphical-session.target" ];
       };
-    };
 
     xdg = lib.optionalAttrs cfg.file.enable {
       configFile."xdg-desktop-portal-termfilechooser/config".text = ''
