@@ -28,7 +28,7 @@ in
           rebase.pull = "rebase";
         };
       };
-      jujutsu = {
+      jujutsu = lib.optionalAttrs (!homeCfg.standalone) {
         enable = true;
         settings = {
           inherit user;
