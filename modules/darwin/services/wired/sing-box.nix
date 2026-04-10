@@ -43,7 +43,6 @@ in
       {
         script = ''
           mkdir -p /run/sing-box /var/log/sing-box
-          /usr/sbin/ipconfig waitall
           ${lib.genJqSecretsScript pkgs cfg.settings "/run/sing-box/config.json"}
           ${lib.getExe cfg.package} -C /run/sing-box run
         '';
@@ -54,7 +53,6 @@ in
               map (path: lib.nameValuePair path true) secretPaths
             );
           };
-          RunAtLoad = true;
           StandardOutPath = "/var/log/sing-box/info.log";
           StandardErrorPath = "/var/log/sing-box/error.log";
         };
