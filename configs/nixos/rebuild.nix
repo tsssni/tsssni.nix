@@ -4,14 +4,6 @@ import ../rebuild.nix (
   // {
     distro = "nixos";
     eval = args.inputs.nixpkgs.lib.nixosSystem;
-    tsssni = args.tsssni // {
-      systemModules = args.tsssni.nixosModules.tsssni;
-      extraSystemModules = args.tsssni.extraNixosModules;
-    };
-    inputs = args.inputs // {
-      home-manager = args.inputs.home-manager // {
-        systemModules = args.inputs.home-manager.nixosModules.home-manager;
-      };
-    };
+    modules = args.modules // { system = args.modules.nixos; };
   }
 )

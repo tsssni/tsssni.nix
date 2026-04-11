@@ -1,7 +1,6 @@
-{
+args: {
   pkgs,
   lib,
-  tsssni,
   ...
 }:
 let
@@ -31,7 +30,7 @@ let
     nix = {
       package = pkgs.nix;
       nixPath = [
-        "nixpkgs=${tsssni.inputs.nixpkgs}"
+        "nixpkgs=${args.inputs.nixpkgs}"
       ];
       settings = {
         experimental-features = features;
@@ -44,25 +43,22 @@ let
     };
 
     nixpkgs = {
-      system = tsssni.system;
-      config = {
-        allowUnfree = true;
-      }
-      // tsssni.config;
+      system = args.system;
+      config = args.config;
       overlays =
-        with tsssni.inputs;
+        with args.inputs;
         (
           [
             niri.overlays.niri
             (final: prev: {
-              agenix = agenix.packages.${tsssni.system}.default;
-              zjstatus = zjstatus.packages.${tsssni.system}.default;
+              agenix = agenix.packages.${args.system}.default;
+              zjstatus = zjstatus.packages.${args.system}.default;
               small = import nixpkgs-small {
-                inherit (tsssni) system;
+                inherit (args) system;
                 config = final.config;
               };
               master = import nixpkgs-master {
-                inherit (tsssni) system;
+                inherit (args) system;
                 config = final.config;
               };
             })
@@ -79,4 +75,4 @@ let
     home.packages = packages;
   };
 in
-if (tsssni.distro == "home") then standloneCfg else systemCfg
+if (args.distro == "home") then standloneCfg else systemCfg
