@@ -1,13 +1,10 @@
-{
-  tsssni,
-  ...
-}:
+{ ... }:
 {
   tsssni = {
     wired = {
       network = {
         enable = true;
-        hostName = tsssni.func;
+        hostName = "msi";
       };
       sing-box.enable = true;
       ssh.enable = true;

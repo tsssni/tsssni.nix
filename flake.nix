@@ -51,26 +51,23 @@
     }@inputs:
     let
       lib = inputs.nixpkgs.lib;
-      configArgs = {
+      args = {
         inherit inputs;
-        tsssni = {
-          inherit (self)
-            pkgs
-            lib
-            nixosModules
-            darwinModules
-            homeModules
-            ;
-          extraNixosModules = with inputs; [
-            agenix.nixosModules.age
-            disko.nixosModules.disko
-            nixos-wsl.nixosModules.wsl
+        modules = with inputs; {
+          nixos = [
+            self.nixosModules.tsssni
             jovian.nixosModules.jovian
+            disko.nixosModules.disko
+            agenix.nixosModules.age
+            home-manager.nixosModules.home-manager
           ];
-          extraDarwinModules = with inputs; [
+          darwin = [
+            self.darwinModules.tsssni
             agenix.darwinModules.age
+            home-manager.darwinModules.home-manager
           ];
-          extraHomeModules = with inputs; [
+          home = [
+            self.homeModules.tsssni
             nixvim.homeModules.nixvim
             niri.homeModules.niri
           ];
@@ -84,7 +81,7 @@
         |> lib.mapAttrs (
           dir: _:
           (import (folder + /rebuild.nix) (
-            configArgs // { func = dir; } // (import (folder + /${dir}/rebuild.nix))
+            args // { func = dir; } // (import (folder + /${dir}/rebuild.nix))
           ))
         );
     in

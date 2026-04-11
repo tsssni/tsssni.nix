@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  tsssni,
   ...
 }:
 let
@@ -52,7 +51,6 @@ in
         };
         environmentVariables = {
           EDITOR = "nvim";
-          NIX_PATH = "nixpkgs=${tsssni.inputs.nixpkgs}";
           PROMPT_COMMAND = lib.hm.nushell.mkNushellInline "{||}";
           PROMPT_COMMAND_RIGHT = lib.hm.nushell.mkNushellInline ''
             {||

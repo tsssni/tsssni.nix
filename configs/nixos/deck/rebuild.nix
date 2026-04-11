@@ -1,4 +1,7 @@
 {
   system = "x86_64-linux";
-  config.rocmSupport = true;
+  config = {
+    rocmSupport = true;
+    allowUnfree = true;
+  };
 }
