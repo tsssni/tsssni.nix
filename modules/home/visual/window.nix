@@ -279,6 +279,7 @@ in
             "${lib.getExe zellijCfg.package}"
           ];
           "Mod+B".action.spawn = [ "firefox" ];
+          "Mod+G".action.spawn = [ "steam" ];
           "Mod+Q".action.quit.skip-confirmation = true;
           "Mod+P".action.screenshot.show-pointer = false;
           "Mod+W".action.screenshot-window.write-to-disk = true;
