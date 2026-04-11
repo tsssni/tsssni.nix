@@ -12,7 +12,7 @@ in
     withRuby = false;
     withPython3 = false;
     extraConfigLua = ''
-      require('vim._core.ui2').enable({})
+      require('vim._core.ui2').enable({ msg = { targets = 'msg' } })
       vim.o.cmdheight = 0
     '';
 
