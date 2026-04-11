@@ -3,6 +3,7 @@
   ...
 }:
 {
+  programs.steam.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware = {

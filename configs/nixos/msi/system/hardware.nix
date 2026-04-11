@@ -23,6 +23,12 @@
       enable = true;
       alsa.enable = true;
       pulse.enable = true;
+      wireplumber.extraConfig."controller" = {
+        "monitor.alsa.rules" = [{
+          matches = [{ "alsa.id" = "Controller"; }];
+          actions.update-props."priority.session" = 100;
+        }];
+      };
     };
   };
 
