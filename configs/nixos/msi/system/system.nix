@@ -41,16 +41,29 @@
     };
   };
 
-  users.users.tsssni = {
-    name = "tsssni";
-    home = "/home/tsssni";
-    shell = config.tsssni.shell.package;
-    hashedPassword = "$y$j9T$mzXj7DKn7uD9EWbb.EdTo0$Yix0Fy713KpDwzwYF4K3yYAWhMlyR7Acy8SU81lx7Q5";
-    extraGroups = [
-      "wheel"
-      "systemd-journal"
-    ];
-    isNormalUser = true;
+  users = {
+    users.tsssni = {
+      name = "tsssni";
+      home = "/home/tsssni";
+      shell = config.tsssni.shell.package;
+      hashedPassword = "$y$j9T$mzXj7DKn7uD9EWbb.EdTo0$Yix0Fy713KpDwzwYF4K3yYAWhMlyR7Acy8SU81lx7Q5";
+      extraGroups = [
+        "wheel"
+        "systemd-journal"
+        "samba"
+      ];
+      isNormalUser = true;
+    };
+
+    users.samba = {
+      home = "/home/samba";
+      homeMode = "0770";
+      createHome = true;
+      isSystemUser = true;
+      group = "samba";
+    };
+
+    groups.samba = { };
   };
 
   tsssni.shell.enable = true;

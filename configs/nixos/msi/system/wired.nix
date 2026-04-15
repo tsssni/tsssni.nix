@@ -11,4 +11,9 @@
     };
     secret.enable = true;
   };
+
+  services.samba = {
+    enable = true;
+    settings.samba.path = "/home/samba";
+  };
 }
