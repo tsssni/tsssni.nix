@@ -14,7 +14,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs.small; [
+    home.packages = with pkgs.master; [
       claude-code
     ];
   };
