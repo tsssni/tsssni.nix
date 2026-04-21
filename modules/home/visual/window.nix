@@ -47,6 +47,160 @@ let
   fzfWrapper = pkgs.writeShellScript "fzf-wrapper.sh" ''
     ${lib.getExe pkgs.ghostty} -e ${fzfPicker} "$@"
   '';
+
+  joinLines = lines: lib.concatStringsSep "\n" (lib.filter (s: s != "") lines);
+  joinSemi = nodes: lib.concatMapStringsSep " " (n: "${n};") (lib.filter (s: s != "") nodes);
+
+  monitorToKdl =
+    key: monitor:
+    let
+      name = monitorName key monitor;
+      rotation = monitor.transform.rotation;
+      fliprot = lib.concatStrings [
+        (lib.optionalString monitor.transform.flipped "flipped")
+        (lib.optionalString (monitor.transform.flipped && rotation != 0) "-")
+        (lib.optionalString (rotation != 0) (toString rotation))
+      ];
+      scale = lib.optionalString (monitor.scale != null) "scale ${toString monitor.scale}";
+      position = lib.optionalString (
+        monitor.position != null
+      ) "position x=${toString monitor.position.x} y=${toString monitor.position.y}";
+      transform = lib.optionalString (fliprot != "") ''transform "${fliprot}"'';
+      refresh = lib.optionalString (monitor.refresh != null) "@${toString monitor.refresh}";
+      mode = lib.optionalString (
+        monitor.width != null && monitor.height != null
+      ) ''mode "${toString monitor.width}x${toString monitor.height}${refresh}"'';
+      body = joinSemi [
+        scale
+        position
+        transform
+        mode
+      ];
+    in
+    ''output "${name}" { ${body} }'';
+
+  outputsKdl = lib.concatStringsSep "\n\n" (lib.mapAttrsToList monitorToKdl cfg.monitors);
+
+  borderExtraKdl = joinLines [
+    (lib.optionalString tuiCfg.enable ''active-color "${colorCfg.lightBlack}"'')
+    (lib.optionalString tuiCfg.enable ''inactive-color "${colorCfg.lightBlack}"'')
+    (lib.optionalString tuiCfg.enable ''urgent-color "${colorCfg.lightBlack}"'')
+  ];
+
+  focusRingExtraKdl =
+    let
+      gradient = ''from="${colorCfg.lightBlue}" to="${colorCfg.lightCyan}" angle=180 relative-to="workspace-view"'';
+    in
+    joinLines [
+      (lib.optionalString tuiCfg.enable "active-gradient ${gradient}")
+      (lib.optionalString tuiCfg.enable "inactive-gradient ${gradient}")
+      (lib.optionalString tuiCfg.enable "urgent-gradient ${gradient}")
+    ];
+
+  awwwLayerRuleKdl = lib.optionalString hasWallpaper ''
+    layer-rule { match namespace="^awww"; place-within-backdrop true; }
+  '';
+
+  ghosttySpawnArgs = lib.concatStringsSep " " (
+    lib.filter (s: s != "") [
+      ''"ghostty"''
+      (lib.optionalString shellCfg.enable ''"-e"'')
+      (lib.optionalString shellCfg.enable ''"${lib.getExe zellijCfg.package}"'')
+    ]
+  );
+
+  niriKdl = ''
+    xwayland-satellite {
+        path "${lib.getExe pkgs.xwayland-satellite-unstable}"
+    }
+
+    input {
+        keyboard { xkb { layout "us"; options "caps:ctrl_modifier"; }; }
+        focus-follows-mouse max-scroll-amount="10%"
+        disable-power-key-handling
+    }
+
+    ${outputsKdl}
+
+    gestures { hot-corners { off; }; }
+
+    layout {
+        gaps 10
+        background-color "transparent"
+        always-center-single-column false
+        default-column-display "normal"
+        default-column-width { proportion 0.5; }
+        preset-column-widths { proportion ${toString (1.0 / 3.0)}; proportion 0.5; proportion ${toString (2.0 / 3.0)}; }
+        preset-window-heights { proportion 0.5; proportion 1.0; }
+        border {
+            width 2
+            ${borderExtraKdl}
+        }
+        focus-ring {
+            width 5
+            ${focusRingExtraKdl}
+        }
+        shadow { off; }
+    }
+
+    animations {
+        window-open { duration-ms 500; curve "ease-out-cubic"; }
+        window-close { duration-ms 700; curve "ease-out-expo"; }
+        window-movement { spring damping-ratio=0.8 stiffness=200 epsilon=0.001; }
+    }
+
+    window-rule { clip-to-geometry true; geometry-corner-radius 20.0; }
+
+    window-rule {
+        match app-id="ghostty"
+        opacity 0.95
+        background-effect { blur true; }
+        draw-border-with-background false
+    }
+
+    prefer-no-csd
+    ${awwwLayerRuleKdl}
+    layer-rule { match namespace="^april-shell$"; background-effect { blur true; }; }
+
+    binds {
+        Mod+Z { spawn-sh "${lib.getExe pkgs.april-shell} ipc call toggleBlurryPlayer toggle"; }
+        Mod+T { spawn ${ghosttySpawnArgs}; }
+        Mod+B { spawn "firefox"; }
+        Mod+G { spawn "steam"; }
+        Mod+Q { quit skip-confirmation=true; }
+        Mod+P { screenshot show-pointer=false; }
+        Mod+W { screenshot-window write-to-disk=true; }
+        Mod+O { toggle-overview; }
+        Mod+M { maximize-column; }
+        Mod+F { fullscreen-window; }
+        Mod+X { close-window; }
+
+        Mod+H { focus-column-left; }
+        Mod+L { focus-column-right; }
+        Mod+J { focus-window-down; }
+        Mod+K { focus-window-up; }
+        Mod+Down { focus-workspace-down; }
+        Mod+Up { focus-workspace-up; }
+
+        Mod+Ctrl+H { move-column-left; }
+        Mod+Ctrl+L { move-column-right; }
+        Mod+Ctrl+J { move-window-down; }
+        Mod+Ctrl+K { move-window-up; }
+        Mod+Ctrl+X { center-column; }
+        Mod+Ctrl+I { consume-or-expel-window-left; }
+        Mod+Ctrl+O { consume-or-expel-window-right; }
+        Mod+Ctrl+Down { move-window-to-workspace-down; }
+        Mod+Ctrl+Up { move-window-to-workspace-up; }
+
+        Mod+Alt+H { switch-preset-column-width; }
+        Mod+Alt+L { maximize-column; }
+        Mod+Alt+J { switch-preset-window-height; }
+        Mod+Alt+K { reset-window-height; }
+
+        Mod+WheelScrollUp { focus-column-left; }
+        Mod+WheelScrollDown { focus-column-right; }
+    }
+  '';
 in
 {
   options.tsssni.visual.window = {
@@ -162,159 +316,7 @@ in
     programs.niri = {
       enable = true;
       package = pkgs.niri-unstable;
-      settings = {
-        xwayland-satellite = {
-          enable = true;
-          path = "${lib.getExe pkgs.xwayland-satellite-unstable}";
-        };
-        input = {
-          keyboard.xkb = {
-            layout = "us";
-            options = "caps:ctrl_modifier";
-          };
-          focus-follows-mouse = {
-            enable = true;
-            max-scroll-amount = "10%";
-          };
-          power-key-handling.enable = false;
-        };
-        outputs = lib.mapAttrs' (
-          key: monitor:
-          lib.nameValuePair (monitorName key monitor) {
-            inherit (monitor) scale transform position;
-            mode = {
-              inherit (monitor) width height refresh;
-            };
-          }
-        ) cfg.monitors;
-        gestures = {
-          hot-corners.enable = false;
-        };
-        layout = {
-          preset-column-widths = [
-            { proportion = 1.0 / 3.0; }
-            { proportion = 1.0 / 2.0; }
-            { proportion = 2.0 / 3.0; }
-          ];
-          preset-window-heights = [
-            { proportion = 1.0 / 2.0; }
-            { proportion = 1.0 / 1.0; }
-          ];
-          always-center-single-column = false;
-          default-column-display = "normal";
-          default-column-width.proportion = 0.5;
-          gaps = 10;
-          border = {
-            enable = true;
-            width = 2;
-          }
-          // lib.optionalAttrs tuiCfg.enable {
-            active.color = colorCfg.lightBlack;
-            inactive.color = colorCfg.lightBlack;
-            urgent.color = colorCfg.lightBlack;
-          };
-          focus-ring = {
-            enable = true;
-            width = 5;
-          }
-          // lib.optionalAttrs tuiCfg.enable (
-            let
-              gradient = {
-                from = colorCfg.lightBlue;
-                to = colorCfg.lightCyan;
-                angle = 180;
-                relative-to = "workspace-view";
-              };
-            in
-            {
-              active.gradient = gradient;
-              inactive.gradient = gradient;
-              urgent.gradient = gradient;
-            }
-          );
-          shadow.enable = false;
-          background-color = "transparent";
-        };
-        animations = {
-          window-open.kind.easing = {
-            curve = "ease-out-cubic";
-            duration-ms = 500;
-          };
-          window-close.kind.easing = {
-            curve = "ease-out-expo";
-            duration-ms = 700;
-          };
-          window-movement.kind.spring = {
-            damping-ratio = 0.8;
-            stiffness = 200;
-            epsilon = 0.001;
-          };
-        };
-        window-rules = [
-          {
-            clip-to-geometry = true;
-            geometry-corner-radius = {
-              bottom-left = 20.0;
-              bottom-right = 20.0;
-              top-left = 20.0;
-              top-right = 20.0;
-            };
-          }
-        ];
-        prefer-no-csd = true;
-        layer-rules = lib.optionals hasWallpaper [
-          {
-            matches = [
-              { namespace = "^awww"; }
-            ];
-            place-within-backdrop = true;
-          }
-        ];
-        binds = with config.lib.niri.actions; {
-          "Mod+T".action.spawn = [
-            "ghostty"
-          ]
-          ++ lib.optionals shellCfg.enable [
-            "-e"
-            "${lib.getExe zellijCfg.package}"
-          ];
-          "Mod+B".action.spawn = [ "firefox" ];
-          "Mod+G".action.spawn = [ "steam" ];
-          "Mod+Q".action.quit.skip-confirmation = true;
-          "Mod+P".action.screenshot.show-pointer = false;
-          "Mod+W".action.screenshot-window.write-to-disk = true;
-          "Mod+O".action = toggle-overview;
-          "Mod+M".action = maximize-column;
-          "Mod+F".action = fullscreen-window;
-          "Mod+X".action = close-window;
-          "Mod+Z".action.spawn-sh = [ "${lib.getExe pkgs.april-shell} ipc call toggleBlurryPlayer toggle" ];
-
-          "Mod+H".action = focus-column-left;
-          "Mod+L".action = focus-column-right;
-          "Mod+J".action = focus-window-down;
-          "Mod+K".action = focus-window-up;
-          "Mod+Down".action = focus-workspace-down;
-          "Mod+Up".action = focus-workspace-up;
-
-          "Mod+Ctrl+H".action = move-column-left;
-          "Mod+Ctrl+L".action = move-column-right;
-          "Mod+Ctrl+J".action = move-window-down;
-          "Mod+Ctrl+K".action = move-window-up;
-          "Mod+Ctrl+X".action = center-column;
-          "Mod+Ctrl+I".action = consume-or-expel-window-left;
-          "Mod+Ctrl+O".action = consume-or-expel-window-right;
-          "Mod+Ctrl+Down".action = move-window-to-workspace-down;
-          "Mod+Ctrl+Up".action = move-window-to-workspace-up;
-
-          "Mod+Alt+H".action = switch-preset-column-width;
-          "Mod+Alt+L".action = maximize-column;
-          "Mod+Alt+J".action = switch-preset-window-height;
-          "Mod+Alt+K".action = reset-window-height;
-
-          "Mod+WheelScrollUp".action = focus-column-left;
-          "Mod+WheelScrollDown".action = focus-column-right;
-        };
-      };
+      config = niriKdl;
     };
 
     services = {
@@ -336,7 +338,8 @@ in
           };
           Service = {
             Type = "oneshot";
-            ExecStart = lib.mapAttrsToList (monitor: value:
+            ExecStart = lib.mapAttrsToList (
+              monitor: value:
               "${lib.getExe pkgs.awww} img ${value.wallpaper} -o ${monitor} --transition-type none"
             ) (lib.filterAttrs (_: v: v.wallpaper != null) cfg.monitors);
           };
