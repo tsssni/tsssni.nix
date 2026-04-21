@@ -287,3 +287,42 @@
   ]
   (#match? @_func "(^|\\.)mkNushellInline$")
   (#set! injection.language "nu"))
+
+;; =============================================================================
+;; KDL NAMING CONVENTION
+;; Matches any binding whose name ends in "Kdl"
+;; e.g. niriKdl = ''...''; borderExtraKdl = lib.optionalString cond ''...''
+;; =============================================================================
+(binding
+  attrpath: (attrpath (identifier) @_path)
+  expression: [
+    ; Direct string assignment
+    ; niriKdl = ''...''
+    (string_expression (string_fragment) @injection.content)
+    (indented_string_expression (string_fragment) @injection.content)
+
+    ; Function wrappers (handles 1-3 levels of nesting)
+    ; borderExtraKdl = lib.optionalString cond ''...''
+    ; fooKdl = mkIf cond (mkOverride 10 "...")
+    (apply_expression argument: [
+      (string_expression (string_fragment) @injection.content)
+      (indented_string_expression (string_fragment) @injection.content)
+      (parenthesized_expression (apply_expression argument: [
+        (string_expression (string_fragment) @injection.content)
+        (indented_string_expression (string_fragment) @injection.content)
+        (parenthesized_expression (apply_expression argument: [
+          (string_expression (string_fragment) @injection.content)
+          (indented_string_expression (string_fragment) @injection.content)
+        ]))
+      ]))
+    ])
+
+    ; Let expressions
+    ; fooKdl = let x = ...; in ''...''
+    (let_expression body: [
+      (string_expression (string_fragment) @injection.content)
+      (indented_string_expression (string_fragment) @injection.content)
+    ])
+  ]
+  (#match? @_path "Kdl$")
+  (#set! injection.language "kdl"))

@@ -42,11 +42,8 @@ in
       treesitter = {
         enable = true;
         nixvimInjections = false;
-        settings = {
-          auto_install = false;
-          highlight.enable = true;
-          indent.enable = false;
-        };
+        highlight.enable = true;
+        indent.enable = false;
       };
       blink-cmp = {
         enable = true;

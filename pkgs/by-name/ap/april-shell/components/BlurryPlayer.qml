@@ -72,6 +72,7 @@ PanelWindow {
     implicitHeight: 256
     exclusionMode: ExclusionMode.Ignore
     WlrLayershell.keyboardFocus: visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    WlrLayershell.namespace: "blurry-player"
     color: "transparent"
 
     Item {

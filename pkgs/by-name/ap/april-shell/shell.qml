@@ -17,9 +17,10 @@ ShellRoot {
 
         WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+        WlrLayershell.namespace: "april-shell"
         exclusionMode: ExclusionMode.Auto
         implicitWidth: 48
-        color: "#303446"
+        color: "#cc303446"
 
         Column {
             id: topSection
