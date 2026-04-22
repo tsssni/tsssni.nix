@@ -13,7 +13,11 @@
       aesth.enable = true;
       intelli.enable = true;
       script.enable = true;
-      version.enable = true;
+      version = {
+        enable = true;
+        name = "tsssni";
+        email = "dingyongyu2002@foxmail.com";
+      };
     };
     nixvim.enable = true;
     shell = {

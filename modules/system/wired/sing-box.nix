@@ -99,7 +99,7 @@ in
                   type = "selector";
                   tag = "wired";
                   outbounds = (map (attr: attr.tag) attrs) ++ [ "direct" ];
-                  default = "hy2";
+                  default = "hy3";
                 }
               ]
               ++ map (attr: mkOutbound attr) attrs

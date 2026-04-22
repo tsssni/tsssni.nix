@@ -150,14 +150,6 @@ let
     }
 
     window-rule { clip-to-geometry true; geometry-corner-radius 20.0; }
-
-    window-rule {
-        match app-id="ghostty"
-        opacity 0.95
-        background-effect { blur true; }
-        draw-border-with-background false
-    }
-
     prefer-no-csd
     ${awwwLayerRuleKdl}
     layer-rule { match namespace="^april-shell$"; background-effect { blur true; }; }

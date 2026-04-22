@@ -9,7 +9,11 @@
   programs.home-manager.enable = true;
 
   tsssni = {
-    devel.version.enable = true;
+    devel.version = {
+      enable = true;
+      name = "tsssni";
+      email = "dingyongyu2002@foxmail.com";
+    };
     nixvim.enable = true;
     shell = {
       fetch.enable = true;
