@@ -143,7 +143,14 @@ in
       {
         mode = "n";
         key = "<C-/>";
-        action = "<cmd>nohlsearch | let @/ = ''<CR>";
+        action.__raw = ''
+          function()
+            vim.cmd('nohlsearch')
+            vim.fn.setreg('/', "")
+            local ok, msgs = pcall(require, 'vim._core.ui2.messages')
+            if ok then msgs.msg_clear() end
+          end
+        '';
       }
     ];
   };
