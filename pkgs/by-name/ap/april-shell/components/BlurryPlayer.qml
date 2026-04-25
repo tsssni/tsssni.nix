@@ -18,8 +18,6 @@ PanelWindow {
             card.slideX = 20;
             visible = true;
             showAnim.start();
-            if (card.artUrl)
-                colorSampler.loadImage(card.artUrl);
         } else {
             hideAnim.start();
         }
@@ -90,13 +88,10 @@ PanelWindow {
         readonly property string artist: player?.trackArtist ?? ""
         readonly property string artUrl: player?.trackArtUrl ?? ""
         property string displayArtUrl: ""
-        property color textColor: "#bebad9"
 
         onArtUrlChanged: {
-            if (artUrl) {
-                colorSampler.loadImage(artUrl);
+            if (artUrl)
                 coverAnim.restart();
-            }
         }
 
         SequentialAnimation {
@@ -168,34 +163,17 @@ PanelWindow {
             samples: card.blurRadius * 2 + 1
         }
 
-        Canvas {
-            id: colorSampler
-            width: 64
-            height: 64
-            visible: false
-
-            onImageLoaded: requestPaint()
-
-            onPaint: {
-                if (!card.artUrl)
-                    return;
-                var ctx = getContext("2d");
-                ctx.clearRect(0, 0, width, height);
-                ctx.drawImage(card.artUrl, 0, 0, width, height);
-
-                var c = [0, 0, 0];
-                for (var y = 48; y < 64; y++)
-                    for (var x = 16; x < 48; x++) {
-                        var d = ctx.getImageData(x, y, 1, 1).data;
-                        for (var i = 0; i < 3; i++)
-                            c[i] += (d[i] / 255.0) * (d[i] / 255.0);
-                    }
-                for (var i = 0; i < 3; i++)
-                    c[i] /= 512;
-                // WCAG relative luminance (already in linear space)
-                var luma = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-                // threshold ≈ 0.179 maximises minimum contrast ratio with black/white
-                card.textColor = luma < 0.179 ? "#bebad9" : "#1a1730";
+        Rectangle {
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
+            height: parent.height * 0.55
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#001a1730" }
+                GradientStop { position: 0.55; color: "#661a1730" }
+                GradientStop { position: 1.0; color: "#cc1a1730" }
             }
         }
 
@@ -223,6 +201,9 @@ PanelWindow {
                     anchors.fill: parent
                     source: card.displayArtUrl
                     fillMode: Image.PreserveAspectCrop
+                    sourceSize.width: 160
+                    sourceSize.height: 160
+                    mipmap: true
                 }
 
                 layer.enabled: true
@@ -239,7 +220,7 @@ PanelWindow {
             Text {
                 Layout.fillWidth: true
                 text: card.title
-                color: card.textColor
+                color: "#bebad9"
                 font.pixelSize: 16
                 font.bold: true
                 elide: Text.ElideRight
@@ -249,7 +230,7 @@ PanelWindow {
             Text {
                 Layout.fillWidth: true
                 text: card.artist
-                color: card.textColor
+                color: "#bebad9"
                 font.pixelSize: 14
                 font.bold: true
                 elide: Text.ElideRight
