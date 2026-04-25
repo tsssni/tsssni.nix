@@ -16,3 +16,5 @@ vim.lsp.config('nixd', {
   },
 })
 vim.lsp.enable('nixd')
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2

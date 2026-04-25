@@ -31,20 +31,29 @@ Item {
 
     property int currentLyricIndex: 0
     property real lyricProgress: 0.0
+    property real displayProgress: 0.0
 
     property string displayPrev: ""
     property string displayCurrent: ""
     property string displayNext: ""
 
+    property int maxLength: 1024
+
     onLyricsChanged: {
         currentLyricIndex = 0
         lyricProgress = 0.0
+        displayProgress = 0.0
         lyricChangeAnim.restart()
     }
     onCurrentLyricIndexChanged: lyricChangeAnim.restart()
 
     SequentialAnimation {
         id: lyricChangeAnim
+        PropertyAction {
+            target: root
+            property: "displayProgress"
+            value: 1.0
+        }
         NumberAnimation {
             target: lyricsContainer
             property: "opacity"
@@ -57,6 +66,7 @@ Item {
                 root.displayPrev = root.prevLyric
                 root.displayCurrent = root.currentLyric
                 root.displayNext = root.nextLyric
+                root.displayProgress = root.lyricProgress
             }
         }
         NumberAnimation {
@@ -80,6 +90,8 @@ Item {
         var startTime = lyrics[idx].time
         var endTime = idx < lyrics.length - 1 ? lyrics[idx + 1].time : startTime + 5
         lyricProgress = Math.max(0.0, Math.min(1.0, (pos - startTime) / (endTime - startTime)))
+        if (!lyricChangeAnim.running)
+            displayProgress = lyricProgress
     }
 
     Timer {
@@ -120,7 +132,7 @@ Item {
     readonly property int lineHeight: Math.ceil(metricsCurrent.height)
     readonly property int contextHeight: Math.ceil(metricsContext.height)
     readonly property int lyricsStripWidth: contextHeight + 4 + lineHeight + 4 + contextHeight
-    readonly property int titleVisualHeight: Math.max(Math.ceil(metricsCurrent.width), Math.ceil(metricsContext.width)) + 16
+    readonly property int titleVisualHeight: Math.min(maxLength, Math.max(Math.ceil(metricsCurrent.width), Math.ceil(metricsContext.width)) + 16)
 
     visible: player !== null
     implicitWidth: lyricsStripWidth + 4
@@ -171,8 +183,8 @@ Item {
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
                     GradientStop { position: 0.0; color: "#a0b4e5" }
-                    GradientStop { position: Math.max(root.lyricProgress, 0.0001); color: "#a8e5af" }
-                    GradientStop { position: Math.min(root.lyricProgress + 0.0001, 1.0); color: "#606878" }
+                    GradientStop { position: Math.max(root.displayProgress, 0.0001); color: "#a8e5af" }
+                    GradientStop { position: Math.min(root.displayProgress + 0.0001, 1.0); color: "#606878" }
                     GradientStop { position: 1.0; color: "#606878" }
                 }
             }
