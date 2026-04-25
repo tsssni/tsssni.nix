@@ -8,8 +8,6 @@ let
   cfg = config.tsssni.visual.window;
   tuiCfg = config.tsssni.visual.theme.tui;
   colorCfg = tuiCfg.color;
-  shellCfg = config.tsssni.shell.shell;
-  zellijCfg = config.programs.zellij;
 
   monitorName = key: monitor: if monitor.name != null then monitor.name else key;
   hasWallpaper = lib.any (monitor: monitor.wallpaper != null) (lib.attrValues cfg.monitors);
@@ -101,14 +99,6 @@ let
     layer-rule { match namespace="^awww"; place-within-backdrop true; }
   '';
 
-  ghosttySpawnArgs = lib.concatStringsSep " " (
-    lib.filter (s: s != "") [
-      ''"ghostty"''
-      (lib.optionalString shellCfg.enable ''"-e"'')
-      (lib.optionalString shellCfg.enable ''"${lib.getExe zellijCfg.package}"'')
-    ]
-  );
-
   niriKdl = ''
     xwayland-satellite {
         path "${lib.getExe pkgs.xwayland-satellite-unstable}"
@@ -156,7 +146,7 @@ let
 
     binds {
         Mod+Z { spawn-sh "${lib.getExe pkgs.april-shell} ipc call toggleBlurryPlayer toggle"; }
-        Mod+T { spawn ${ghosttySpawnArgs}; }
+        Mod+T { spawn "ghostty"; }
         Mod+B { spawn "firefox"; }
         Mod+G { spawn "steam"; }
         Mod+Q { quit skip-confirmation=true; }

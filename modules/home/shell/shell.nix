@@ -10,7 +10,13 @@ let
   imeCfg = config.tsssni.visual.ime;
   guiCfg = config.tsssni.visual.theme.gui;
   cursorCfg = guiCfg.cursor;
-  zjstatusPlugin = ''plugin location="file://${pkgs.zjstatus}/bin/zjstatus.wasm"'';
+  zjstatusPlugin = ''
+    zjstatus location="file://${pkgs.zjstatus}/bin/zjstatus.wasm" {
+        format_left "{tabs}"
+        tab_normal "#[fg=7]π"
+        tab_active "#[fg=7,bold]λ"
+    }
+  '';
   scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
   homeEnvs = {
     PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")'';
@@ -26,6 +32,24 @@ let
     arr
     |> map (x: "source ${scriptsPath}/custom-completions/${x}/${x}-completions.nu")
     |> lib.concatStringsSep "\n";
+  zjCmd = lib.hm.nushell.mkNushellInline ''
+    def zj [path?: directory] {
+      let target = if $path == null {
+        pwd
+      } else {
+        let abs = $path | path expand
+        if ($abs | path type) != "dir" {
+          error make { msg: $"not a directory: ($abs)" }
+        }
+        $abs
+      }
+      let base = $target | path basename | str replace --all --regex '[^a-zA-Z0-9_-]' '_'
+      let hash = $target | hash md5 | str substring 0..7
+      let name = $"($base)-($hash)"
+      cd $target
+      ^zellij attach --create $name
+    }
+  '';
 in
 {
   options.tsssni.shell.shell = {
@@ -78,12 +102,12 @@ in
         )
         // (lib.optionalAttrs homeCfg.standalone homeEnvs)
         // (lib.optionalAttrs pkgs.stdenv.isDarwin darwinEnvs);
-        configFile.text = completions [
+        configFile.text = (completions [
           "git"
           "jj"
           "nix"
           "zellij"
-        ];
+        ]) + "\n\n" + zjCmd.expr;
       };
       zellij = {
         enable = true;
@@ -92,6 +116,7 @@ in
           show_startup_tips = false;
           default_mode = "Normal";
           default_layout = "copilot";
+          session_serialization = true;
         };
         extraConfig = ''
           keybinds clear-defaults=true {
@@ -106,7 +131,7 @@ in
                   bind "Alt m" { SwitchToMode "Move"; }
                   bind "Alt s" { SwitchToMode "Scroll"; }
                   bind "Alt o" { SwitchToMode "Session"; }
-                  bind "Alt q" { Quit; }
+                  bind "Alt q" { Detach; }
               }
               shared_except "normal" "entersearch" "renametab" "renamepane" {
                   bind "Esc" { SwitchToMode "Normal"; }
@@ -201,15 +226,15 @@ in
                   }
               }
           }
+
+          plugins {
+              ${zjstatusPlugin}
+          }
         '';
         layouts.copilot = ''
           layout split_direction="Vertical" {
               pane size=1 borderless=true {
-                  ${zjstatusPlugin} {
-                      format_left "{tabs}"
-                      tab_normal "#[fg=7]π"
-                      tab_active "#[fg=7,bold]λ"
-                  }
+                  plugin location="zjstatus"
               }
               pane
           }
