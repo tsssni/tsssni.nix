@@ -5,8 +5,8 @@ import QtQuick.Effects
 Item {
     id: root
 
-    readonly property list<MprisPlayer> players: Mpris.players.values
-    readonly property MprisPlayer player: players.find(p => p.identity === "musicfox" && p.playbackState === MprisPlaybackState.Playing) ?? players.find(p => p.identity === "musicfox") ?? null
+    readonly property var musicfoxPlayers: Mpris.players.values.filter(p => p.identity === "musicfox")
+    readonly property MprisPlayer player: musicfoxPlayers.find(p => p.playbackState === MprisPlaybackState.Playing) ?? musicfoxPlayers[0] ?? null
 
     function parseLrc(text) {
         if (!text) return []
@@ -39,6 +39,23 @@ Item {
 
     property int maxLength: 1024
 
+    component ContextText: Text {
+        color: "#606878"
+        font.pixelSize: 14
+        font.italic: true
+        font.family: "IBM Plex Mono"
+        elide: Text.ElideRight
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    component CurrentText: Text {
+        font.pixelSize: 20
+        font.italic: true
+        font.family: "IBM Plex Mono"
+        elide: Text.ElideRight
+        verticalAlignment: Text.AlignVCenter
+    }
+
     onLyricsChanged: {
         currentLyricIndex = 0
         lyricProgress = 0.0
@@ -49,24 +66,28 @@ Item {
 
     SequentialAnimation {
         id: lyricChangeAnim
-        PropertyAction {
-            target: root
-            property: "displayProgress"
-            value: 1.0
-        }
-        NumberAnimation {
-            target: lyricsContainer
-            property: "opacity"
-            to: 0
-            duration: 200
-            easing.type: Easing.InCubic
+        ParallelAnimation {
+            NumberAnimation {
+                target: lyricsContainer
+                property: "opacity"
+                to: 0
+                duration: 200
+                easing.type: Easing.InCubic
+            }
+            NumberAnimation {
+                target: root
+                property: "displayProgress"
+                to: 1.0
+                duration: 200
+                easing.type: Easing.OutCubic
+            }
         }
         ScriptAction {
             script: {
                 root.displayPrev = root.prevLyric
                 root.displayCurrent = root.currentLyric
                 root.displayNext = root.nextLyric
-                root.displayProgress = root.lyricProgress
+                root.displayProgress = 0
             }
         }
         NumberAnimation {
@@ -90,8 +111,13 @@ Item {
         var startTime = lyrics[idx].time
         var endTime = idx < lyrics.length - 1 ? lyrics[idx + 1].time : startTime + 5
         lyricProgress = Math.max(0.0, Math.min(1.0, (pos - startTime) / (endTime - startTime)))
-        if (!lyricChangeAnim.running)
-            displayProgress = lyricProgress
+        if (!lyricChangeAnim.running) {
+            var diff = lyricProgress - displayProgress
+            if (Math.abs(diff) > 0.01)
+                displayProgress = displayProgress + diff * 0.15
+            else
+                displayProgress = lyricProgress
+        }
     }
 
     Timer {
@@ -104,6 +130,7 @@ Item {
     readonly property string prevLyric: lyrics.length > 0 && currentLyricIndex > 0 ? lyrics[currentLyricIndex - 1].text : ""
     readonly property string currentLyric: lyrics.length > 0 ? lyrics[currentLyricIndex].text : (player?.trackTitle ?? "")
     readonly property string nextLyric: lyrics.length > 0 && currentLyricIndex < lyrics.length - 1 ? lyrics[currentLyricIndex + 1].text : ""
+    readonly property string longerContext: displayPrev.length > displayNext.length ? displayPrev : displayNext
 
     onCurrentLyricChanged: {
         if (displayCurrent === "" && currentLyric !== "") {
@@ -126,7 +153,7 @@ Item {
         font.pixelSize: 14
         font.italic: true
         font.family: "IBM Plex Mono"
-        text: root.displayPrev.length > root.displayNext.length ? root.displayPrev : root.displayNext
+        text: root.longerContext
     }
 
     readonly property int lineHeight: Math.ceil(metricsCurrent.height)
@@ -159,74 +186,73 @@ Item {
             anchors.centerIn: parent
             rotation: 90
 
-            Text {
+            ContextText {
                 x: 0; y: 0
                 width: root.titleVisualHeight
                 height: root.contextHeight
                 text: root.displayPrev
-                color: "#606878"
-                font.pixelSize: 14
-                font.italic: true
-                font.family: "IBM Plex Mono"
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
             }
 
-            Rectangle {
-                id: currentGradient
-                x: 0
-                y: root.contextHeight + 4
-                width: root.titleVisualHeight
-                height: root.lineHeight
-                layer.enabled: true
-                visible: false
-                gradient: Gradient {
-                    orientation: Gradient.Horizontal
-                    GradientStop { position: 0.0; color: "#a0b4e5" }
-                    GradientStop { position: Math.max(root.displayProgress, 0.0001); color: "#a8e5af" }
-                    GradientStop { position: Math.min(root.displayProgress + 0.0001, 1.0); color: "#606878" }
-                    GradientStop { position: 1.0; color: "#606878" }
-                }
-            }
-
-            Text {
-                id: currentLyricText
+            CurrentText {
+                id: currentLyricGray
                 x: 0
                 y: root.contextHeight + 4
                 width: root.titleVisualHeight
                 height: root.lineHeight
                 text: root.displayCurrent
-                font.pixelSize: 20
-                font.italic: true
-                font.family: "IBM Plex Mono"
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
-                layer.enabled: true
-                visible: false
+                color: "#606878"
             }
 
-            MultiEffect {
+            Item {
                 x: 0
                 y: root.contextHeight + 4
-                width: root.titleVisualHeight
+                width: root.titleVisualHeight * root.displayProgress
                 height: root.lineHeight
-                source: currentGradient
-                maskEnabled: true
-                maskSource: currentLyricText
+                clip: true
+
+                Rectangle {
+                    id: currentGradient
+                    x: 0
+                    y: 0
+                    width: root.titleVisualHeight
+                    height: root.lineHeight
+                    layer.enabled: true
+                    visible: false
+                    gradient: Gradient {
+                        orientation: Gradient.Horizontal
+                        GradientStop { position: 0.0; color: "#a0b4e5" }
+                        GradientStop { position: 1.0; color: "#a8e5af" }
+                    }
+                }
+
+                CurrentText {
+                    id: currentLyricText
+                    x: 0
+                    y: 0
+                    width: root.titleVisualHeight
+                    height: root.lineHeight
+                    text: root.displayCurrent
+                    layer.enabled: true
+                    visible: false
+                }
+
+                MultiEffect {
+                    x: 0
+                    y: 0
+                    width: root.titleVisualHeight
+                    height: root.lineHeight
+                    source: currentGradient
+                    maskEnabled: true
+                    maskSource: currentLyricText
+                }
             }
 
-            Text {
+            ContextText {
                 x: 0
                 y: root.contextHeight + 4 + root.lineHeight + 4
                 width: root.titleVisualHeight
                 height: root.contextHeight
                 text: root.displayNext
-                color: "#606878"
-                font.pixelSize: 14
-                font.italic: true
-                font.family: "IBM Plex Mono"
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
             }
         }
     }
