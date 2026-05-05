@@ -39,6 +39,7 @@
         efiSysMountPoint = "/efi";
       };
     };
+    zfs.forceImportRoot = true;
   };
 
   users = {

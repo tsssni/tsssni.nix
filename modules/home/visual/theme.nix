@@ -121,7 +121,7 @@ in
         latinFont = lib.mkOption {
           type = lib.hm.types.fontType;
           default = {
-            package = pkgs.ibm-plex;
+            package = pkgs.cherry.ibm-plex;
             name = "IBM Plex Mono";
             size = 16;
           };

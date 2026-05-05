@@ -9,9 +9,6 @@ let
   tuiCfg = config.tsssni.visual.theme.tui;
   colorCfg = tuiCfg.color;
 
-  monitorName = key: monitor: if monitor.name != null then monitor.name else key;
-  hasWallpaper = lib.any (monitor: monitor.wallpaper != null) (lib.attrValues cfg.monitors);
-
   fzfPicker = lib.getExe (
     pkgs.writeShellApplication {
       name = "fzf-picker";
@@ -42,17 +39,12 @@ let
       '';
     }
   );
-  fzfWrapper = pkgs.writeShellScript "fzf-wrapper.sh" ''
-    ${lib.getExe pkgs.ghostty} -e ${fzfPicker} "$@"
-  '';
-
-  joinLines = lines: lib.concatStringsSep "\n" (lib.filter (s: s != "") lines);
-  joinSemi = nodes: lib.concatMapStringsSep " " (n: "${n};") (lib.filter (s: s != "") nodes);
 
   monitorToKdl =
     key: monitor:
     let
-      name = monitorName key monitor;
+      join = nodes: lib.concatMapStringsSep " " (n: "${n};") (lib.filter (s: s != "") nodes);
+      name = if monitor.name != null then monitor.name else key;
       rotation = monitor.transform.rotation;
       fliprot = lib.concatStrings [
         (lib.optionalString monitor.transform.flipped "flipped")
@@ -68,7 +60,7 @@ let
       mode = lib.optionalString (
         monitor.width != null && monitor.height != null
       ) ''mode "${toString monitor.width}x${toString monitor.height}${refresh}"'';
-      body = joinSemi [
+      body = join [
         scale
         position
         transform
@@ -79,31 +71,31 @@ let
 
   outputsKdl = lib.concatStringsSep "\n\n" (lib.mapAttrsToList monitorToKdl cfg.monitors);
 
-  borderExtraKdl = joinLines [
-    (lib.optionalString tuiCfg.enable ''active-color "${colorCfg.lightBlack}"'')
-    (lib.optionalString tuiCfg.enable ''inactive-color "${colorCfg.lightBlack}"'')
-    (lib.optionalString tuiCfg.enable ''urgent-color "${colorCfg.lightBlack}"'')
-  ];
+  borderExtraKdl = lib.optionalString tuiCfg.enable (
+    lib.concatStringsSep "\n" [
+      ''active-color "${colorCfg.lightBlack}"''
+      ''inactive-color "${colorCfg.lightBlack}"''
+      ''urgent-color "${colorCfg.lightBlack}"''
+    ]
+  );
 
   focusRingExtraKdl =
     let
       gradient = ''from="${colorCfg.lightBlue}" to="${colorCfg.lightCyan}" angle=180 relative-to="workspace-view"'';
     in
-    joinLines [
-      (lib.optionalString tuiCfg.enable "active-gradient ${gradient}")
-      (lib.optionalString tuiCfg.enable "inactive-gradient ${gradient}")
-      (lib.optionalString tuiCfg.enable "urgent-gradient ${gradient}")
-    ];
+    lib.optionalString tuiCfg.enable (
+      lib.concatStringsSep "\n" [
+        "active-gradient ${gradient}"
+        "inactive-gradient ${gradient}"
+        "urgent-gradient ${gradient}"
+      ]
+    );
 
-  awwwLayerRuleKdl = lib.optionalString hasWallpaper ''
+  awwwLayerRuleKdl = ''
     layer-rule { match namespace="^awww"; place-within-backdrop true; }
   '';
 
   niriKdl = ''
-    xwayland-satellite {
-        path "${lib.getExe pkgs.xwayland-satellite-unstable}"
-    }
-
     input {
         keyboard { xkb { layout "us"; options "caps:ctrl_modifier"; }; }
         focus-follows-mouse max-scroll-amount="10%"
@@ -145,7 +137,7 @@ let
     layer-rule { match namespace="^april-shell$"; background-effect { blur true; }; }
 
     binds {
-        Mod+Z { spawn-sh "${lib.getExe pkgs.april-shell} ipc call toggleBlurryPlayer toggle"; }
+        Mod+Z { spawn-sh "april-shell ipc call toggleBlurryPlayer toggle"; }
         Mod+T { spawn "ghostty"; }
         Mod+B { spawn "firefox"; }
         Mod+G { spawn "steam"; }
@@ -290,64 +282,60 @@ in
         };
       };
     };
-    shell.enable = lib.mkEnableOption "tsssni.visual.window.shell";
-    file.enable = lib.mkEnableOption "tsssni.visual.window.file";
   };
 
   config = lib.mkIf cfg.enable {
-    programs.niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-      config = niriKdl;
-    };
-
     services = {
-      awww.enable = hasWallpaper;
+      awww.enable = true;
       wlsunset = {
         inherit (cfg.sunset) enable temperature;
       }
       // cfg.sunset.coordinate;
     };
 
-    systemd.user.services =
-      { }
-      // lib.optionalAttrs hasWallpaper {
-        awww-wallpaper = {
-          Unit = {
-            Description = "awww-wallpaper";
-            After = [ "awww.service" ];
-            Requires = [ "awww.service" ];
-          };
-          Service = {
-            Type = "oneshot";
-            ExecStart = lib.mapAttrsToList (
-              monitor: value:
-              "${lib.getExe pkgs.awww} img ${value.wallpaper} -o ${monitor} --transition-type none"
-            ) (lib.filterAttrs (_: v: v.wallpaper != null) cfg.monitors);
-          };
-          Install.WantedBy = [ "awww.service" ];
+    systemd.user.services = {
+      april-shell = {
+        Unit = {
+          Description = "april-shell";
+          After = [ "graphical-session.target" ];
+          PartOf = [ "graphical-session.target" ];
         };
-      }
-      // lib.optionalAttrs cfg.shell.enable {
-        april-shell = {
-          Unit = {
-            Description = "april-shell";
-            After = [ "graphical-session.target" ];
-            PartOf = [ "graphical-session.target" ];
-          };
-          Service = {
-            ExecStart = "${lib.getExe pkgs.april-shell}";
-            Restart = "on-failure";
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
+        Service = {
+          ExecStart = "${lib.getExe pkgs.april-shell}";
+          Restart = "on-failure";
         };
+        Install.WantedBy = [ "graphical-session.target" ];
       };
+      awww-wallpaper = {
+        Unit = {
+          Description = "awww-wallpaper";
+          After = [ "awww.service" ];
+          Requires = [ "awww.service" ];
+        };
+        Service = {
+          Type = "oneshot";
+          ExecStart = lib.mapAttrsToList (
+            monitor: value:
+            let
+              wallpaper = if value.wallpaper != null then value.wallpaper else ./config/wallpaper/moonscape.png;
+            in
+            "${lib.getExe pkgs.awww} img ${wallpaper} -o ${monitor} --transition-type none"
+          ) cfg.monitors;
+        };
+        Install.WantedBy = [ "awww.service" ];
+      };
+    };
 
-    xdg = lib.optionalAttrs cfg.file.enable {
-      configFile."xdg-desktop-portal-termfilechooser/config".text = ''
-        [filechooser]
-        cmd=${fzfWrapper}
-      '';
+    xdg = {
+      configFile = {
+        "niri/config.kdl".text = niriKdl;
+        "xdg-desktop-portal-termfilechooser/config".text = ''
+          [filechooser]
+          cmd=${pkgs.writeShellScript "fzf-wrapper.sh" ''
+            ${lib.getExe pkgs.ghostty} -e ${fzfPicker} "$@"
+          ''}
+        '';
+      };
       portal = {
         config.niri."org.freedesktop.impl.portal.FileChooser" = "termfilechooser";
         extraPortals = [ pkgs.xdg-desktop-portal-termfilechooser ];
@@ -355,6 +343,9 @@ in
     };
 
     home.packages = with pkgs; [
+      niri
+      april-shell
+      xwayland-satellite
       wl-clipboard
     ];
   };

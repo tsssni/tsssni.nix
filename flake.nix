@@ -3,8 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-cherry.url = "github:tsssni/nixpkgs/cherry";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,10 +32,6 @@
     };
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    niri = {
-      url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zjstatus = {
@@ -69,7 +65,6 @@
           home = [
             self.homeModules.tsssni
             nixvim.homeModules.nixvim
-            niri.homeModules.niri
           ];
         };
       };
