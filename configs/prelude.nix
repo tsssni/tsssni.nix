@@ -49,15 +49,14 @@ let
         with args.inputs;
         (
           [
-            niri.overlays.niri
             (final: prev: {
               agenix = agenix.packages.${args.system}.default;
               zjstatus = zjstatus.packages.${args.system}.default;
-              small = import nixpkgs-small {
+              master = import nixpkgs-master {
                 inherit (args) system;
                 config = final.config;
               };
-              master = import nixpkgs-master {
+              cherry = import nixpkgs-cherry {
                 inherit (args) system;
                 config = final.config;
               };
