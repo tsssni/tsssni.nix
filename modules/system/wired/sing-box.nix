@@ -99,7 +99,7 @@ in
                   type = "selector";
                   tag = "wired";
                   outbounds = (map (attr: attr.tag) attrs) ++ [ "direct" ];
-                  default = "hy3";
+                  default = "hy4";
                 }
               ]
               ++ map (attr: mkOutbound attr) attrs
@@ -124,6 +124,11 @@ in
             }
             {
               tag = "hy3";
+              type = "trojan";
+              server = "tsssni.biz";
+            }
+            {
+              tag = "hy4";
               type = "hysteria2";
               server = "tsssni.biz";
             }
