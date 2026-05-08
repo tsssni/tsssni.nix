@@ -38,7 +38,10 @@ let
         trusted-substituters = substituters;
         trusted-public-keys = keys;
       };
-      gc.automatic = true;
+      gc = {
+        automatic = true;
+        options = "-d";
+      };
       optimise.automatic = true;
     };
 
