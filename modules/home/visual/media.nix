@@ -4,7 +4,6 @@
   config,
   ...
 }:
-
 let
   cfg = config.tsssni.visual.media;
 in
