@@ -46,8 +46,9 @@ let
       let base = $target | path basename | str replace --all --regex '[^a-zA-Z0-9_-]' '_'
       let hash = $target | hash md5 | str substring 0..7
       let name = $"($base)-($hash)"
+      zellij delete-session $name err> /dev/null
       cd $target
-      ^zellij attach --create $name
+      zellij attach --create $name
     }
   '';
 in
@@ -116,7 +117,6 @@ in
           show_startup_tips = false;
           default_mode = "Normal";
           default_layout = "copilot";
-          session_serialization = true;
         };
         extraConfig = ''
           keybinds clear-defaults=true {
