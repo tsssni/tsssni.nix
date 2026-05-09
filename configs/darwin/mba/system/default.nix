@@ -8,7 +8,7 @@
     users.tsssni = {
       name = "tsssni";
       home = "/Users/tsssni";
-      shell = config.tsssni.shell.package;
+      shell = config.tsssni.infra.shell.package;
       uid = 501;
     };
   };
@@ -18,9 +18,8 @@
     stateVersion = 6;
   };
 
-  tsssni = {
+  tsssni.infra = {
     shell.enable = true;
-    secret.enable = true;
-    wired.sing-box.enable = true;
+    crypto.enable = true;
   };
 }

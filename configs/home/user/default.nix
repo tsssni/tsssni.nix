@@ -12,21 +12,17 @@
     home.standalone = true;
     devel = {
       intelli.enable = true;
-      script.enable = true;
+      literal = {
+        enable = true;
+        input.type = "ibus";
+      };
+      science.enable = true;
       version.enable = true;
     };
-    nixvim.enable = true;
-    shell = {
-      fetch.enable = true;
+    intef = {
       shell.enable = true;
       terminal.enable = true;
     };
-    visual = {
-      ime = {
-        enable = true;
-        type = "ibus";
-      };
-      theme.tui.enable = true;
-    };
+    nixvim.enable = true;
   };
 }

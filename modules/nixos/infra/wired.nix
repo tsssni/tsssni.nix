@@ -4,21 +4,21 @@
   ...
 }:
 let
-  cfg = config.tsssni.wired.network;
+  cfg = config.tsssni.infra.wired;
 in
 {
-  options.tsssni.wired.network = {
-    enable = lib.mkEnableOption "tsssni.wired.network";
-    hostName = lib.mkOption {
+  options.tsssni.infra.wired = {
+    enable = lib.mkEnableOption "tsssni.infra.wired";
+    host = lib.mkOption {
       type = lib.types.str;
       default = "tsssni";
-      description = "Host name for the tsssni wired network.";
     };
+    tunnel = lib.mkEnableOption "tsssni.infra.wired.tunnel";
   };
 
   config = lib.mkIf cfg.enable {
     networking = {
-      hostName = cfg.hostName;
+      hostName = cfg.host;
       hostId = "01145140";
       useDHCP = lib.mkDefault true;
       firewall.enable = false;
@@ -27,5 +27,7 @@ in
         wifi.backend = "iwd";
       };
     };
+    services.openssh.enable = lib.mkIf cfg.tunnel true;
+    programs.ssh.startAgent = lib.mkIf cfg.tunnel true;
   };
 }

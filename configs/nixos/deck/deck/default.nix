@@ -9,17 +9,22 @@
   programs.home-manager.enable = true;
 
   tsssni = {
-    devel.version = {
-      enable = true;
-      name = "tsssni";
-      email = "dingyongyu2002@foxmail.com";
+    intef = {
+      shell.enable = true;
+      terminal.enable = true;
     };
     nixvim.enable = true;
-    shell = {
-      fetch.enable = true;
-      shell.enable = true;
+    devel = {
+      literal.enable = true;
+      version = {
+        enable = true;
+        name = "tsssni";
+        email = "dingyongyu2002@foxmail.com";
+      };
+      wired = {
+        enable = true;
+        tunnel = true;
+      };
     };
-    visual.theme.tui.enable = true;
-    wired.ssh.enable = true;
   };
 }

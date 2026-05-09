@@ -6,7 +6,7 @@
 let
   cfg = config.tsssni.devel.version;
   homeCfg = config.tsssni.home;
-  shellCfg = config.tsssni.shell.shell;
+  shellCfg = config.tsssni.intef.shell;
   hasUser = cfg.name != null && cfg.email != null;
   user = {
     inherit (cfg) name email;
@@ -27,18 +27,18 @@ in
 
   config = lib.mkIf cfg.enable {
     programs = {
-      git = lib.optionalAttrs (!homeCfg.standalone) {
+      git = lib.mkIf (!homeCfg.standalone) {
         enable = true;
         signing.format = null;
         settings = {
           credential.helper = "store";
           rebase.pull = "rebase";
-        }
-        // lib.optionalAttrs hasUser { inherit user; };
+          user = lib.mkIf hasUser user;
+        };
       };
-      jujutsu = lib.optionalAttrs (!homeCfg.standalone) {
+      jujutsu = lib.mkIf (!homeCfg.standalone) {
         enable = true;
-        settings = lib.optionalAttrs hasUser { inherit user; };
+        settings.user = lib.mkIf hasUser user;
       };
       direnv = {
         enable = true;

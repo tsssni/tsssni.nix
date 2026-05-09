@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.tsssni.devel.intelli;
-  modelEnv =
+  model =
     name: m:
     pkgs.writeScriptBin name (lib.hm.nushell.mkNushellInline ''
       #!${pkgs.nushell}/bin/nu
@@ -54,12 +54,13 @@ in
       package = pkgs.master.claude-code;
       settings = {
         theme = "dark-ansi";
+        editorMode = "vim";
         alwaysThinkingEnabled = true;
         showThinkingSummaries = true;
       };
     };
 
-    home.packages = lib.mapAttrsToList modelEnv cfg.models;
+    home.packages = lib.mapAttrsToList model cfg.models;
 
     tsssni.devel.intelli.models.deepseek = lib.mkDefault {
       baseUrl = "https://api.deepseek.com/anthropic";

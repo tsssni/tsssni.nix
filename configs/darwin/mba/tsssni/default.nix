@@ -9,29 +9,31 @@
   programs.home-manager.enable = true;
 
   tsssni = {
+    intef = {
+      shell.enable = true;
+      terminal.enable = true;
+    };
+    nixvim.enable = true;
     devel = {
+      aesth = {
+        enable = true;
+        consume = true;
+      };
       intelli.enable = true;
-      script.enable = true;
+      literal = {
+        enable = true;
+        input.type = "squirrel";
+      };
+      science.enable = true;
       version = {
         enable = true;
         name = "tsssni";
         email = "dingyongyu2002@foxmail.com";
       };
-    };
-    nixvim.enable = true;
-    shell = {
-      fetch.enable = true;
-      shell.enable = true;
-      terminal.enable = true;
-    };
-    visual = {
-      ime = {
+      wired = {
         enable = true;
-        type = "squirrel";
+        tunnel = true;
       };
-      media.enable = true;
-      theme.tui.enable = true;
     };
-    wired.ssh.enable = true;
   };
 }

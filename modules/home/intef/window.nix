@@ -5,9 +5,9 @@
   ...
 }:
 let
-  cfg = config.tsssni.visual.window;
-  tuiCfg = config.tsssni.visual.theme.tui;
-  colorCfg = tuiCfg.color;
+  cfg = config.tsssni.intef.window;
+  literatureCfg = config.tsssni.devel.literal;
+  colorCfg = literatureCfg.color;
 
   fzfPicker = lib.getExe (
     pkgs.writeShellApplication {
@@ -40,7 +40,7 @@ let
     }
   );
 
-  monitorToKdl =
+  monitorKdl =
     key: monitor:
     let
       join = nodes: lib.concatMapStringsSep " " (n: "${n};") (lib.filter (s: s != "") nodes);
@@ -68,32 +68,26 @@ let
       ];
     in
     ''output "${name}" { ${body} }'';
+  outputsKdl = lib.concatStringsSep "\n\n" (lib.mapAttrsToList monitorKdl cfg.monitors);
 
-  outputsKdl = lib.concatStringsSep "\n\n" (lib.mapAttrsToList monitorToKdl cfg.monitors);
-
-  borderExtraKdl = lib.optionalString tuiCfg.enable (
+  borderKdl = lib.optionalString literatureCfg.enable (
     lib.concatStringsSep "\n" [
       ''active-color "${colorCfg.lightBlack}"''
       ''inactive-color "${colorCfg.lightBlack}"''
       ''urgent-color "${colorCfg.lightBlack}"''
     ]
   );
-
-  focusRingExtraKdl =
+  focusRingKdl =
     let
       gradient = ''from="${colorCfg.lightBlue}" to="${colorCfg.lightCyan}" angle=180 relative-to="workspace-view"'';
     in
-    lib.optionalString tuiCfg.enable (
+    lib.optionalString literatureCfg.enable (
       lib.concatStringsSep "\n" [
         "active-gradient ${gradient}"
         "inactive-gradient ${gradient}"
         "urgent-gradient ${gradient}"
       ]
     );
-
-  awwwLayerRuleKdl = ''
-    layer-rule { match namespace="^awww"; place-within-backdrop true; }
-  '';
 
   niriKdl = ''
     input {
@@ -116,11 +110,11 @@ let
         preset-window-heights { proportion 0.5; proportion 1.0; }
         border {
             width 2
-            ${borderExtraKdl}
+            ${borderKdl}
         }
         focus-ring {
             width 5
-            ${focusRingExtraKdl}
+            ${focusRingKdl}
         }
         shadow { off; }
     }
@@ -133,7 +127,7 @@ let
 
     window-rule { clip-to-geometry true; geometry-corner-radius 20.0; }
     prefer-no-csd
-    ${awwwLayerRuleKdl}
+    layer-rule { match namespace="^awww"; place-within-backdrop true; }
     layer-rule { match namespace="^april-shell$"; background-effect { blur true; }; }
 
     binds {
@@ -177,8 +171,9 @@ let
   '';
 in
 {
-  options.tsssni.visual.window = {
-    enable = lib.mkEnableOption "tsssni.visual.window";
+  options.tsssni.intef.window = {
+    enable = lib.mkEnableOption "tsssni.intef.window";
+
     monitors = lib.mkOption {
       type =
         with lib.types;
@@ -187,33 +182,27 @@ in
             name = lib.mkOption {
               type = nullOr str;
               default = null;
-              description = "Output name. Defaults to the attribute key.";
             };
             width = lib.mkOption {
               type = nullOr int;
               default = null;
-              description = "Output resolution width in pixels.";
             };
             height = lib.mkOption {
               type = nullOr int;
               default = null;
-              description = "Output resolution height in pixels.";
             };
             refresh = lib.mkOption {
               type = nullOr float;
               default = null;
-              description = "Output refresh rate. When null, picks the highest available.";
             };
             scale = lib.mkOption {
               type = nullOr float;
               default = null;
-              description = "Output scale. Represents how many physical pixels fit in one logical pixel.";
             };
             transform = {
               flipped = lib.mkOption {
                 type = bool;
                 default = false;
-                description = "Whether to flip this output vertically.";
               };
               rotation = lib.mkOption {
                 type = enum [
@@ -223,7 +212,6 @@ in
                   270
                 ];
                 default = 0;
-                description = "Counter-clockwise rotation of this output in degrees.";
               };
             };
             position = lib.mkOption {
@@ -234,52 +222,74 @@ in
                 };
               });
               default = null;
-              description = "Position in global coordinate space. Affects directional monitor actions and cursor movement.";
             };
             wallpaper = lib.mkOption {
               type = nullOr path;
               default = null;
-              description = "Wallpaper image path for this output.";
             };
           };
         });
       default = { };
     };
+
     sunset = {
-      enable = lib.mkEnableOption "tsssni.visual.window.sunset";
+      enable = lib.mkEnableOption "tsssni.intef.window.sunset";
       coordinate = {
         latitude = lib.mkOption {
           type = lib.types.float;
           default = 35.6620;
-          description = ''
-            Your current latitude, between `-90.0` and `90.0`.
-          '';
         };
         longitude = lib.mkOption {
           type = lib.types.float;
           default = 139.7038;
-          description = ''
-            Your current longitude, between `-180.0` and `180.0`.
-          '';
         };
       };
       temperature = {
         day = lib.mkOption {
           type = lib.types.int;
           default = 6504;
-          description = ''
-            Colour temperature to use during the day, in Kelvin (K).
-            This value must be greater than `temperature.night`.
-          '';
         };
         night = lib.mkOption {
           type = lib.types.int;
           default = 3450;
-          description = ''
-            Colour temperature to use during the night, in Kelvin (K).
-            This value must be smaller than `temperature.day`.
-          '';
         };
+      };
+    };
+
+    theme = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.fluent-gtk-theme;
+      };
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Fluent";
+      };
+    };
+
+    icon = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.adwaita-icon-theme;
+      };
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Adwaita";
+      };
+    };
+
+    cursor = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.apple-cursor;
+      };
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "macOS";
+      };
+      size = lib.mkOption {
+        type = lib.types.int;
+        default = 24;
       };
     };
   };
@@ -342,11 +352,38 @@ in
       };
     };
 
-    home.packages = with pkgs; [
-      niri
-      april-shell
-      xwayland-satellite
-      wl-clipboard
-    ];
+    gtk = rec {
+      enable = true;
+      theme = cfg.theme;
+      iconTheme = cfg.icon;
+      font = literatureCfg.font.latinFont;
+      colorScheme = "dark";
+      gtk2.extraConfig = "gtk-application-prefer-dark-theme = 1";
+      gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+      gtk4 = {
+        inherit theme;
+        extraConfig.gtk-application-prefer-dark-theme = 1;
+      };
+    };
+
+    qt = {
+      enable = true;
+      platformTheme.name = "gtk";
+    };
+
+    home = {
+      packages = with pkgs; [
+        niri
+        april-shell
+        xwayland-satellite
+        wl-clipboard
+        xdg-utils
+        dconf
+      ];
+      pointerCursor = {
+        gtk.enable = true;
+      }
+      // cfg.cursor;
+    };
   };
 }
