@@ -9,10 +9,7 @@
   programs.home-manager.enable = true;
 
   tsssni = {
-    intef = {
-      shell.enable = true;
-      terminal.enable = true;
-    };
+    intef.shell.enable = true;
     nixvim.enable = true;
     devel = {
       literal.enable = true;
