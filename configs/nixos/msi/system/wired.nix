@@ -1,15 +1,12 @@
 { ... }:
 {
-  tsssni = {
+  tsssni.infra = {
     wired = {
-      network = {
-        enable = true;
-        hostName = "msi";
-      };
-      sing-box.enable = true;
-      ssh.enable = true;
+      enable = true;
+      host = "msi";
+      tunnel = true;
     };
-    secret.enable = true;
+    crypto.enable = true;
   };
 
   services.samba = {

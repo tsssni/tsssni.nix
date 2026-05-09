@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.tsssni.wired.sing-box;
+  cfg = config.tsssni.infra.crypto;
   geoip = [
     "geoip-cn"
   ];
@@ -18,11 +18,14 @@ let
   rule_set = geoip ++ geosite;
 in
 {
-  options.tsssni.wired.sing-box = {
-    enable = lib.mkEnableOption "tsssni.wired.sing-box";
+  options.tsssni.infra.crypto = {
+    enable = lib.mkEnableOption "tsssni.infra.crypto";
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      agenix
+    ];
     age.secrets = {
       "sbx-passwd" = {
         file = ./config/sbx-passwd.age;

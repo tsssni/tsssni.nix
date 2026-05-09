@@ -5,11 +5,11 @@
   ...
 }:
 let
-  cfg = config.tsssni.shell;
+  cfg = config.tsssni.infra.shell;
 in
 {
-  options.tsssni.shell = {
-    enable = lib.mkEnableOption "tsssni.shell";
+  options.tsssni.infra.shell = {
+    enable = lib.mkEnableOption "tsssni.infra.shell";
     package = lib.mkPackageOption pkgs "nushell" { };
   };
 

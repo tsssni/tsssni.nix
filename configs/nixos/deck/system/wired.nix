@@ -1,11 +1,11 @@
 { ... }:
 {
-  tsssni.wired = {
-    network = {
+  tsssni.infra = {
+    crypto.enable = true;
+    wired = {
       enable = true;
-      hostName = "deck";
+      host = "deck";
+      tunnel = true;
     };
-    sing-box.enable = true;
-    ssh.enable = true;
   };
 }

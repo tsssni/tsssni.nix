@@ -5,24 +5,20 @@
   ...
 }:
 let
-  cfg = config.tsssni.shell.shell;
+  cfg = config.tsssni.intef.shell;
   homeCfg = config.tsssni.home;
-  imeCfg = config.tsssni.visual.ime;
-  guiCfg = config.tsssni.visual.theme.gui;
-  cursorCfg = guiCfg.cursor;
-  zjstatusPlugin = ''
-    zjstatus location="file://${pkgs.zjstatus}/bin/zjstatus.wasm" {
-        format_left "{tabs}"
-        tab_normal "#[fg=7]π"
-        tab_active "#[fg=7,bold]λ"
-    }
-  '';
+  literatureCfg = config.tsssni.devel.literal;
+  windowCfg = config.tsssni.intef.window;
+  cursorCfg = windowCfg.cursor;
+
   scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
   homeEnvs = {
     PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin")'';
   }
-  // lib.optionalAttrs (imeCfg.enable && imeCfg.type == "ibus") {
-    IBUS_COMPONENT_PATH = "/usr/share/ibus/component:${pkgs.ibus-engines.rime.override { rimeDataPkgs = [ pkgs.rime-arisa ]; }}/share/ibus/component";
+  // lib.optionalAttrs (literatureCfg.enable && literatureCfg.input.type == "ibus") {
+    IBUS_COMPONENT_PATH = "/usr/share/ibus/component:${
+      pkgs.ibus-engines.rime.override { rimeDataPkgs = [ pkgs.rime-arisa ]; }
+    }/share/ibus/component";
   };
   darwinEnvs = {
     PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin")'';
@@ -32,8 +28,16 @@ let
     arr
     |> map (x: "source ${scriptsPath}/custom-completions/${x}/${x}-completions.nu")
     |> lib.concatStringsSep "\n";
-  zjCmd = lib.hm.nushell.mkNushellInline ''
-    def zj [path?: directory] {
+
+  zjstatus = ''
+    zjstatus location="file://${pkgs.zjstatus}/bin/zjstatus.wasm" {
+        format_left "{tabs}"
+        tab_normal "#[fg=7]π"
+        tab_active "#[fg=7,bold]λ"
+    }
+  '';
+  multiplex = lib.hm.nushell.mkNushellInline ''
+    def "multiplex spawn" [path?: directory] {
       let target = if $path == null {
         pwd
       } else {
@@ -43,18 +47,31 @@ let
         }
         $abs
       }
-      let base = $target | path basename | str replace --all --regex '[^a-zA-Z0-9_-]' '_'
-      let hash = $target | hash md5 | str substring 0..7
-      let name = $"($base)-($hash)"
-      zellij delete-session $name err> /dev/null
+      let name = $target | hash md5 | str substring 0..7
       cd $target
+      try { zellij delete-session $name }
       zellij attach --create $name
     }
+
+    def "multiplex clear" [] {
+      zellij ka --yes
+      zellij da --yes
+    }
+  '';
+
+  nixSmallLogo = pkgs.writeText "nix-small.txt" ''
+    $1  \\  $2\\ //
+    $1 ==\\__$2\\/ $1//
+    $2   //   \\$1//
+    $2==//     $1//==
+    $2 //$1\\$2___$1//
+    $2// $1/\\  $2\\==
+    $1  // \\  $2\\
   '';
 in
 {
-  options.tsssni.shell.shell = {
-    enable = lib.mkEnableOption "tsssni.shell.shell";
+  options.tsssni.intef.shell = {
+    enable = lib.mkEnableOption "tsssni.intef.shell";
   };
 
   config = lib.mkIf cfg.enable {
@@ -71,7 +88,6 @@ in
             vi_insert = "line";
           };
           completions.algorithm = "prefix";
-          use_kitty_protocol = true;
           table.missing_value_symbol = "";
         };
         environmentVariables = {
@@ -93,23 +109,25 @@ in
             }
           '';
         }
-        // (
-          lib.optionalAttrs guiCfg.enable {
-            XCURSOR_SIZE = cursorCfg.size;
-            XCURSOR_THEME = cursorCfg.name;
-            QT_QPA_PLATFORMTHEME = "qt5ct";
-            XDG_SESSION_TYPE = "wayland";
-          }
-        )
+        // (lib.optionalAttrs windowCfg.enable {
+          XCURSOR_SIZE = cursorCfg.size;
+          XCURSOR_THEME = cursorCfg.name;
+          QT_QPA_PLATFORMTHEME = "qt5ct";
+          XDG_SESSION_TYPE = "wayland";
+        })
         // (lib.optionalAttrs homeCfg.standalone homeEnvs)
         // (lib.optionalAttrs pkgs.stdenv.isDarwin darwinEnvs);
-        configFile.text = (completions [
-          "git"
-          "jj"
-          "nix"
-          "zellij"
-        ]) + "\n\n" + zjCmd.expr;
+        configFile.text =
+          (completions [
+            "git"
+            "jj"
+            "nix"
+            "zellij"
+          ])
+          + "\n\n"
+          + multiplex.expr;
       };
+
       zellij = {
         enable = true;
         settings = {
@@ -117,6 +135,8 @@ in
           show_startup_tips = false;
           default_mode = "Normal";
           default_layout = "copilot";
+          default_shell = "nu";
+          mouse_mode = true;
         };
         extraConfig = ''
           keybinds clear-defaults=true {
@@ -228,7 +248,7 @@ in
           }
 
           plugins {
-              ${zjstatusPlugin}
+              ${zjstatus}
           }
         '';
         layouts.copilot = ''
@@ -240,6 +260,78 @@ in
           }
         '';
       };
+
+      fastfetch = {
+        enable = true;
+        package = with pkgs; if homeCfg.standalone then null else fastfetch;
+        settings = {
+          logo = {
+            type = "file";
+            source = "${nixSmallLogo}";
+            color = {
+              "1" = "light_blue";
+              "2" = "light_cyan";
+            };
+          };
+          modules = [
+            {
+              type = "cpu";
+              format = "{name}";
+              key = " 芯";
+              keyColor = "light_blue";
+            }
+            {
+              type = "cpu";
+              format = "{march}";
+              key = "󰭄 构";
+              keyColor = "light_magenta";
+            }
+            {
+              type = "opengl";
+              format = "{library} {slv}";
+              key = "󰾲 显";
+              keyColor = "light_cyan";
+            }
+          ]
+          ++ lib.optionals pkgs.stdenv.isLinux [
+            {
+              type = "vulkan";
+              format = "Vulkan {api-version}";
+              key = "󰡷 图";
+              keyColor = "blue";
+            }
+          ]
+          ++ lib.optionals pkgs.stdenv.isDarwin [
+            {
+              type = "gpu";
+              format = "{platform-api}";
+              key = "󰡷 图";
+              keyColor = "blue";
+            }
+          ]
+          ++ [
+            {
+              type = "os";
+              format = "{name} {codename}";
+              key = "󱄅 系";
+              keyColor = "light_red";
+            }
+            {
+              type = "kernel";
+              format = "{sysname} {release}";
+              key = " 核";
+              keyColor = "light_white";
+            }
+            {
+              type = "shell";
+              format = "{exe-name} {version}";
+              key = " 壳";
+              keyColor = "light_green";
+            }
+          ];
+        };
+      };
+
       btop = {
         enable = true;
         package = if homeCfg.standalone then null else pkgs.btop;

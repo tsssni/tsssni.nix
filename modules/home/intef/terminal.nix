@@ -5,16 +5,14 @@
   ...
 }:
 let
-  cfg = config.tsssni.shell.terminal;
+  cfg = config.tsssni.intef.terminal;
   homeCfg = config.tsssni.home;
-  tuiCfg = config.tsssni.visual.theme.tui;
-  colorCfg = tuiCfg.color;
-  fontCfg = tuiCfg.font;
+  literatureCfg = config.tsssni.devel.literal;
+  colorCfg = literatureCfg.color;
+  fontCfg = literatureCfg.font;
 in
 {
-  options.tsssni.shell.terminal = {
-    enable = lib.mkEnableOption "tsssni.shell.terminal";
-  };
+  options.tsssni.intef.terminal.enable = lib.mkEnableOption "tsssni.intef.terminal";
 
   config = lib.mkIf cfg.enable {
     programs.ghostty = {
@@ -41,16 +39,14 @@ in
           "ctrl+equal=increase_font_size:1"
           "ctrl+minus=decrease_font_size:1"
         ];
-      }
-      // (lib.optionalAttrs tuiCfg.enable {
-        theme = "plana";
-        font-family = [
+        theme = lib.mkIf literatureCfg.enable "plana";
+        font-family = lib.mkIf literatureCfg.enable [
           fontCfg.nerdFont.name
           fontCfg.latinFont.name
         ];
-        font-size = fontCfg.nerdFont.size;
-      });
-      themes = lib.optionalAttrs tuiCfg.enable {
+        font-size = lib.mkIf literatureCfg.enable fontCfg.nerdFont.size;
+      };
+      themes = lib.mkIf literatureCfg.enable {
         plana = {
           palette = builtins.genList (i: "${toString i}=${builtins.elemAt colorCfg.palette i}") 16;
           foreground = colorCfg.foreground;
