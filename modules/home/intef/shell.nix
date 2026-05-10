@@ -277,7 +277,7 @@ in
             {
               type = "cpu";
               format = "{name}";
-              key = " 芯";
+              key = " 芯";
               keyColor = "light_blue";
             }
             {
@@ -314,18 +314,18 @@ in
               type = "os";
               format = "{name} {codename}";
               key = "󱄅 系";
-              keyColor = "light_red";
+              keyColor = "magenta";
             }
             {
               type = "kernel";
               format = "{sysname} {release}";
-              key = " 核";
+              key = " 核";
               keyColor = "light_white";
             }
             {
               type = "shell";
               format = "{exe-name} {version}";
-              key = " 壳";
+              key = " 壳";
               keyColor = "light_green";
             }
           ];
