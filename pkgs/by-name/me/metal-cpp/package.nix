@@ -4,14 +4,24 @@
   lib,
   apple-sdk_26,
   cmake,
+  version ? null,
 }:
-stdenv.mkDerivation rec {
+let
+  hashes = import ./hashes.nix;
+  modernVersions = lib.filter (v: builtins.match "[0-9]+(\\.[0-9]+)?" v != null) (
+    builtins.attrNames hashes
+  );
+  latest = lib.head (lib.sort (a: b: builtins.compareVersions a b > 0) modernVersions);
+  selected = if version == null then latest else version;
+  hash = hashes.${selected} or (throw "metal-cpp: unknown version \"${selected}\"");
+in
+stdenv.mkDerivation {
   pname = "metal-cpp";
-  version = "26";
+  version = selected;
 
   src = fetchzip {
-    url = "https://developer.apple.com/metal/cpp/files/metal-cpp_${version}.zip";
-    hash = "sha256-7n2eI2lw/S+Us6l7YPAATKwcIbRRpaQ8VmES7S8ZjY8=";
+    url = "https://developer.apple.com/metal/cpp/files/metal-cpp_${selected}.zip";
+    inherit hash;
     stripRoot = true;
   };
 
