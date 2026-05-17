@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -46,5 +47,10 @@ in
         nix-direnv.enable = true;
       };
     };
+
+    home.packages = with pkgs; [
+      gh
+      nurl
+    ];
   };
 }

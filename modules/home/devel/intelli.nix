@@ -51,7 +51,6 @@ in
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
-      package = pkgs.master.claude-code;
       settings = {
         theme = "dark-ansi";
         editorMode = "vim";

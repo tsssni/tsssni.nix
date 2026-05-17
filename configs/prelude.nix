@@ -52,18 +52,18 @@ let
         with args.inputs;
         (
           [
-            (final: prev: {
-              agenix = agenix.packages.${args.system}.default;
-              zjstatus = zjstatus.packages.${args.system}.default;
-              master = import nixpkgs-master {
-                inherit (args) system;
-                config = final.config;
-              };
-              cherry = import nixpkgs-cherry {
-                inherit (args) system;
-                config = final.config;
-              };
-            })
+            (final: prev:
+              let
+                master = import nixpkgs-master {
+                  inherit (args) system;
+                  config = final.config;
+                };
+              in
+              {
+                agenix = agenix.packages.${args.system}.default;
+                zjstatus = zjstatus.packages.${args.system}.default;
+                inherit (master) claude-code;
+              })
           ]
           ++ (import ../pkgs lib)
         );
