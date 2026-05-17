@@ -7,5 +7,5 @@ let
   ];
 in
 {
-  "sbx-passwd.age".publicKeys = publicKeys;
+  "passwd.age".publicKeys = publicKeys;
 }

@@ -28,7 +28,7 @@ in
     ];
     age.secrets = {
       "sbx-passwd" = {
-        file = ./config/sbx-passwd.age;
+        file = ./config/passwd.age;
         mode = "440";
       };
     };
