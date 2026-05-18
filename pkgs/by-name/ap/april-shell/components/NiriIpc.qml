@@ -12,7 +12,11 @@ Item {
     readonly property var focusedWorkspaceWindows: {
         if (focusedWorkspaceId < 0)
             return [];
-        return windows.filter(w => w.workspace_id === focusedWorkspaceId).slice().sort((a, b) => a.layout.pos_in_scrolling_layout[0] - b.layout.pos_in_scrolling_layout[0]);
+        return windows.filter(w => w.workspace_id === focusedWorkspaceId).slice().sort((a, b) => {
+            const ap = a.layout.pos_in_scrolling_layout;
+            const bp = b.layout.pos_in_scrolling_layout;
+            return ap[0] - bp[0] || ap[1] - bp[1];
+        });
     }
 
     function focusWindow(windowId) {

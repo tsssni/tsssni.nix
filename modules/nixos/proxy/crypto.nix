@@ -21,7 +21,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    age.secrets."proxy-passwd".file = ./config/passwd.age;
+    age.secrets."proxy-passwd".file = cfg.passwd;
     services.sing-box = {
       enable = true;
       settings.inbounds = [

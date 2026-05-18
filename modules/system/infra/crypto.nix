@@ -20,15 +20,15 @@ in
 {
   options.tsssni.infra.crypto = {
     enable = lib.mkEnableOption "tsssni.infra.crypto";
+    passwd = lib.mkOption {
+      type = lib.types.path;
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      agenix
-    ];
     age.secrets = {
       "sbx-passwd" = {
-        file = ./config/passwd.age;
+        file = cfg.passwd;
         mode = "440";
       };
     };

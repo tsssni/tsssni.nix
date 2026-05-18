@@ -6,7 +6,10 @@
       host = "msi";
       tunnel = true;
     };
-    crypto.enable = true;
+    crypto = {
+      enable = true;
+      passwd = ../../../../assets/infra/passwd.age;
+    };
   };
 
   services.samba = {

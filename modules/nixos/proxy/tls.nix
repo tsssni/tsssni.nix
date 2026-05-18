@@ -11,7 +11,7 @@ in
 {
   config = lib.mkIf cfg.enable {
     age.secrets."proxy-cloudflare" = {
-      file = ./config/cloudflare.age;
+      file = cfg.cloudflareApiToken;
       group = "acme";
       mode = "0440";
     };

@@ -22,5 +22,11 @@
     gateway = lib.mkOption {
       type = lib.types.listOf lib.types.str;
     };
+    passwd = lib.mkOption {
+      type = lib.types.path;
+    };
+    cloudflareApiToken = lib.mkOption {
+      type = lib.types.path;
+    };
   };
 }

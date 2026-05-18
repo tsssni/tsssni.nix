@@ -20,6 +20,9 @@
 
   tsssni.infra = {
     shell.enable = true;
-    crypto.enable = true;
+    crypto = {
+      enable = true;
+      passwd = ../../../../assets/infra/passwd.age;
+    };
   };
 }

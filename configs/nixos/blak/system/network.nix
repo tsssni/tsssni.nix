@@ -7,5 +7,7 @@
     hostName = "blak";
     address = [ "38.59.242.113/22" ];
     gateway = [ "38.59.240.1" ];
+    passwd = ../../../../assets/proxy/passwd.age;
+    cloudflareApiToken = ../../../../assets/proxy/cloudflare.age;
   };
 }
