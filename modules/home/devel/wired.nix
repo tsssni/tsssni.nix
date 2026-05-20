@@ -36,7 +36,7 @@ in
         includes = [
           "~/.ssh/config.d/*"
         ];
-        matchBlocks."*" = {
+        settings."*" = {
           forwardAgent = true;
           addKeysToAgent = "yes";
           hashKnownHosts = true;

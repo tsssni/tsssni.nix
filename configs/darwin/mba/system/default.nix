@@ -23,6 +23,10 @@
     crypto = {
       enable = true;
       passwd = ../../../../assets/infra/passwd.age;
+      domains = [
+        "tsssni.top"
+        "tsssni.biz"
+      ];
     };
   };
 }

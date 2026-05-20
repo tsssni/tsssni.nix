@@ -23,6 +23,9 @@ in
     passwd = lib.mkOption {
       type = lib.types.path;
     };
+    domains = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -102,7 +105,7 @@ in
                   type = "selector";
                   tag = "wired";
                   outbounds = (map (attr: attr.tag) attrs) ++ [ "direct" ];
-                  default = "hy4";
+                  default = (lib.last attrs).tag;
                 }
               ]
               ++ map (attr: mkOutbound attr) attrs
@@ -114,28 +117,20 @@ in
                 }
               ];
           in
-          mkOutbounds [
-            {
-              tag = "hy1";
-              type = "trojan";
-              server = "tsssni.top";
-            }
-            {
-              tag = "hy2";
-              type = "hysteria2";
-              server = "tsssni.top";
-            }
-            {
-              tag = "hy3";
-              type = "trojan";
-              server = "tsssni.biz";
-            }
-            {
-              tag = "hy4";
-              type = "hysteria2";
-              server = "tsssni.biz";
-            }
-          ];
+          mkOutbounds (
+            lib.imap1 (i: attr: attr // { tag = "hy${toString i}"; }) (
+              lib.concatMap (server: [
+                {
+                  type = "trojan";
+                  inherit server;
+                }
+                {
+                  type = "hysteria2";
+                  inherit server;
+                }
+              ]) cfg.domains
+            )
+          );
         route = {
           rules = [
             {
