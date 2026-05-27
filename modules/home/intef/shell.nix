@@ -7,18 +7,10 @@
 let
   cfg = config.tsssni.intef.shell;
   homeCfg = config.tsssni.home;
-  literatureCfg = config.tsssni.devel.literal;
-  windowCfg = config.tsssni.intef.window;
-  cursorCfg = windowCfg.cursor;
 
   scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
   homeEnvs = {
     PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin" | uniq)'';
-  }
-  // lib.optionalAttrs (literatureCfg.enable && literatureCfg.input.type == "ibus") {
-    IBUS_COMPONENT_PATH = "/usr/share/ibus/component:${
-      pkgs.ibus-engines.rime.override { rimeDataPkgs = [ pkgs.rime-arisa ]; }
-    }/share/ibus/component";
   };
   darwinEnvs = {
     PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin" | uniq)'';
@@ -59,53 +51,6 @@ let
     }
   '';
 
-  versionAsync = lib.hm.nushell.mkNushellInline ''
-    def version-cache-file [] {
-      let tmp = $env.TMPDIR? | default "/tmp"
-      $"($tmp)/nu-version-($env.PWD | hash md5)"
-    }
-
-    def version-mtimes [] {
-      ["." ".git/index" ".git/HEAD" ".jj/working_copy/checkout"] | each {|src|
-        if ($src | path exists) { ls -D $src | get 0.modified } else { null }
-      }
-    }
-
-    def version-compute [] {
-      let cache_file = version-cache-file
-      let mtimes = version-mtimes
-      let render = try {
-        let bookmark = try { jj log -r '@ | @-' --no-graph -T 'local_bookmarks' err> /dev/null | str trim }
-        let branch = if ($bookmark | is-not-empty) {
-          $bookmark
-        } else {
-          try { git rev-parse --abbrev-ref HEAD err> /dev/null | str trim } catch { "" }
-        }
-        if ($branch | is-empty) {
-          ""
-        } else {
-          let unstaged = (git diff --quiet | complete).exit_code != 0
-          let staged = (git diff --cached --quiet | complete).exit_code != 0
-          let markers = [(if $unstaged { $"(ansi light_red)~(ansi reset)" }) (if $staged { $"(ansi light_green)+(ansi reset)" })] | compact | str join " "
-          let suffix = if $markers != "" { $" ($markers)" } else { "" }
-          $"(ansi light_blue)($branch)(ansi reset)($suffix) "
-        }
-      } catch { "" }
-      {render: $render, mtimes: $mtimes} | to nuon | save -f $cache_file
-    }
-
-    def version-read [] {
-      let cache_file = version-cache-file
-      let stale = if not ($cache_file | path exists) {
-        true
-      } else {
-        try { (open --raw $cache_file | from nuon | get mtimes) != version-mtimes } catch { true }
-      }
-      if $stale { version-compute }
-      try { open --raw $cache_file | from nuon | get render } catch { "" }
-    }
-  '';
-
   nixSmallLogo = pkgs.writeText "nix-small.txt" ''
     $1  \\  $2\\ //
     $1 ==\\__$2\\/ $1//
@@ -119,6 +64,10 @@ in
 {
   options.tsssni.intef.shell = {
     enable = lib.mkEnableOption "tsssni.intef.shell";
+    environmentVariables = lib.mkOption {
+      type = lib.types.attrsOf lib.hm.types.nushellValue;
+      default = { };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -137,25 +86,11 @@ in
           completions.algorithm = "prefix";
           table.missing_value_symbol = "";
         };
-        environmentVariables = {
-          EDITOR = "nvim";
-          PROMPT_COMMAND = lib.hm.nushell.mkNushellInline "{||}";
-          PROMPT_COMMAND_RIGHT = lib.hm.nushell.mkNushellInline ''
-            {||
-              let exit_code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
-              let version = version-read
-              $"($version)($exit_code)"
-            }
-          '';
-        }
-        // (lib.optionalAttrs windowCfg.enable {
-          XCURSOR_SIZE = cursorCfg.size;
-          XCURSOR_THEME = cursorCfg.name;
-          QT_QPA_PLATFORMTHEME = "qt5ct";
-          XDG_SESSION_TYPE = "wayland";
-        })
-        // (lib.optionalAttrs homeCfg.standalone homeEnvs)
-        // (lib.optionalAttrs pkgs.stdenv.isDarwin darwinEnvs);
+        environmentVariables =
+          { }
+          // (lib.optionalAttrs homeCfg.standalone homeEnvs)
+          // (lib.optionalAttrs pkgs.stdenv.isDarwin darwinEnvs)
+          // cfg.environmentVariables;
         configFile.text =
           (completions [
             "git"
@@ -164,9 +99,7 @@ in
             "zellij"
           ])
           + "\n\n"
-          + multiplex.expr
-          + "\n\n"
-          + versionAsync.expr;
+          + multiplex.expr;
       };
 
       zellij = {

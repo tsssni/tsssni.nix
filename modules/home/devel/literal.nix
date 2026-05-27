@@ -157,22 +157,33 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni.devel.literal.color = builtins.listToAttrs (
-      lib.imap0 (i: x: {
-        name = x;
-        value = lib.mkDefault (builtins.elemAt colorCfg.palette i);
-      }) colorList
-    );
+    tsssni = {
+      devel.literal.color = builtins.listToAttrs (
+        lib.imap0 (i: x: {
+          name = x;
+          value = lib.mkDefault (builtins.elemAt colorCfg.palette i);
+        }) colorList
+      );
+      intef.shell.environmentVariables =
+        { }
+        // lib.optionalAttrs (inputType == "fcitx5") {
+          GTK_IM_MODULE = "wayland";
+        }
+        // lib.optionalAttrs (inputType == "ibus" && homeCfg.standalone) {
+          IBUS_COMPONENT_PATH = "/usr/share/ibus/component:${ibusRime}/share/ibus/component";
+        };
+    };
 
     i18n.inputMethod =
-      lib.optionalAttrs (inputType != "none" && pkgs.stdenv.isLinux && !homeCfg.standalone) (
-        {
-          enable = true;
-          type = inputType;
-        }
-        // lib.optionalAttrs (inputType == "fcitx5") { fcitx5 = fcitx5Cfg; }
-        // lib.optionalAttrs (inputType == "ibus") { ibus = ibusCfg; }
-      );
+      lib.optionalAttrs (inputType != "none" && pkgs.stdenv.isLinux && !homeCfg.standalone)
+        (
+          {
+            enable = true;
+            type = inputType;
+          }
+          // lib.optionalAttrs (inputType == "fcitx5") { fcitx5 = fcitx5Cfg; }
+          // lib.optionalAttrs (inputType == "ibus") { ibus = ibusCfg; }
+        );
 
     home = {
       packages = with fontCfg; [
@@ -190,15 +201,13 @@ in
             else
               null;
         in
-        lib.mkIf
-          (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.isDarwin))
-          {
-            "${path}" = {
-              source = "${pkgs.rime-arisa}/share/rime-data";
-              recursive = true;
-              force = true;
-            };
+        lib.mkIf (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.isDarwin)) {
+          "${path}" = {
+            source = "${pkgs.rime-arisa}/share/rime-data";
+            recursive = true;
+            force = true;
           };
+        };
     };
   };
 }
