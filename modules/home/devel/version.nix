@@ -31,6 +31,7 @@ in
       PROMPT_COMMAND = lib.hm.nushell.mkNushellInline "{||}";
       PROMPT_COMMAND_RIGHT = lib.hm.nushell.mkNushellInline ''
         {||
+          let code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
           let cache = $"($env.TMPDIR? | default "/tmp")/nu-version-($env.PWD | hash md5)"
           let entries = [".jj/repo/op_heads/heads" ".git/HEAD" ".git/index" "." ]
           let mtimes = $entries | each {|entry| try { ls -D $entry | get 0.modified }}
@@ -54,7 +55,6 @@ in
             {render: $render, mtimes: $mtimes} | to nuon | save -f $cache
             $render
           }
-          let code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
           $"($version)($code)"
         }
       '';
