@@ -154,6 +154,7 @@ let
         Mod+Ctrl+L { move-column-right; }
         Mod+Ctrl+J { move-window-down; }
         Mod+Ctrl+K { move-window-up; }
+        Mod+Ctrl+F { toggle-window-floating; }
         Mod+Ctrl+X { center-column; }
         Mod+Ctrl+I { consume-or-expel-window-left; }
         Mod+Ctrl+O { consume-or-expel-window-right; }
