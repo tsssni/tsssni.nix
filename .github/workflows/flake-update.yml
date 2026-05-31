@@ -16,8 +16,12 @@ env:
   CACHIX_CACHE: tsssni
   NIX_EXTRA_CONF: |
     experimental-features = nix-command flakes pipe-operators
-    extra-substituters = https://nix-community.cachix.org https://cache.nixos-cuda.org https://cache.garnix.io
-    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=
+    extra-substituters = https://nix-community.cachix.org
+    extra-substituters = https://cache.nixos-cuda.org
+    extra-substituters = https://jovian.cachix.org
+    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+    extra-trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=
+    extra-trusted-public-keys = jovian.cachix.org-1:8Vq4Txku6VZIRhYrHYki3Ab9XHJRoWmdYqMqj4rB/Uc=
 
 jobs:
   update:

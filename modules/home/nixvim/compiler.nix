@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.tsssni.nixvim;
+  grammars = config.programs.nixvim.plugins.treesitter.package.builtGrammars;
 in
 {
   programs.nixvim = lib.mkIf cfg.enable {
@@ -44,6 +45,38 @@ in
         nixvimInjections = false;
         highlight.enable = true;
         indent.enable = false;
+        grammarPackages = with grammars; [
+          # core
+          c
+          cpp
+          cmake
+          glsl
+          hlsl
+          slang
+          nix
+          # script
+          nu
+          bash
+          lua
+          python
+          # typeset
+          typst
+          latex
+          markdown
+          markdown_inline
+          # embedded
+          query
+          regex
+          printf
+          comment
+          # config
+          kdl
+          json
+          yaml
+          toml
+          # version
+          diff
+        ];
       };
       blink-cmp = {
         enable = true;
