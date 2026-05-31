@@ -6,7 +6,17 @@ Rectangle {
     id: root
 
     required property var niriIpc
-    readonly property var apps: niriIpc.focusedWorkspaceWindows
+    required property string output
+    readonly property var apps: {
+        const ws = niriIpc.workspaces.find(w => w.output === output && w.is_active);
+        if (!ws)
+            return [];
+        return niriIpc.windows.filter(w => w.workspace_id === ws.id).slice().sort((a, b) => {
+            const ap = a.layout.pos_in_scrolling_layout;
+            const bp = b.layout.pos_in_scrolling_layout;
+            return ap[0] - bp[0] || ap[1] - bp[1];
+        });
+    }
 
     visible: apps.length > 0
     implicitWidth: 40

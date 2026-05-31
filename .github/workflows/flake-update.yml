@@ -1,0 +1,152 @@
+name: flake
+
+on:
+  schedule:
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: flake-update
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  CACHIX_CACHE: tsssni
+  NIX_EXTRA_CONF: |
+    experimental-features = nix-command flakes pipe-operators
+    extra-substituters = https://nix-community.cachix.org https://cache.nixos-cuda.org https://cache.garnix.io
+    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    outputs:
+      proceed: ${{ steps.update.outputs.proceed }}
+      head: ${{ steps.update.outputs.head }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: nix
+        uses: DeterminateSystems/nix-installer-action@v22
+        with:
+          extra-conf: ${{ env.NIX_EXTRA_CONF }}
+      - name: update
+        id: update
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          nix flake update
+
+          if git diff --quiet -- flake.lock; then
+            echo "lock unchanged, nothing to do"
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "update found, proceeding"
+          echo "proceed=true" >> "$GITHUB_OUTPUT"
+      - name: upload
+        uses: actions/upload-artifact@v4
+        if: steps.update.outputs.proceed == 'true'
+        with:
+          name: flake-lock
+          path: flake.lock
+          retention-days: 1
+          if-no-files-found: error
+
+  build:
+    needs: update
+    if: needs.update.outputs.proceed == 'true'
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: macos-26
+            platform: darwin
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: nix
+        uses: DeterminateSystems/nix-installer-action@v22
+        with:
+          extra-conf: ${{ env.NIX_EXTRA_CONF }}
+      - name: cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: ${{ env.CACHIX_CACHE }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: download
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-lock
+          path: .
+      - name: build
+        shell: bash
+        run: |
+          set -euo pipefail
+          build_kind() {
+            local kind="$1" attr="$2" names n
+            names=$(nix eval --json ".#${kind}" --apply builtins.attrNames | jq -r '.[]')
+            for n in $names; do
+              echo "::group::build ${kind}.${n}"
+              nix build --no-link --print-out-paths ".#${kind}.${n}.${attr}"
+              echo "::endgroup::"
+            done
+          }
+          if [ "${{ matrix.platform }}" = "linux" ]; then
+            build_kind nixosConfigurations config.system.build.toplevel
+            build_kind homeConfigurations activationPackage
+          else
+            build_kind darwinConfigurations system
+          fi
+
+  commit:
+    needs: [update, build]
+    if: needs.update.outputs.proceed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: master
+      - name: download
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-lock
+          path: .
+      - name: commit
+        env:
+          HEAD_SHA: ${{ needs.update.outputs.head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+
+          if [ "$(git rev-parse HEAD)" != "$HEAD_SHA" ]; then
+            echo "master moved since update (HEAD != ${HEAD_SHA}), deferring to next round"
+            exit 0
+          fi
+
+          git add flake.lock
+          msg=$(git log -1 --format=%s)
+          if [ "$msg" = "flake: update" ]; then
+            git commit --amend --no-edit
+            git push --force-with-lease origin HEAD:master
+          else
+            git commit -m "flake: update"
+            git push origin HEAD:master
+          fi
