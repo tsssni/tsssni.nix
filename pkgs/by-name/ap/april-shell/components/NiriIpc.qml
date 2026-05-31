@@ -9,14 +9,9 @@ Item {
     property int focusedWorkspaceId: -1
     property int focusedWindowId: -1
 
-    readonly property var focusedWorkspaceWindows: {
-        if (focusedWorkspaceId < 0)
-            return [];
-        return windows.filter(w => w.workspace_id === focusedWorkspaceId).slice().sort((a, b) => {
-            const ap = a.layout.pos_in_scrolling_layout;
-            const bp = b.layout.pos_in_scrolling_layout;
-            return ap[0] - bp[0] || ap[1] - bp[1];
-        });
+    readonly property string focusedOutput: {
+        const ws = workspaces.find(w => w.id === focusedWorkspaceId);
+        return ws ? ws.output : "";
     }
 
     function focusWindow(windowId) {

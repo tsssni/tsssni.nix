@@ -111,6 +111,7 @@ in
           default_layout = "copilot";
           default_shell = "nu";
           mouse_mode = true;
+          advanced_mouse_actions = false;
         };
         extraConfig = ''
           keybinds clear-defaults=true {
