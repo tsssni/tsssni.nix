@@ -67,6 +67,18 @@
           ];
         };
       };
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      systemAttrs = f: system: { ${system} = f system; };
+      mapSystems = f: systems |> lib.map (systemAttrs f) |> lib.mergeAttrsList;
+      byNameOverlay = import ./pkgs/by-name-overlay.nix lib ./pkgs/by-name;
+      packageNames =
+        byNameOverlay { } { }
+        |> builtins.attrNames
+        |> lib.filter (name: name != "_internalCallByNamePackageFile");
       collectConfigs =
         folder:
         folder
@@ -80,8 +92,20 @@
         );
     in
     {
-      pkgs = import ./pkgs lib;
       lib = import ./lib lib;
+      pkgs = import ./pkgs lib;
+      packages = mapSystems (
+        system:
+        let
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = self.pkgs;
+            config.allowUnfree = true;
+          };
+        in
+        lib.genAttrs packageNames (name: pkgs.${name})
+        |> lib.filterAttrs (_: drv: lib.meta.availableOn { inherit system; } drv)
+      );
       nixosModules = {
         tsssni = import ./modules/nixos;
         default = self.nixosModules.tsssni;
