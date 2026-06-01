@@ -1,4 +1,5 @@
 {
+  lib,
   makeWrapper,
   kdePackages,
   quickshell,
@@ -19,5 +20,8 @@ stdenvNoCC.mkDerivation rec {
       --set QML2_IMPORT_PATH "${qtdeclarative}/lib/qt-6/qml:${qt5compat}/lib/qt-6/qml:${quickshell}/lib/qt-6/qml"
   '';
 
-  meta.mainProgram = "april-shell";
+  meta = {
+    mainProgram = "april-shell";
+    platforms = lib.platforms.linux;
+  };
 }

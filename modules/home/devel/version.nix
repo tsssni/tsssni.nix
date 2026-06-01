@@ -33,7 +33,7 @@ in
         {||
           let code = if $env.LAST_EXIT_CODE != 0 { $"(ansi red)($env.LAST_EXIT_CODE)(ansi reset) " } else { "" }
           let cache = $"($env.TMPDIR? | default "/tmp")/nu-version-($env.PWD | hash md5)"
-          let entries = [".jj/repo/op_heads/heads" ".git/HEAD" ".git/index" "." ]
+          let entries = [ ".jj/repo/op_heads/heads" ".git/HEAD" ]
           let mtimes = $entries | each {|entry| try { ls -D $entry | get 0.modified }}
           let stale = try { (open --raw $cache | from nuon | get mtimes) != $mtimes } catch { true }
           let bookmark = if not $stale { "" } else { try {
@@ -47,11 +47,7 @@ in
             {render: "", mtimes: $mtimes} | to nuon | save -f $cache
             ""
           } else {
-            let unstaged = (git diff --quiet | complete).exit_code != 0
-            let staged = (git diff --cached --quiet | complete).exit_code != 0
-            let markers = [(if $unstaged { $"(ansi light_red)~(ansi reset)" }) (if $staged { $"(ansi light_green)+(ansi reset)" })] | compact | str join " "
-            let suffix = if $markers != "" { $" ($markers)" } else { "" }
-            let render = $"(ansi light_blue)($bookmark)(ansi reset)($suffix) "
+            let render = $"(ansi light_blue)($bookmark)(ansi reset) "
             {render: $render, mtimes: $mtimes} | to nuon | save -f $cache
             $render
           }

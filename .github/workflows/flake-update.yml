@@ -16,6 +16,7 @@ env:
   CACHIX_CACHE: tsssni
   NIX_EXTRA_CONF: |
     experimental-features = nix-command flakes pipe-operators
+  NIX_EXTRA_SUBSTITUTERS: |
     extra-substituters = https://nix-community.cachix.org
     extra-substituters = https://cache.nixos-cuda.org
     extra-substituters = https://jovian.cachix.org
@@ -29,6 +30,7 @@ jobs:
     outputs:
       proceed: ${{ steps.update.outputs.proceed }}
       head: ${{ steps.update.outputs.head }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -41,25 +43,53 @@ jobs:
       - name: update
         id: update
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           nix flake update
+          nix shell nixpkgs#nushell nixpkgs#nurl --command nu ./pkgs/update.nu
 
-          if git diff --quiet -- flake.lock; then
-            echo "lock unchanged, nothing to do"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nothing changed, nothing to do"
             echo "proceed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "update found, proceeding"
           echo "proceed=true" >> "$GITHUB_OUTPUT"
+          git diff --cached --binary > update.patch
+      - name: matrix
+        id: matrix
+        if: steps.update.outputs.proceed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          emit() {
+            local kind="$1" attr="$2" os="$3" platform="$4"
+            nix eval --json ".#${kind}" --apply builtins.attrNames \
+            | jq -c --arg kind "$kind" --arg attr "$attr" --arg os "$os" --arg platform "$platform" \
+            '[.[] | {os:$os, platform:$platform, kind:$kind, attr:$attr, name:.}]'
+          }
+          configs_nixos=$(emit nixosConfigurations config.system.build.toplevel ubuntu-latest linux)
+          configs_home=$(emit homeConfigurations activationPackage ubuntu-latest linux)
+          configs_darwin=$(emit darwinConfigurations system macos-26 darwin)
+          pkgs_linux_x86_64=$(emit packages.x86_64-linux "" ubuntu-latest linux)
+          pkgs_linux_aarch64=$(emit packages.aarch64-linux "" ubuntu-24.04-arm linux)
+          pkgs_darwin_aarch64=$(emit packages.aarch64-darwin "" macos-26 darwin)
+          matrix=$(jq -nc \
+          --argjson a "$configs_nixos" --argjson b "$configs_home" --argjson c "$configs_darwin" \
+          --argjson d "$pkgs_linux_x86_64" --argjson e "$pkgs_linux_aarch64" --argjson f "$pkgs_darwin_aarch64" \
+          '{include: ($a + $b + $c + $d + $e + $f)}')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
       - name: upload
         uses: actions/upload-artifact@v4
         if: steps.update.outputs.proceed == 'true'
         with:
-          name: flake-lock
-          path: flake.lock
+          name: update-patch
+          path: update.patch
           retention-days: 1
           if-no-files-found: error
 
@@ -68,51 +98,52 @@ jobs:
     if: needs.update.outputs.proceed == 'true'
     strategy:
       fail-fast: true
-      matrix:
-        include:
-          - os: ubuntu-latest
-            platform: linux
-          - os: macos-26
-            platform: darwin
+      matrix: ${{ fromJson(needs.update.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+      - name: nothing-but-nix
+        if: matrix.platform == 'linux'
+        uses: wimpysworld/nothing-but-nix@main
       - name: nix
         uses: DeterminateSystems/nix-installer-action@v22
         with:
-          extra-conf: ${{ env.NIX_EXTRA_CONF }}
+          extra-conf: |
+            ${{ env.NIX_EXTRA_CONF }}
+            ${{ matrix.platform == 'linux' && 'build-dir = /nix/build' || '' }}
       - name: cachix
         uses: cachix/cachix-action@v17
         with:
           name: ${{ env.CACHIX_CACHE }}
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: substituters
+        shell: bash
+        run: |
+          mkdir -p ~/.config/nix
+          printf '%s\n' "$NIX_EXTRA_SUBSTITUTERS" >> ~/.config/nix/nix.conf
+          nix show-config | grep -E "^(substituters|trusted-public-keys) ="
       - name: download
         uses: actions/download-artifact@v4
         with:
-          name: flake-lock
+          name: update-patch
           path: .
+      - name: apply
+        shell: bash
+        run: git apply update.patch
       - name: build
         shell: bash
         run: |
           set -euo pipefail
-          build_kind() {
-            local kind="$1" attr="$2" names n
-            names=$(nix eval --json ".#${kind}" --apply builtins.attrNames | jq -r '.[]')
-            for n in $names; do
-              echo "::group::build ${kind}.${n}"
-              nix build --no-link --print-out-paths ".#${kind}.${n}.${attr}"
-              echo "::endgroup::"
-            done
-          }
-          if [ "${{ matrix.platform }}" = "linux" ]; then
-            build_kind nixosConfigurations config.system.build.toplevel
-            build_kind homeConfigurations activationPackage
-          else
-            build_kind darwinConfigurations system
+          attr=".#${{ matrix.kind }}.${{ matrix.name }}"
+          if [ -n "${{ matrix.attr }}" ]; then
+            attr="$attr.${{ matrix.attr }}"
           fi
+          echo "::group::nix build $attr"
+          nix build --no-link "$attr"
+          echo "::endgroup::"
 
   commit:
     needs: [update, build]
@@ -129,7 +160,7 @@ jobs:
       - name: download
         uses: actions/download-artifact@v4
         with:
-          name: flake-lock
+          name: update-patch
           path: .
       - name: commit
         env:
@@ -145,7 +176,9 @@ jobs:
             exit 0
           fi
 
-          git add flake.lock
+          git apply update.patch
+          rm -f update.patch
+          git add -A
           msg=$(git log -1 --format=%s)
           if [ "$msg" = "flake: update" ]; then
             git commit --amend --no-edit

@@ -31,8 +31,5 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://github.com/danoli3/FreeImage";
     license = lib.licenses.gpl2Plus;
     platforms = lib.platforms.unix;
-    knownVulnerabilities = [
-      "FreeImage has a long history of CVEs; upstream is unmaintained. Use only when no alternative is viable."
-    ];
   };
 })
