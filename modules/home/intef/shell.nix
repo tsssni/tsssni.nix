@@ -33,16 +33,18 @@ let
       let target = if $path == null {
         pwd
       } else {
-        let abs = $path | path expand
-        if ($abs | path type) != "dir" {
-          error make { msg: $"not a directory: ($abs)" }
-        }
-        $abs
+        $path | path expand
       }
       let name = $target | hash md5 | str substring 0..7
       cd $target
-      try { zellij delete-session $name }
-      zellij attach --create $name
+      try { zellij d $name }
+      zellij a --create $name
+    }
+
+    def "multiplex kill" [path?: directory] {
+      let target = if $path == null { pwd } else { $path | path expand }
+      let name = $target | hash md5 | str substring 0..7
+      zellij d $name --force
     }
 
     def "multiplex clear" [] {
