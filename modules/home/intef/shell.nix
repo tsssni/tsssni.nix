@@ -22,7 +22,7 @@ let
     |> lib.concatStringsSep "\n";
 
   zjstatus = ''
-    zjstatus location="file://${pkgs.zjstatus}/bin/zjstatus.wasm" {
+    zjstatus location="file://${pkgs.zellijPlugins.zjstatus}/bin/zjstatus.wasm" {
         format_left "{tabs}"
         tab_normal "#[fg=7]π"
         tab_active "#[fg=7,bold]λ"

@@ -63,7 +63,6 @@ let
               in
               {
                 agenix = agenix.packages.${args.system}.default;
-                zjstatus = zjstatus.packages.${args.system}.default;
                 inherit (master) claude-code;
               })
           ]
