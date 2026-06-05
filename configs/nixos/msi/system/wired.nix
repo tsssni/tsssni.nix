@@ -1,4 +1,11 @@
-{ ... }:
+{
+  lib,
+  config,
+  ...
+}:
+let
+  root = config.services.filebrowser.settings.root;
+in
 {
   tsssni.infra = {
     wired = {
@@ -16,8 +23,13 @@
     };
   };
 
-  services.samba = {
+  services.filebrowser = {
     enable = true;
-    settings.samba.path = "/home/samba";
+    settings.address = "0.0.0.0";
+  };
+
+  systemd = {
+    services.filebrowser.serviceConfig.UMask = lib.mkForce "0007";
+    tmpfiles.settings.filebrowser.${root}.d.mode = lib.mkForce "2770";
   };
 }
