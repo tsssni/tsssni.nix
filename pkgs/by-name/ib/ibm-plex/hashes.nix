@@ -11,6 +11,6 @@
   "sans-kr" = { version = "1.1.0"; hash = "sha256-FsHxMvLlI4yylgG96DOZIdW2DYpk7I+c5QgkVIkNZIE="; };
   "sans-jp" = { version = "3.0.0"; hash = "sha256-2BbhqsutMXEoS2JoZjJprrElIpFa9lgvPaM65pnYdfs="; };
   "sans-hebrew" = { version = "1.1.0"; hash = "sha256-rTuBQYLI+6gEFTumCdaWpeoLzRoyFSmqWbXziq+UG6I="; };
-  "mono" = { version = "1.1.0"; hash = "sha256-OwUmrPfEehLDz0fl2ChYLK8FQM2p0G1+EMrGsYEq+6g="; };
+  "mono" = { version = "2.5.0"; hash = "sha256-GK9KStu5KQ5g5+IUwJq4L+a5gOwzsNXH80OOIbyvOnM="; };
   "math" = { version = "1.1.0"; hash = "sha256-dJA6uqxa/yb3eLY4l39NeP0yIl2NfrbaRpf6h0/F7Xc="; };
 }
