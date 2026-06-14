@@ -1,4 +1,5 @@
-args: {
+args:
+{
   pkgs,
   lib,
   ...
@@ -54,7 +55,8 @@ let
         with args.inputs;
         (
           [
-            (final: prev:
+            (
+              final: prev:
               let
                 master = import nixpkgs-master {
                   inherit (args) system;
@@ -63,8 +65,13 @@ let
               in
               {
                 agenix = agenix.packages.${args.system}.default;
-                inherit (master) claude-code;
-              })
+                inherit (master)
+                  claude-code
+                  sing-geoip
+                  sing-geosite
+                  ;
+              }
+            )
           ]
           ++ (import ../pkgs lib)
         );
