@@ -6,13 +6,13 @@
 }:
 stdenv.mkDerivation rec {
   pname = "proxy";
-  version = "4.0.2";
+  version = "4.1.0";
 
   src = fetchFromGitHub {
     owner = "ngcpp";
     repo = "proxy";
     rev = "${version}";
-    sha256 = "sha256-E3Ccc8zWU4KEyhaoLUE3Wnq3ED/3lb97mpNCobOkIvQ=";
+    sha256 = "sha256-j+GSXQju4GdxGp/m/Fk1Qhxim8jjpb8cRVcB1mttA6E=";
   };
 
   nativeBuildInputs = [ cmake ];

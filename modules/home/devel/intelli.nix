@@ -10,7 +10,7 @@ let
     name: m:
     pkgs.writeScriptBin name (lib.hm.nushell.mkNushellInline ''
       #!${pkgs.nushell}/bin/nu
-      def main [...args] {
+      def --wrapped main [...args] {
         let api_key = open "${m.apiKeyPath}" | str trim
         with-env {
           ANTHROPIC_BASE_URL: "${m.baseUrl}"
