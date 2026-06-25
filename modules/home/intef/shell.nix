@@ -53,6 +53,12 @@ let
     }
   '';
 
+  blockCursor = lib.hm.nushell.mkNushellInline ''
+    $env.config.hooks.pre_execution = (
+      $env.config.hooks.pre_execution? | default [] | append {|| print -n (ansi -e '2 q') }
+    )
+  '';
+
   nixSmallLogo = pkgs.writeText "nix-small.txt" ''
     $1  \\  $2\\ //
     $1 ==\\__$2\\/ $1//
@@ -101,7 +107,9 @@ in
             "zellij"
           ])
           + "\n\n"
-          + multiplex.expr;
+          + multiplex.expr
+          + "\n\n"
+          + blockCursor.expr;
       };
 
       zellij = {
