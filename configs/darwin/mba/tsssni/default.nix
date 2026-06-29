@@ -22,6 +22,7 @@
       intelli.enable = true;
       literal = {
         enable = true;
+        font.emojiFont.package = null;
         input.type = "squirrel";
       };
       science.enable = true;

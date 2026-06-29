@@ -134,7 +134,11 @@ in
       hanzitFont = fontOption pkgs.ibm-plex "IBM Plex Sans TC";
       kanjiFont = fontOption pkgs.ibm-plex "IBM Plex Sans JP";
       hangulFont = fontOption pkgs.ibm-plex "IBM Plex Sans KR";
-      emojiFont = fontOption pkgs.noto-fonts-color-emoji "Noto Color Emoji";
+      emojiFont =
+        if !pkgs.stdenv.isDarwin then
+          fontOption pkgs.noto-fonts-color-emoji "Noto Color Emoji"
+        else
+          fontOption null "Apple Color Emoji";
     };
     color = {
       palette = lib.mkOption {
@@ -186,11 +190,7 @@ in
         );
 
     home = {
-      packages = with fontCfg; [
-        nerdFont.package
-        latinFont.package
-        emojiFont.package
-      ];
+      packages = builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg));
       file =
         let
           path =
