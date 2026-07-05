@@ -18,14 +18,17 @@ in
   config = lib.mkIf cfg.enable {
     home.packages =
       with pkgs;
-      lib.optionals cfg.produce [
+      lib.optionals cfg.produce ([
         blender
         gimp3
+        renderdoc
         (unityhub.override {
           # without available editor unity nvim plugin refuse to generate csproj
           extraLibs = (pkgs: [ nixvimCfg.build.package ]);
         })
-      ]
+      ] ++ lib.optionals pkgs.config.cudaSupport [
+        nsight-graphics
+      ])
       ++ lib.optionals cfg.consume [
         go-musicfox
         tev

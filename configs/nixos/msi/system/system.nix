@@ -19,6 +19,9 @@
     kernelPackages = pkgs.linuxPackages;
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
+    extraModprobeConfig = ''
+      options nvidia NVreg_RestrictProfilingToAdminUsers=0
+    '';
     loader = {
       grub = {
         enable = true;
