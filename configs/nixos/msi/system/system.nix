@@ -5,6 +5,13 @@
 }:
 {
   boot = {
+    kernelPackages = pkgs.linuxPackages;
+    kernelModules = [ "kvm-amd" ];
+    blacklistedKernelModules = [ "amdgpu" ];
+    extraModulePackages = [ ];
+    extraModprobeConfig = ''
+      options nvidia NVreg_RestrictProfilingToAdminUsers=0
+    '';
     initrd = {
       availableKernelModules = [
         "nvme"
@@ -16,12 +23,6 @@
       ];
       kernelModules = [ ];
     };
-    kernelPackages = pkgs.linuxPackages;
-    kernelModules = [ "kvm-amd" ];
-    extraModulePackages = [ ];
-    extraModprobeConfig = ''
-      options nvidia NVreg_RestrictProfilingToAdminUsers=0
-    '';
     loader = {
       grub = {
         enable = true;
