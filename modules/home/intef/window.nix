@@ -389,6 +389,7 @@ in
         dconf
       ];
       pointerCursor = {
+        enable = true;
         gtk.enable = true;
       }
       // cfg.cursor;

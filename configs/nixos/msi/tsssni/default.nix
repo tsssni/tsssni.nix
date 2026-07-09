@@ -16,10 +16,10 @@
         enable = true;
         monitors = {
           HDMI-A-1 = {
+            width = 3840;
             height = 2160;
             scale = 1.5;
             wallpaper = ./config/niri/wallpaper/chainsaw.jpg;
-            width = 3840;
           };
         };
         sunset.enable = true;
