@@ -43,6 +43,10 @@ in
         font-family = lib.mkIf literatureCfg.enable [
           fontCfg.nerdFont.name
           fontCfg.latinFont.name
+          fontCfg.hanzisFont.name
+          fontCfg.hanzitFont.name
+          fontCfg.kanjiFont.name
+          fontCfg.hangulFont.name
         ];
         font-size = lib.mkIf literatureCfg.enable fontCfg.nerdFont.size;
       };
