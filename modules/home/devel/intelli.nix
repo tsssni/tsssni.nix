@@ -56,6 +56,17 @@ in
         editorMode = "vim";
         alwaysThinkingEnabled = true;
         showThinkingSummaries = true;
+        remoteControlAtStartup = false;
+        permissions = {
+          allow = [
+            "Read"
+            "Glob"
+            "Grep"
+            "WebFetch"
+            "WebSearch"
+          ];
+          defaultMode = "default";
+        };
       };
     };
 
