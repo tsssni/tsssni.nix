@@ -29,9 +29,9 @@
   extraPkgs ? pkgs: [ ],
 }:
 let
-  version = "2026.2.0";
-  vercode = "26134";
-  hash = "sha256-gXwkSUpxpzidd2E7ZZ7/m3KpdHqendcDUQ9J260QoIk=";
+  version = "2026.3.0";
+  vercode = "26201";
+  hash = "sha256-/tTWraUJmNkIbQLEzLoNt52LkcW070ESKhixKRNes10=";
 
   pver = builtins.replaceStrings [ "." ] [ "_" ] version;
   subdir = "NVIDIA-Nsight-Graphics-${lib.versions.majorMinor version}";

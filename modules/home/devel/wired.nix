@@ -11,7 +11,8 @@ in
   options.tsssni.devel.wired = {
     enable = lib.mkEnableOption "tsssni.devel.wired";
     tunnel = lib.mkEnableOption "tsssni.devel.wired.tunnel";
-    browser = lib.mkEnableOption "tsssni.devel.wired.browser";
+    firefox = lib.mkEnableOption "tsssni.devel.wired.browser";
+    google = lib.mkEnableOption "tsssni.devel.wired.google";
     cloud = lib.mkEnableOption "tsssni.devel.wired.cloud";
   };
 
@@ -43,9 +44,13 @@ in
         };
       };
 
-      firefox = lib.mkIf cfg.browser {
+      firefox = lib.mkIf cfg.firefox {
         enable = true;
         configPath = "${config.xdg.configHome}/mozilla/firefox";
+      };
+
+      google-chrome = lib.mkIf cfg.google {
+        enable = true;
       };
     };
   };
