@@ -45,8 +45,8 @@
       };
       wired = {
         enable = true;
-        browser = true;
         cloud = true;
+        firefox = true;
         tunnel = true;
       };
     };
