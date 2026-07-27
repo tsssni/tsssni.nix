@@ -97,7 +97,7 @@ jobs:
     needs: update
     if: needs.update.outputs.proceed == 'true'
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix: ${{ fromJson(needs.update.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -147,7 +147,7 @@ jobs:
 
   commit:
     needs: [update, build]
-    if: needs.update.outputs.proceed == 'true'
+    if: always() && needs.update.outputs.proceed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
