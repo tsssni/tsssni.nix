@@ -258,19 +258,19 @@ in
 
     theme = {
       package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.fluent-gtk-theme;
+        type = lib.types.nullOr lib.types.package;
+        default = null;
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Fluent";
+        default = "Adwaita";
       };
     };
 
     icon = {
       package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.adwaita-icon-theme;
+        type = lib.types.nullOr lib.types.package;
+        default = null;
       };
       name = lib.mkOption {
         type = lib.types.str;
