@@ -134,7 +134,6 @@ let
         Mod+Z { spawn-sh "april-shell ipc call toggleBlurryPlayer toggle"; }
         Mod+T { spawn "ghostty"; }
         Mod+B { spawn "firefox"; }
-        Mod+G { spawn "steam"; }
         Mod+Q { quit skip-confirmation=true; }
         Mod+P { screenshot show-pointer=false; }
         Mod+W { screenshot-window write-to-disk=true; }

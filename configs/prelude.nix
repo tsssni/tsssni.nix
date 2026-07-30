@@ -62,14 +62,14 @@ let
                   inherit (args) system;
                   config = final.config;
                 };
+                vanilla = import nixpkgs {
+                  inherit (args) system;
+                };
               in
               {
                 agenix = agenix.packages.${args.system}.default;
-                inherit (master)
-                  claude-code
-                  sing-geoip
-                  sing-geosite
-                  ;
+                inherit (vanilla) firefox;
+                inherit (master) claude-code;
               }
             )
           ]
