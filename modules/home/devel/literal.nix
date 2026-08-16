@@ -65,12 +65,12 @@ let
   inputTypes = lib.types.enum (
     [ "none" ]
     ++ (
-      if pkgs.stdenv.isLinux then
+      if pkgs.stdenv.hostPlatform.isLinux then
         [
           "fcitx5"
           "ibus"
         ]
-      else if pkgs.stdenv.isDarwin then
+      else if pkgs.stdenv.hostPlatform.isDarwin then
         [ "squirrel" ]
       else
         [ ]
@@ -135,7 +135,7 @@ in
       kanjiFont = fontOption pkgs.ibm-plex "IBM Plex Sans JP";
       hangulFont = fontOption pkgs.ibm-plex "IBM Plex Sans KR";
       emojiFont =
-        if !pkgs.stdenv.isDarwin then
+        if !pkgs.stdenv.hostPlatform.isDarwin then
           fontOption pkgs.noto-fonts-color-emoji "Noto Color Emoji"
         else
           fontOption null "Apple Color Emoji";
@@ -179,7 +179,7 @@ in
     };
 
     i18n.inputMethod =
-      lib.optionalAttrs (inputType != "none" && pkgs.stdenv.isLinux && !homeCfg.standalone)
+      lib.optionalAttrs (inputType != "none" && pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone)
         (
           {
             enable = true;
@@ -201,7 +201,7 @@ in
             else
               null;
         in
-        lib.mkIf (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.isDarwin)) {
+        lib.mkIf (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin)) {
           "${path}" = {
             source = "${pkgs.rime-arisa}/share/rime-data";
             recursive = true;

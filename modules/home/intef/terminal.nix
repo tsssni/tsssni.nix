@@ -21,18 +21,18 @@ in
         with pkgs;
         if homeCfg.standalone then
           null
-        else if stdenv.isLinux then
+        else if stdenv.hostPlatform.isLinux then
           ghostty
         else
           ghostty-bin;
-      systemd.enable = pkgs.stdenv.isLinux && !homeCfg.standalone;
+      systemd.enable = pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone;
       clearDefaultKeybinds = true;
       settings = {
         window-decoration = "none";
         window-inherit-working-directory = false;
         confirm-close-surface = false;
         macos-option-as-alt = true;
-        maximize = pkgs.stdenv.isDarwin;
+        maximize = pkgs.stdenv.hostPlatform.isDarwin;
         keybind = [
           "cmd+c=copy_to_clipboard"
           "cmd+v=paste_from_clipboard"

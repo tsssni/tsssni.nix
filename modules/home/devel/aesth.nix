@@ -36,7 +36,7 @@ in
 
     programs.mpv = lib.mkIf cfg.consume { enable = true; };
 
-    xdg.mimeApps = lib.mkIf (cfg.consume && pkgs.stdenv.isLinux) {
+    xdg.mimeApps = lib.mkIf (cfg.consume && pkgs.stdenv.hostPlatform.isLinux) {
       enable = true;
       defaultApplications =
         let
