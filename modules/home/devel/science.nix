@@ -8,7 +8,6 @@ let
   cfg = config.tsssni.devel.science;
   python = pkgs.python3.withPackages (
     ps: with ps; [
-      mlx
       numpy
       openimageio
     ]

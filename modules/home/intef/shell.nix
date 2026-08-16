@@ -97,7 +97,7 @@ in
         environmentVariables =
           { }
           // (lib.optionalAttrs homeCfg.standalone homeEnvs)
-          // (lib.optionalAttrs pkgs.stdenv.isDarwin darwinEnvs)
+          // (lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin darwinEnvs)
           // cfg.environmentVariables;
         configFile.text =
           (completions [
@@ -278,7 +278,7 @@ in
               keyColor = "light_cyan";
             }
           ]
-          ++ lib.optionals pkgs.stdenv.isLinux [
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
             {
               type = "vulkan";
               format = "Vulkan {api-version}";
@@ -286,7 +286,7 @@ in
               keyColor = "blue";
             }
           ]
-          ++ lib.optionals pkgs.stdenv.isDarwin [
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
             {
               type = "gpu";
               format = "{platform-api}";
