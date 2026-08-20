@@ -19,16 +19,18 @@ in
           };
         };
       };
-      bufferline = {
+      barbar = {
         enable = true;
-        settings.options = {
-          always_show_bufferlinhe = true;
-          diagnostics = false;
-          hover.enabled = false;
-          indicator.stype = "none";
-          numbers = "buffer_id";
-          show_buffer_close_icons = false;
-          show_close_icon = false;
+        keymaps = {
+          previous.key = "<C-h>";
+          next.key = "<C-l>";
+          closeBuffersLeft.key = "<C-z>";
+          closeBuffersRight.key = "<C-c>";
+          closeAllButCurrent.key = "<C-x>";
+        };
+        settings = {
+          exclude_name = [ "" ];
+          icons.button = false;
         };
       };
       fzf-lua = {
@@ -42,6 +44,7 @@ in
           "<Leader>h" = "helptags";
           "<Leader>r" = "lsp_references";
           "<Leader>s" = "resume";
+          "<Leader>v" = "git_hunks";
         };
         settings =
           let
@@ -81,7 +84,10 @@ in
             };
           };
       };
-      web-devicons.enable = true;
+      mini-icons = {
+        enable = true;
+        mockDevIcons = true;
+      };
       auto-session.enable = true;
     };
 
@@ -109,31 +115,6 @@ in
               end
           end
         '';
-      }
-      {
-        mode = "n";
-        key = "<C-h>";
-        action = ":BufferLineCyclePrev<CR>";
-      }
-      {
-        mode = "n";
-        key = "<C-l>";
-        action = ":BufferLineCycleNext<CR>";
-      }
-      {
-        mode = "n";
-        key = "<C-z>";
-        action = ":BufferLineCloseLeft<CR>";
-      }
-      {
-        mode = "n";
-        key = "<C-c>";
-        action = ":BufferLineCloseRight<CR>";
-      }
-      {
-        mode = "n";
-        key = "<C-x>";
-        action = ":BufferLineCloseOthers<CR>";
       }
       {
         mode = "n";

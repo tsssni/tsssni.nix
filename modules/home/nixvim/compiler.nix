@@ -25,9 +25,6 @@ in
           lspBufAction = "hover";
         }
       ];
-      luaConfig.content = ''
-        vim.lsp.set_log_level('OFF')
-      '';
       servers.nixd = {
         enable = true;
         package = null;
@@ -106,7 +103,7 @@ in
           };
         };
       };
-      nvim-autopairs.enable = true;
+      blink-pairs.enable = true;
     };
 
     extraFiles."queries/nix/injections.scm".source = ./config/injections.scm;

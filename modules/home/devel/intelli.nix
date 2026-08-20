@@ -49,23 +49,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs = {
-      claude-code = {
-        enable = true;
-        settings = {
-          theme = "dark-ansi";
-          editorMode = "vim";
-          alwaysThinkingEnabled = true;
-          showThinkingSummaries = true;
-        };
-      };
-      dsh = {
-        enable = true;
-        profiles.tui = {
-          bundles = [ pkgs.dsh.bundles.tui ];
-          mode = "managed";
-        };
-        defaultProfile = "nix-tui";
+    programs.claude-code = {
+      enable = true;
+      settings = {
+        theme = "dark-ansi";
+        editorMode = "vim";
+        alwaysThinkingEnabled = true;
+        showThinkingSummaries = true;
       };
     };
 
