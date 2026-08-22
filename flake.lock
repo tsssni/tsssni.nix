@@ -82,6 +82,24 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -131,16 +149,37 @@
         ]
       },
       "locked": {
-        "lastModified": 1787143379,
-        "narHash": "sha256-s/s0MIX39/jnq8xF3cPB2KvUyckyeie0w+KJ3JFLhgA=",
+        "lastModified": 1787477578,
+        "narHash": "sha256-cDTA+Amvov1/b0cK7uIwQ/QFHQ28J/4UmcLfyCHsr60=",
         "owner": "Jovian-Experiments",
         "repo": "Jovian-NixOS",
-        "rev": "f5159bcc975208c452f971288e4f072de74215ce",
+        "rev": "1f0adb740741b398309e640c280c58e9ec903058",
         "type": "github"
       },
       "original": {
         "owner": "Jovian-Experiments",
         "repo": "Jovian-NixOS",
+        "type": "github"
+      }
+    },
+    "json2steamshortcut": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763116114,
+        "narHash": "sha256-0gI7PnQUDZTFjhHgg0eP1SCJOvW5gw3sQ2UAMspipnQ=",
+        "owner": "ChrisOboe",
+        "repo": "json2steamshortcut",
+        "rev": "b829fe2871fd1736d2406724e4abbb492527cb08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ChrisOboe",
+        "repo": "json2steamshortcut",
         "type": "github"
       }
     },
@@ -209,11 +248,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1787135253,
-        "narHash": "sha256-RD2kNWCG+Bjo6h+JVjWVNntZs2GtRoeY2xHjts/FNkA=",
+        "lastModified": 1787360063,
+        "narHash": "sha256-dt4WdcvsA8/RCe+VZZwqU0X+XMM3wBbGCWA0/sFWzGo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ffb3c9b700e759be2ef13237c9d8f953b32a1e46",
+        "rev": "2c423e03bbafcff28bfadc6781a4a8257f205cb5",
         "type": "github"
       },
       "original": {
@@ -225,11 +264,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1787384386,
-        "narHash": "sha256-JTb1XUB8ToZUq1xRdKtXhDwQ8yMeHqaZhy/YioMNjng=",
+        "lastModified": 1787477626,
+        "narHash": "sha256-8R622CNShD74cJLbipWCRxuBXSp4UOhoxH6xc1P759o=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b7425b524e6cb47924daef0d0cf3448966eb6e0c",
+        "rev": "d5a67bfd957c085276c7c1c65921441f879fa54d",
         "type": "github"
       },
       "original": {
@@ -245,7 +284,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "systems": "systems_2"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1787270640,
@@ -267,6 +306,7 @@
         "disko": "disko",
         "home-manager": "home-manager_2",
         "jovian": "jovian",
+        "json2steamshortcut": "json2steamshortcut",
         "nix-darwin": "nix-darwin",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
@@ -290,6 +330,21 @@
       }
     },
     "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
       "flake": false,
       "locked": {
         "lastModified": 1774449309,

@@ -9,7 +9,17 @@
   programs.home-manager.enable = true;
 
   tsssni = {
-    intef.shell.enable = true;
+    intef = {
+      shell.enable = true;
+      stream = {
+        enable = true;
+        steam = 181256525;
+      };
+      terminal = {
+        enable = true;
+        terminfo = true;
+      };
+    };
     nixvim.enable = true;
     devel = {
       literal.enable = true;

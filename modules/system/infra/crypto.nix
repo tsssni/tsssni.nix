@@ -145,6 +145,10 @@ in
               outbound = "direct";
             }
             {
+              process_path_regex = [ "chiaki" ];
+              outbound = "direct";
+            }
+            {
               inherit rule_set;
               outbound = "direct";
             }

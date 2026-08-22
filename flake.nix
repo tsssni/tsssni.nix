@@ -33,6 +33,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    json2steamshortcut = {
+      url = "github:ChrisOboe/json2steamshortcut";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -60,6 +64,7 @@
           home = [
             self.homeModules.tsssni
             nixvim.homeModules.nixvim
+            json2steamshortcut.homeModules.default
           ];
         };
       };

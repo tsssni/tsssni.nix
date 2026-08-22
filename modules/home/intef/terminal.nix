@@ -12,10 +12,15 @@ let
   fontCfg = literatureCfg.font;
 in
 {
-  options.tsssni.intef.terminal.enable = lib.mkEnableOption "tsssni.intef.terminal";
+  options.tsssni.intef.terminal = {
+    enable = lib.mkEnableOption "tsssni.intef.terminal";
+    terminfo = lib.mkEnableOption "tsssni.intef.terminal.terminfo";
+  };
 
   config = lib.mkIf cfg.enable {
-    programs.ghostty = {
+    home.packages = lib.optional cfg.terminfo pkgs.ghostty.terminfo;
+
+    programs.ghostty = lib.mkIf (!cfg.terminfo) {
       enable = true;
       package =
         with pkgs;
