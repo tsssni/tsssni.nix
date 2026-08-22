@@ -115,6 +115,23 @@ PanelWindow {
             }
         }
 
+        readonly property real seekStep: 5
+        readonly property real volumeStep: 0.05
+
+        function seekBy(offset: real): void {
+            if (!player.canSeek)
+                return;
+            const target = player.position + offset;
+            const max = player.lengthSupported ? player.length : Infinity;
+            player.seek(Math.max(0, Math.min(max, target)) - player.position);
+        }
+
+        function adjustVolume(delta: real): void {
+            if (!player.volumeSupported)
+                return;
+            player.volume = Math.max(0, Math.min(1, player.volume + delta));
+        }
+
         Keys.onPressed: event => {
             if (!player)
                 return;
@@ -127,6 +144,18 @@ PanelWindow {
                 break;
             case Qt.Key_K:
                 player.previous();
+                break;
+            case Qt.Key_Left:
+                card.seekBy(-card.seekStep);
+                break;
+            case Qt.Key_Right:
+                card.seekBy(card.seekStep);
+                break;
+            case Qt.Key_Up:
+                card.adjustVolume(card.volumeStep);
+                break;
+            case Qt.Key_Down:
+                card.adjustVolume(-card.volumeStep);
                 break;
             }
             event.accepted = true;
