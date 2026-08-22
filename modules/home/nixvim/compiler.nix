@@ -41,7 +41,6 @@ in
         enable = true;
         nixvimInjections = false;
         highlight.enable = true;
-        indent.enable = false;
         grammarPackages = with grammars; [
           # core
           c

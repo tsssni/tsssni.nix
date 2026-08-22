@@ -116,6 +116,7 @@ in
         enable = true;
         settings = {
           theme = "ansi";
+          pane_frame_style = "full";
           show_startup_tips = false;
           default_mode = "Normal";
           default_layout = "copilot";
