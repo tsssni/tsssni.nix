@@ -54,6 +54,8 @@ in
       settings = {
         theme = "dark-ansi";
         editorMode = "vim";
+        effortLevel = "medium";
+        permissions.defaultMode = "default";
         alwaysThinkingEnabled = true;
         showThinkingSummaries = true;
       };

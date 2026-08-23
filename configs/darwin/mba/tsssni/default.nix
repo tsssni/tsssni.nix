@@ -34,7 +34,6 @@
       wired = {
         enable = true;
         tunnel = true;
-        google = true;
       };
     };
   };
