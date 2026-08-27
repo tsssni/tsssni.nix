@@ -54,7 +54,7 @@
     extraGroups = [
       "wheel"
       "systemd-journal"
-      "filebrowser"
+      "webdav"
     ];
     isNormalUser = true;
   };

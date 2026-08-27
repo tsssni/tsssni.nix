@@ -1,10 +1,6 @@
-{
-  lib,
-  config,
-  ...
-}:
+{ ... }:
 let
-  root = config.services.filebrowser.settings.root;
+  root = "/var/lib/webdav/data";
 in
 {
   tsssni.infra = {
@@ -23,13 +19,24 @@ in
     };
   };
 
-  services.filebrowser = {
+  services.webdav = {
     enable = true;
-    settings.address = "0.0.0.0";
+    settings = {
+      address = "0.0.0.0";
+      port = 8080;
+      directory = root;
+      permissions = "R";
+      users = [
+        {
+          username = "tsssni";
+          password = "{bcrypt}$2b$10$9BLg/F5nkUzEJXTaiVgbQuF5fztgkyUzy62E9GRnnijGrUo8.4nSm";
+        }
+      ];
+    };
   };
 
-  systemd = {
-    services.filebrowser.serviceConfig.UMask = lib.mkForce "0007";
-    tmpfiles.settings.filebrowser.${root}.d.mode = lib.mkForce "2770";
+  systemd.services.webdav.serviceConfig = {
+    StateDirectory = "webdav/data";
+    StateDirectoryMode = "2770";
   };
 }
