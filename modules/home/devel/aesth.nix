@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.tsssni.devel.aesth;
-  nixvimCfg = config.programs.nixvim;
 in
 {
   options.tsssni.devel.aesth = {
@@ -22,12 +21,8 @@ in
         blender
         gimp3
         renderdoc
-        (unityhub.override {
-          # without available editor unity nvim plugin refuse to generate csproj
-          extraLibs = (pkgs: [ nixvimCfg.build.package ]);
-        })
       ] ++ lib.optionals pkgs.config.cudaSupport [
-        nsight-graphics
+        cudaPackages.nsight_graphics
       ])
       ++ lib.optionals cfg.consume [
         go-musicfox

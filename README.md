@@ -56,7 +56,7 @@ in
 Provide pkgs via overlays.
 
 ```nix
-nixpkgs.overlays = inputs.tsssni.pkgs;
+nixpkgs.overlays = [ inputs.tsssni.overlays.default ];
 ```
 
 ## Config

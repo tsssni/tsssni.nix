@@ -32,9 +32,6 @@ let
   systemCfg = {
     nix = {
       package = pkgs.nix;
-      nixPath = [
-        "nixpkgs=${args.inputs.nixpkgs}"
-      ];
       settings = {
         experimental-features = features;
         substituters = substituters;
@@ -66,16 +63,18 @@ let
               };
             in
             {
-              agenix = agenix.packages.${args.system}.default;
               inherit (vanilla) firefox;
               inherit (master) claude-code;
             }
           )
-        ]
-        ++ (import ../pkgs lib);
+          self.overlays.default
+        ];
     };
 
-    environment.systemPackages = packages;
+    environment = {
+      defaultPackages = [ ];
+      systemPackages = packages;
+    };
   };
 
   standloneCfg = removeAttrs systemCfg [ "environment" ] // {

@@ -21,7 +21,6 @@ in
       with pkgs;
       [
         _7zz
-        curl
       ]
       ++ lib.optionals cfg.tunnel [
         wireguard-tools

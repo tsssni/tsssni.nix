@@ -59,6 +59,7 @@ in
     programs = {
       git = lib.mkIf (!homeCfg.standalone) {
         enable = true;
+        package = pkgs.gitMinimal;
         signing.format = null;
         settings = {
           credential.helper = "store";

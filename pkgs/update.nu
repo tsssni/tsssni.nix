@@ -1,7 +1,13 @@
 #!/usr/bin/env nu
 
 let here = $env.FILE_PWD
-let scripts = (glob $"($here)/by-name/**/update.nu" | sort)
+let scripts = (
+  ls -s $here
+  | where type == dir and name != lib
+  | each {|scope| glob $"($here)/($scope.name)/**/update.nu" }
+  | flatten
+  | sort
+)
 
 let results = ($scripts | par-each {|s|
   let name = ($s | path dirname | path basename)

@@ -70,7 +70,7 @@ let
   };
 in
 stdenv.mkDerivation {
-  pname = "nsight-graphics";
+  pname = "nsight_graphics";
   version = "${version}.${vercode}";
 
   src = fetchurl {

@@ -68,18 +68,32 @@
           ];
         };
       };
+
       systems = [
         "aarch64-darwin"
         "x86_64-linux"
         "aarch64-linux"
       ];
       systemAttrs = f: system: { ${system} = f system; };
+      systemPkgs = mapSystems (
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          overlays = [ self.overlays.default ];
+          config.allowUnfree = true;
+        }
+      );
       mapSystems = f: systems |> lib.map (systemAttrs f) |> lib.mergeAttrsList;
-      byNameOverlay = import ./pkgs/by-name-overlay.nix lib ./pkgs/by-name;
-      packageNames =
-        byNameOverlay { } { }
-        |> builtins.attrNames
-        |> lib.filter (name: name != "_internalCallByNamePackageFile");
+
+      collectOverlays =
+        scopes: scopes |> lib.mapAttrsToList (_: scope: scope.merge) |> lib.composeManyExtensions;
+
+      collectPackages =
+        scopes: system:
+        scopes
+        |> lib.concatMapAttrs (_: scope: scope.collect systemPkgs.${system})
+        |> lib.filterAttrs (_: drv: lib.meta.availableOn { inherit system; } drv);
+
       collectConfigs =
         folder:
         folder
@@ -94,19 +108,12 @@
     in
     {
       lib = import ./lib lib;
-      pkgs = import ./pkgs lib;
-      packages = mapSystems (
-        system:
-        let
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = self.pkgs;
-            config.allowUnfree = true;
-          };
-        in
-        lib.genAttrs packageNames (name: pkgs.${name})
-        |> lib.filterAttrs (_: drv: lib.meta.availableOn { inherit system; } drv)
-      );
+      scopes = import ./pkgs/scopes.nix lib;
+      packages = mapSystems (collectPackages self.scopes);
+      overlays = {
+        tsssni = collectOverlays self.scopes;
+        default = self.overlays.tsssni;
+      };
       nixosModules = {
         tsssni = import ./modules/nixos;
         default = self.nixosModules.tsssni;
