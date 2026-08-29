@@ -68,7 +68,18 @@ let
       ];
     in
     ''output "${name}" { ${body} }'';
+
   outputsKdl = lib.concatStringsSep "\n\n" (lib.mapAttrsToList monitorKdl cfg.monitors);
+
+  wallpaperKdl = lib.concatStringsSep "\n" (
+    lib.mapAttrsToList (
+      monitor: value:
+      let
+        wallpaper = if value.wallpaper != null then value.wallpaper else ./config/wallpaper/moonscape.png;
+      in
+      ''spawn-at-startup "${lib.getExe pkgs.awww}" "img" "${wallpaper}" "-o" "${monitor}" "--transition-type" "none"''
+    ) cfg.monitors
+  );
 
   borderKdl = lib.optionalString literatureCfg.enable (
     lib.concatStringsSep "\n" [
@@ -77,6 +88,7 @@ let
       ''urgent-color "${colorCfg.lightBlack}"''
     ]
   );
+
   focusRingKdl =
     let
       gradient = ''from="${colorCfg.lightBlue}" to="${colorCfg.lightCyan}" angle=180 relative-to="workspace-view"'';
@@ -97,6 +109,8 @@ let
     }
 
     ${outputsKdl}
+
+    ${wallpaperKdl}
 
     gestures { hot-corners { off; }; }
 
@@ -322,24 +336,6 @@ in
           Restart = "on-failure";
         };
         Install.WantedBy = [ "graphical-session.target" ];
-      };
-      awww-wallpaper = {
-        Unit = {
-          Description = "awww-wallpaper";
-          After = [ "awww.service" ];
-          Requires = [ "awww.service" ];
-        };
-        Service = {
-          Type = "oneshot";
-          ExecStart = lib.mapAttrsToList (
-            monitor: value:
-            let
-              wallpaper = if value.wallpaper != null then value.wallpaper else ./config/wallpaper/moonscape.png;
-            in
-            "${lib.getExe pkgs.awww} img ${wallpaper} -o ${monitor} --transition-type none"
-          ) cfg.monitors;
-        };
-        Install.WantedBy = [ "awww.service" ];
       };
     };
 

@@ -18,8 +18,6 @@ in
     home.packages =
       with pkgs;
       lib.optionals cfg.produce ([
-        blender
-        gimp3
         renderdoc
       ] ++ lib.optionals pkgs.config.cudaSupport [
         cudaPackages.nsight_graphics

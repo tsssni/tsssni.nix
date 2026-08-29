@@ -123,6 +123,7 @@ in
           default_shell = "nu";
           mouse_mode = true;
           advanced_mouse_actions = false;
+          scroll_mode_sync = false;
         };
         extraConfig = ''
           keybinds clear-defaults=true {

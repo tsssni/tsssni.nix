@@ -15,7 +15,7 @@
       window = {
         enable = true;
         monitors = {
-          HDMI-A-1 = {
+          DP-2 = {
             width = 3840;
             height = 2160;
             scale = 1.5;
