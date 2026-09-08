@@ -102,7 +102,10 @@ in
           };
         };
       };
-      blink-pairs.enable = true;
+      blink-pairs = {
+        enable = true;
+        settings.highlights.groups = [ "Delimiter" ];
+      };
     };
 
     extraFiles."queries/nix/injections.scm".source = ./config/injections.scm;
@@ -121,7 +124,6 @@ in
 
   home = {
     packages = with pkgs; [
-      lldb
       nixd
       nixfmt
     ];

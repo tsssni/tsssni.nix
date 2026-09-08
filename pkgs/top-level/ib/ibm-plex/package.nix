@@ -32,6 +32,7 @@ stdenvNoCC.mkDerivation {
     ) selectedFamilies;
     postBuild = ''
       find "$out" -name unhinted -exec rm -fr {} +
+      rm -r "$out/fonts/complete/ttf"
     '';
   };
 

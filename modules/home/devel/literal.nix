@@ -42,7 +42,7 @@ let
     "#a0b4e5"
     "#c0a8e8"
     "#9fe5e5"
-    "#d5d1e6"
+    "#e0e2ea"
   ];
   colorList = [
     "black"
@@ -86,6 +86,7 @@ let
   };
 
   fcitx5Cfg = {
+    fcitx5-with-addons = pkgs.fcitx5-arisa;
     addons = with pkgs; [
       fcitx5-fluent
       fcitx5-mozc

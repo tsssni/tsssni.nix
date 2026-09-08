@@ -24,7 +24,7 @@ local palette = {
   light_cyan = '#9fe5e5',
 
   white = '#bebad9',
-  light_white = '#d5d1e6',
+  light_white = '#e0e2ea',
 }
 
 return palette
