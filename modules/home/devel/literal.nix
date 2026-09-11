@@ -130,11 +130,11 @@ in
     enable = lib.mkEnableOption "tsssni.devel.literal";
     font = {
       nerdFont = fontOption pkgs.nerd-fonts.blex-mono "BlexMono Nerd Font";
-      latinFont = fontOption pkgs.ibm-plex "IBM Plex Mono";
-      hanzisFont = fontOption pkgs.ibm-plex "IBM Plex Sans SC";
-      hanzitFont = fontOption pkgs.ibm-plex "IBM Plex Sans TC";
-      kanjiFont = fontOption pkgs.ibm-plex "IBM Plex Sans JP";
-      hangulFont = fontOption pkgs.ibm-plex "IBM Plex Sans KR";
+      latinFont = fontOption pkgs.ibm-plex-lite "IBM Plex Mono";
+      hanzisFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans SC";
+      hanzitFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans TC";
+      kanjiFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans JP";
+      hangulFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans KR";
       emojiFont =
         if !pkgs.stdenv.hostPlatform.isDarwin then
           fontOption pkgs.noto-fonts-color-emoji "Noto Color Emoji"
