@@ -40,6 +40,11 @@ let
     }
   );
 
+  kwin = pkgs.writeScriptBin "kwin-box" ''
+    #!${lib.getExe pkgs.nushell}
+    ${builtins.readFile ./config/scripts/kwin.nu}
+  '';
+
   monitorKdl =
     key: monitor:
     let
@@ -377,6 +382,7 @@ in
     home = {
       packages = with pkgs; [
         niri
+        kwin
         april-shell
         xwayland-satellite
         wl-clipboard
