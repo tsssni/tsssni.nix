@@ -36,6 +36,9 @@ in
         window-decoration = "none";
         window-inherit-working-directory = false;
         confirm-close-surface = false;
+        desktop-notifications = false;
+        app-notifications = false;
+        bell-features = "no-system,no-audio,no-attention,no-title,no-border";
         macos-option-as-alt = true;
         maximize = pkgs.stdenv.hostPlatform.isDarwin;
         keybind = [

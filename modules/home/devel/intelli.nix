@@ -58,6 +58,7 @@ in
         permissions.defaultMode = "default";
         alwaysThinkingEnabled = true;
         showThinkingSummaries = true;
+        preferredNotifChannel = "notifications_disabled";
       };
     };
 
