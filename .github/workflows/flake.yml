@@ -1,0 +1,98 @@
+name: flake
+
+on:
+  schedule:
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: flake
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: nix shell nixpkgs#nushell --command nu {0}
+
+env:
+  CACHIX_CACHE: tsssni
+  NIX_EXTRA_CONF: |
+    experimental-features = nix-command flakes pipe-operators
+    access-tokens = github.com=${{ github.token }}
+  NIX_EXTRA_SUBSTITUTERS: |
+    extra-substituters = https://nix-community.cachix.org
+    extra-substituters = https://cache.nixos-cuda.org
+    extra-substituters = https://jovian.cachix.org
+    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+    extra-trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=
+    extra-trusted-public-keys = jovian.cachix.org-1:8Vq4Txku6VZIRhYrHYki3Ab9XHJRoWmdYqMqj4rB/Uc=
+
+jobs:
+  update:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: write
+    outputs:
+      proceed: ${{ steps.update.outputs.proceed }}
+      rev: ${{ steps.update.outputs.rev }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: master
+      - name: nix
+        uses: NixOS/nix-installer-action@v1
+        with:
+          extra-conf: ${{ env.NIX_EXTRA_CONF }}
+      - name: update
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: nu ./scripts/cachix.nu update
+      - name: matrix
+        id: matrix
+        if: steps.update.outputs.proceed == 'true'
+        run: nu ./scripts/cachix.nu matrix
+
+  build:
+    needs: update
+    if: needs.update.outputs.proceed == 'true'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.update.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ needs.update.outputs.rev }}
+      - name: nothing-but-nix
+        if: matrix.platform == 'linux'
+        uses: wimpysworld/nothing-but-nix@v10
+      - name: nix
+        uses: NixOS/nix-installer-action@v1
+        with:
+          extra-conf: |
+            ${{ env.NIX_EXTRA_CONF }}
+            ${{ matrix.platform == 'linux' && 'build-dir = /nix/build' || '' }}
+      - name: cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: ${{ env.CACHIX_CACHE }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: substituters
+        run: |
+          mkdir ~/.config/nix
+          $env.NIX_EXTRA_SUBSTITUTERS | save --append ~/.config/nix/nix.conf
+          nix config show | lines | where $it =~ '^(substituters|trusted-public-keys) =' | str join "\n" | print
+      - name: build
+        run: |
+          let attr = [".#${{ matrix.kind }}.${{ matrix.name }}" "${{ matrix.attr }}"] | where $it != "" | str join "."
+          print $"::group::nix build ($attr)"
+          nix build --no-link $attr
+          print "::endgroup::"
