@@ -12,6 +12,6 @@ let m = (
 if ($m | is-empty) { error make { msg: "no linux_x64 installer found" } }
 
 let url = $"https://developer.nvidia.com/downloads/assets/tools/secure/nsight-graphics/($m.dir)/linux_x64/NVIDIA_Nsight_Graphics_($m.ver).($m.code)-linux_x64.run"
-let hash = (^nurl -H -f fetchurl $url | str trim)
+let hash = (nurl -H -f fetchurl $url | str trim)
 
 update-file $f { version: $m.ver, vercode: $m.code, hash: $hash }

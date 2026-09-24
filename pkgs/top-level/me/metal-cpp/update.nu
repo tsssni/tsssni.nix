@@ -16,7 +16,7 @@ let es = (
     let url = $"https://developer.apple.com/metal/cpp/files/metal-cpp_($v).zip"
     let code = (^curl -sI -o /dev/null -w '%{http_code}' $url | str trim)
     if $code == "200" {
-      let hash = (^nurl -H -f fetchzip $url | str trim)
+      let hash = (nurl -H -f fetchzip $url | str trim)
       { v: $v, h: $hash, old_h: ($old | get -o $v) }
     } else {
       null

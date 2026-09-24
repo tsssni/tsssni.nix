@@ -27,6 +27,7 @@ let
   packages = with pkgs; [
     nix
     nh
+    comma-with-db
   ];
 
   systemCfg = {
@@ -68,6 +69,7 @@ let
             }
           )
           self.overlays.default
+          nix-index-database.overlays.nix-index
         ];
     };
 
