@@ -23,7 +23,6 @@
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.darwin.follows = "nix-darwin";
     };
     nixvim = {
       url = "github:nix-community/nixvim";

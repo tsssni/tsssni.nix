@@ -2,20 +2,16 @@
   "nodes": {
     "agenix": {
       "inputs": {
-        "darwin": [
-          "nix-darwin"
-        ],
-        "home-manager": "home-manager",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1790460690,
-        "narHash": "sha256-5T54NUBA0c1eo7a8MMT1GOuFYsDqqa91rLWp7l/xPC8=",
+        "lastModified": 1790555459,
+        "narHash": "sha256-ftyJcr21FzMLq4hnzg3COo7gITOkJ4j+ey0miWCTU3U=",
         "owner": "ryantm",
         "repo": "agenix",
-        "rev": "654f73179924797b0d5307105398aedfcdc10800",
+        "rev": "b485690a7c97b3793a41dd57edfb05ac84343813",
         "type": "github"
       },
       "original": {
@@ -100,28 +96,6 @@
       }
     },
     "home-manager": {
-      "inputs": {
-        "nixpkgs": [
-          "agenix",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1790215976,
-        "narHash": "sha256-VkR1rMGyjU9jtw8ISFx5uqR9e+LEaOlhHwrseFkiIVk=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "a6631107a83ceab5872f298a2ea710859c80c4cb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "ref": "release-26.05",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "home-manager_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -284,11 +258,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1790508105,
-        "narHash": "sha256-bdO5zizZPB/rrn41GxQfWlMdpT7R2QOl/+zNArpipJk=",
+        "lastModified": 1790566247,
+        "narHash": "sha256-rvQLbIhS0dc1MM4TpJIfrKnvZueyM0Mfmb6d8/R8YQE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8016c29df5ca2ef8cfaec76d15414db8609a39f7",
+        "rev": "55d33a38f82193676603b4b58572b8718d6623b7",
         "type": "github"
       },
       "original": {
@@ -307,11 +281,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1790359697,
-        "narHash": "sha256-AIMlxsdXEAiv7KQQ/fcarzqe541iUrT+hCUVS71CrJI=",
+        "lastModified": 1790541651,
+        "narHash": "sha256-/496IQz8qNWHHLnc3Zvr0l4uxJ34igNhJhn7ZKAefFk=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "4571c7a95787165cc7102d417a0fe4519bf6a995",
+        "rev": "5980a626794486abad69fca7667f9c11dfbc3bd7",
         "type": "github"
       },
       "original": {
@@ -324,7 +298,7 @@
       "inputs": {
         "agenix": "agenix",
         "disko": "disko",
-        "home-manager": "home-manager_2",
+        "home-manager": "home-manager",
         "jovian": "jovian",
         "json2steamshortcut": "json2steamshortcut",
         "nix-darwin": "nix-darwin",
