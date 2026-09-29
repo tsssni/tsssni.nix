@@ -1,13 +1,18 @@
 {
   pkgs,
-  lib,
-  config,
   ...
 }:
 {
   hardware = {
-    enableRedistributableFirmware = true;
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    cpu.amd.updateMicrocode = true;
+    firmware = [
+      (pkgs.runCommand "minimal-firmware" { passthru.compressFirmware = false; } ''
+        fw=${pkgs.compressFirmwareZstd pkgs.linux-firmware}/lib/firmware
+        mkdir -p $out/lib/firmware/{mediatek,rtl_nic}
+        cp $fw/mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin.zst $out/lib/firmware/mediatek/
+        cp $fw/rtl_nic/rtl8125b-2.fw.zst $out/lib/firmware/rtl_nic/
+      '')
+    ];
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -17,20 +22,16 @@
   services = {
     hardware.openrgb = {
       enable = true;
-      package = pkgs.openrgb-with-all-plugins;
       startupProfile = "tsssni";
     };
     pipewire = {
       enable = true;
       alsa.enable = true;
       pulse.enable = true;
-      wireplumber.extraConfig."controller" = {
-        "monitor.alsa.rules" = [{
-          matches = [{ "alsa.id" = "Controller"; }];
-          actions.update-props."priority.session" = 100;
-        }];
-      };
     };
+    udev.extraRules = ''
+      ACTION=="add|change", KERNEL=="event[0-9]*", ATTRS{name}=="*Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+    '';
   };
 
   fileSystems = {

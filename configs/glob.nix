@@ -1,4 +1,4 @@
-args: folder:
+homeModules: folder:
 {
   lib,
   ...
@@ -13,7 +13,7 @@ args: folder:
       |> lib.filterAttrs (dir: type: true && type == "directory" && dir != "system")
       |> lib.mapAttrs (
         dir: _: {
-          imports = [ ./${folder}/${dir} ] ++ args.modules.home;
+          imports = [ ./${folder}/${dir} ] ++ homeModules;
         }
       );
   };

@@ -129,7 +129,7 @@ in
   options.tsssni.devel.literal = {
     enable = lib.mkEnableOption "tsssni.devel.literal";
     font = {
-      nerdFont = fontOption pkgs.nerd-fonts.blex-mono "BlexMono Nerd Font";
+      nerdFont = fontOption pkgs.blex-mono-lite "BlexMono Nerd Font";
       latinFont = fontOption pkgs.ibm-plex-lite "IBM Plex Mono";
       hanzisFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans SC";
       hanzitFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans TC";
@@ -173,9 +173,6 @@ in
         { }
         // lib.optionalAttrs (inputType == "fcitx5") {
           GTK_IM_MODULE = "wayland";
-        }
-        // lib.optionalAttrs (inputType == "ibus" && homeCfg.standalone) {
-          IBUS_COMPONENT_PATH = "/usr/share/ibus/component:${ibusRime}/share/ibus/component";
         };
     };
 
@@ -191,7 +188,9 @@ in
         );
 
     home = {
-      packages = builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg));
+      packages = lib.optionals (!homeCfg.standalone) (
+        builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg))
+      );
       file =
         let
           path =
@@ -199,16 +198,20 @@ in
               "Library/Rime"
             else if (inputType == "fcitx5") then
               ".local/share/fcitx5/rime"
+            else if (inputType == "ibus") then
+              ".config/ibus/rime"
             else
               null;
         in
-        lib.mkIf (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin)) {
-          "${path}" = {
-            source = "${pkgs.rime-arisa}/share/rime-data";
-            recursive = true;
-            force = true;
+        lib.mkIf
+          (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin))
+          {
+            "${path}" = {
+              source = "${pkgs.rime-arisa}/share/rime-data";
+              recursive = true;
+              force = true;
+            };
           };
-        };
     };
   };
 }

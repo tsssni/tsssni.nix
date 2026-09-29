@@ -15,6 +15,7 @@
 
   system = {
     primaryUser = "tsssni";
+    tools.enable = false;
     stateVersion = 6;
   };
 

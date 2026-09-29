@@ -16,6 +16,22 @@ in
       vim.o.cmdheight = 0
     '';
 
+    globals = {
+      editorconfig = false;
+      loaded_gzip = 1;
+      loaded_man = 1;
+      loaded_matchit = 1;
+      loaded_matchparen = 1;
+      loaded_netrwPlugin = 1;
+      loaded_nvim_net_plugin = 1;
+      loaded_remote_plugins = 1;
+      loaded_shada_plugin = 1;
+      loaded_spellfile_plugin = 1;
+      loaded_tarPlugin = 1;
+      loaded_tutor_mode_plugin = 1;
+      loaded_zipPlugin = 1;
+    };
+
     opts = {
       background = "dark";
       backup = false;

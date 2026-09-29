@@ -6,8 +6,6 @@
     stateVersion = "24.11";
   };
 
-  programs.home-manager.enable = true;
-
   tsssni = {
     home.standalone = true;
     devel = {
@@ -16,7 +14,6 @@
         enable = true;
         input.type = "ibus";
       };
-      science.enable = true;
       version.enable = true;
     };
     intef = {

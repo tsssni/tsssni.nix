@@ -27,17 +27,12 @@
     };
     nixvim.enable = true;
     devel = {
-      aesth = {
-        enable = true;
-        consume = true;
-        produce = true;
-      };
+      aesth.enable = true;
       intelli.enable = true;
       literal = {
         enable = true;
         input.type = "fcitx5";
       };
-      science.enable = true;
       version = {
         enable = true;
         name = "tsssni";

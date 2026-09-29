@@ -4,6 +4,5 @@ import ../rebuild.nix (
   // {
     distro = "nixos";
     eval = args.inputs.nixpkgs.lib.nixosSystem;
-    modules = args.modules // { system = args.modules.nixos; };
   }
 )

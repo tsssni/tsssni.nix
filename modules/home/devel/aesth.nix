@@ -8,28 +8,21 @@ let
   cfg = config.tsssni.devel.aesth;
 in
 {
-  options.tsssni.devel.aesth = {
-    enable = lib.mkEnableOption "tsssni.devel.aesth";
-    produce = lib.mkEnableOption "tsssni.devel.aesth.produce";
-    consume = lib.mkEnableOption "tsssni.devel.aesth.consume";
-  };
+  options.tsssni.devel.aesth.enable = lib.mkEnableOption "tsssni.devel.aesth";
 
   config = lib.mkIf cfg.enable {
-    home.packages =
-      with pkgs;
-      lib.optionals cfg.produce ([
-        renderdoc
-      ] ++ lib.optionals pkgs.config.cudaSupport [
-        cudaPackages.nsight_graphics
-      ])
-      ++ lib.optionals cfg.consume [
-        go-musicfox
-        tev
-      ];
+    home.packages = with pkgs; [
+      go-musicfox
+      tev
+    ];
 
-    programs.mpv = lib.mkIf cfg.consume { enable = true; };
+    programs.mpv = {
+      enable = true;
+      package = pkgs.mpv.override { youtubeSupport = false; };
+      config.hwdec = "auto-safe";
+    };
 
-    xdg.mimeApps = lib.mkIf (cfg.consume && pkgs.stdenv.hostPlatform.isLinux) {
+    xdg.mimeApps = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
       defaultApplications =
         let

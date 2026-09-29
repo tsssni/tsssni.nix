@@ -19,6 +19,8 @@ in
     programs.nixvim = {
       enable = true;
       defaultEditor = true;
+      enablePrintInit = false;
+      enableMan = false;
       nixpkgs.useGlobalPackages = true;
       colorscheme = "plana";
       extraPlugins = with pkgs.vimPlugins; [ plana-nvim ];

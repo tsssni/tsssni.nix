@@ -114,6 +114,11 @@ in
 
       zellij = {
         enable = true;
+        package =
+          if homeCfg.standalone then
+            pkgs.emptyDirectory // { inherit (pkgs.zellij) version; }
+          else
+            pkgs.zellij;
         settings = {
           theme = "ansi";
           pane_frame_style = "full";
@@ -330,5 +335,7 @@ in
         };
       };
     };
+
+    home.packages = lib.optionals (!homeCfg.standalone) [ pkgs.python3 ];
   };
 }

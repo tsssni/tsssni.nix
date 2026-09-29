@@ -15,17 +15,13 @@
     };
     nixvim.enable = true;
     devel = {
-      aesth = {
-        enable = true;
-        consume = true;
-      };
+      aesth.enable = true;
       intelli.enable = true;
       literal = {
         enable = true;
         font.emojiFont.package = null;
         input.type = "squirrel";
       };
-      science.enable = true;
       version = {
         enable = true;
         name = "tsssni";

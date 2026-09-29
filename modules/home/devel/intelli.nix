@@ -6,10 +6,11 @@
 }:
 let
   cfg = config.tsssni.devel.intelli;
+  homeCfg = config.tsssni.home;
   model =
     name: m:
     pkgs.writeScriptBin name (lib.hm.nushell.mkNushellInline ''
-      #!${pkgs.nushell}/bin/nu
+      #!/usr/bin/env nu
       def --wrapped main [...args] {
         let api_key = open "${m.apiKeyPath}" | str trim
         with-env {
@@ -51,6 +52,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
+      package = if homeCfg.standalone then null else pkgs.claude-code;
       settings = {
         theme = "dark-ansi";
         editorMode = "vim";

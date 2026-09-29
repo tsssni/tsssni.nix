@@ -19,6 +19,7 @@
   services = {
     displayManager.sddm.wayland.enable = true;
     openssh.settings.PasswordAuthentication = false;
+    userborn.enable = true;
   };
 
   users.users.deck = {
@@ -37,8 +38,11 @@
     isNormalUser = true;
   };
 
-  tsssni.infra.shell.enable = true;
-  system.stateVersion = "24.11";
+  system = {
+    disableInstallerTools = true;
+    stateVersion = "24.11";
+  };
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";
+  tsssni.infra.shell.enable = true;
 }

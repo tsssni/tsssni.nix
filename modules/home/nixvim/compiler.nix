@@ -15,6 +15,7 @@ in
         {
           key = "gr";
           lspBufAction = "rename";
+          options.nowait = true;
         }
         {
           key = "gf";

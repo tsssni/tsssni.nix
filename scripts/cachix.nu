@@ -8,7 +8,7 @@ def output [key: string, value] {
 
 def "main update" [] {
   nix flake update
-  nix shell nixpkgs#nurl --command nu ./pkgs/update.nu
+  nu ./pkgs/update.nu
 
   git add -A
   if (git diff --cached --quiet | complete).exit_code == 0 {

@@ -41,7 +41,7 @@ let
   );
 
   kwin = pkgs.writeScriptBin "kwin-box" ''
-    #!${lib.getExe pkgs.nushell}
+    #!/usr/bin/env nu
     ${builtins.readFile ./config/scripts/kwin.nu}
   '';
 

@@ -52,6 +52,7 @@ jobs:
         id: update
         env:
           GH_TOKEN: ${{ github.token }}
+        shell: nix shell nixpkgs#nushell nixpkgs#gh nixpkgs#nurl --command nu {0}
         run: nu ./scripts/cachix.nu update
       - name: matrix
         id: matrix

@@ -41,7 +41,6 @@ in
           "<Leader>d" = "diagnostics_document";
           "<Leader>f" = "files";
           "<Leader>g" = "live_grep";
-          "<Leader>h" = "helptags";
           "<Leader>r" = "lsp_references";
           "<Leader>s" = "resume";
           "<Leader>v" = "git_hunks";

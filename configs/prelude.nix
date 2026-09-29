@@ -49,39 +49,53 @@ let
     nixpkgs = {
       system = args.system;
       config = args.config;
-      overlays =
-        with args.inputs;
-        [
-          (
-            final: prev:
-            let
-              master = import nixpkgs-master {
-                inherit (args) system;
-                config = final.config;
-              };
-              vanilla = import nixpkgs {
-                inherit (args) system;
-              };
-            in
-            {
-              inherit (vanilla) firefox;
-              inherit (master) claude-code;
-            }
-          )
-          self.overlays.default
-          nix-index-database.overlays.nix-index
-        ];
+      overlays = with args.inputs; [
+        (
+          final: prev:
+          let
+            master = import nixpkgs-master {
+              inherit (args) system;
+              config = final.config;
+            };
+            vanilla = import nixpkgs {
+              inherit (args) system;
+            };
+          in
+          {
+            inherit (vanilla) firefox;
+            inherit (master) claude-code;
+            nix = prev.nixVersions.latest;
+          }
+        )
+        self.overlays.default
+        nix-index-database.overlays.nix-index
+      ];
     };
 
     environment = {
       defaultPackages = [ ];
       systemPackages = packages;
     };
+
+    documentation = {
+      doc.enable = false;
+      info.enable = false;
+    }
+    // lib.optionalAttrs (args.distro == "nixos") {
+      nixos.enable = false;
+    };
   };
 
-  standloneCfg = removeAttrs systemCfg [ "environment" ] // {
+  standloneCfg = removeAttrs systemCfg [ "environment" "documentation" ] // {
     nix = removeAttrs systemCfg.nix [ "optimise" ];
     home.packages = packages;
+    i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+      pkgs.glibcLocales.override { allLocales = false; }
+    );
+    xdg.mime.enable = false;
+    systemd.user.systemctlPath = "/usr/bin/systemctl";
+    programs.man.package = null;
+    manual.manpages.enable = false;
   };
 in
 if (args.distro == "home") then standloneCfg else systemCfg

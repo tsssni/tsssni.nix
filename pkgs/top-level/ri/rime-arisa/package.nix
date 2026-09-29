@@ -1,7 +1,6 @@
 {
   rime-ice,
   rime-moegirl,
-  rime-zhwiki,
   buildEnv,
   librime,
   rime-data,
@@ -10,7 +9,6 @@ buildEnv {
   name = "rime-arisa";
   paths = [
     rime-ice
-    rime-zhwiki
     rime-moegirl
   ];
   nativeBuildInputs = [

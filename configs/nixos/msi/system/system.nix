@@ -7,7 +7,10 @@
   boot = {
     kernelPackages = pkgs.linuxPackages;
     kernelModules = [ "kvm-amd" ];
-    blacklistedKernelModules = [ "amdgpu" ];
+    blacklistedKernelModules = [
+      "amdgpu"
+      "mt7921e"
+    ];
     extraModulePackages = [ ];
     extraModprobeConfig = ''
       options nvidia NVreg_RestrictProfilingToAdminUsers=0
@@ -59,8 +62,12 @@
     isNormalUser = true;
   };
 
-  tsssni.infra.shell.enable = true;
-  system.stateVersion = "24.11";
+  system = {
+    disableInstallerTools = true;
+    stateVersion = "24.11";
+  };
+  services.userborn.enable = true;
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";
+  tsssni.infra.shell.enable = true;
 }
