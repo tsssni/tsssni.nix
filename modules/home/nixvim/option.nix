@@ -30,18 +30,18 @@ in
       loaded_tarPlugin = 1;
       loaded_tutor_mode_plugin = 1;
       loaded_zipPlugin = 1;
+      mapleader = " ";
+      maplocalleader = " ";
     };
 
     opts = {
       background = "dark";
-      backup = false;
       completeopt = "fuzzy,menu,menuone,noselect,noinsert,popup";
       cursorline = true;
       expandtab = true;
       exrc = true;
       fileformats = "unix";
       foldclose = "all";
-      hlsearch = true;
       list = true;
       listchars = "tab:>·,space:·";
       mouse = "";
@@ -49,7 +49,6 @@ in
       pumheight = 10;
       regexpengine = 2;
       report = 0;
-      relativenumber = false;
       scrolloff = 8;
       shiftround = true;
       shiftwidth = 4;
@@ -64,7 +63,6 @@ in
       splitright = true;
       swapfile = false;
       tabstop = 4;
-      termguicolors = true;
       timeoutlen = 500;
       updatetime = 300;
       whichwrap = "<,>,[,]";

@@ -73,7 +73,7 @@ in
             };
             winopts.wrap = true;
             actions.files = {
-              "__unkeyed_1" = true;
+              __unkeyed-1 = true;
             }
             // copy;
             files.actions = toggle;
@@ -83,10 +83,7 @@ in
             };
           };
       };
-      mini-icons = {
-        enable = true;
-        mockDevIcons = true;
-      };
+      web-devicons.enable = true;
       auto-session.enable = true;
     };
 
@@ -95,30 +92,25 @@ in
       git.enable = false;
     };
 
-    globals = {
-      mapleader = " ";
-      localmapleader = " ";
-    };
-
     keymaps = [
       {
         mode = "n";
         key = "<C-f>";
         action.__raw = ''
           function()
-            oil = require'oil'
-              if vim.o.filetype == 'oil' then
-                oil.close()
-              else
-                oil.open()
-              end
+            local oil = require'oil'
+            if vim.o.filetype == 'oil' then
+              oil.close()
+            else
+              oil.open()
+            end
           end
         '';
       }
       {
         mode = "n";
         key = "<C-q>";
-        action = ":bd!<CR>";
+        action = "<Cmd>bd!<CR>";
       }
       {
         mode = "n";

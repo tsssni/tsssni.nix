@@ -39,9 +39,9 @@ in
               "progress"
               "searchcount"
             ];
-            lualine_c = [ "" ];
-            lualine_x = [ "" ];
-            lualine_y = [ "" ];
+            lualine_c = { __empty = null; };
+            lualine_x = { __empty = null; };
+            lualine_y = { __empty = null; };
             lualine_z = [
               {
                 __unkeyed-1 = "navic";
@@ -49,14 +49,6 @@ in
                 icon = "󰊕 ->";
               }
             ];
-          };
-          inactiveSections = {
-            lualine_a = [ "" ];
-            lualine_b = [ "" ];
-            lualine_c = [ "" ];
-            lualine_x = [ "" ];
-            lualine_y = [ "" ];
-            lualine_z = [ "" ];
           };
         };
       };

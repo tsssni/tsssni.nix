@@ -29,9 +29,9 @@ in
       servers.nixd = {
         enable = true;
         package = null;
-        config = {
+        config.settings.nixd = {
           nixpkgs.expr = "import <nixpkgs> { }";
-          formattings.command = [ "nixfmt" ];
+          formatting.command = [ "nixfmt" ];
         };
       };
     };
