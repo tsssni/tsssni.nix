@@ -61,6 +61,7 @@ in
         alwaysThinkingEnabled = true;
         showThinkingSummaries = true;
         preferredNotifChannel = "notifications_disabled";
+        feedbackSurveyRate = 0;
       };
     };
 
