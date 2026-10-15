@@ -8,6 +8,7 @@ in
       enable = true;
       host = "msi";
       tunnel = true;
+      cloud = true;
     };
     crypto = {
       enable = true;

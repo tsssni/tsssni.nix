@@ -13,7 +13,6 @@ in
     tunnel = lib.mkEnableOption "tsssni.devel.wired.tunnel";
     firefox = lib.mkEnableOption "tsssni.devel.wired.browser";
     google = lib.mkEnableOption "tsssni.devel.wired.google";
-    cloud = lib.mkEnableOption "tsssni.devel.wired.cloud";
   };
 
   config = lib.mkIf cfg.enable {
@@ -24,9 +23,6 @@ in
       ]
       ++ lib.optionals cfg.tunnel [
         wireguard-tools
-      ]
-      ++ lib.optionals cfg.cloud [
-        clouddrive2
       ];
 
     programs = {

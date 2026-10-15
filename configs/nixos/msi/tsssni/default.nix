@@ -40,7 +40,6 @@
       };
       wired = {
         enable = true;
-        cloud = true;
         firefox = true;
         tunnel = true;
       };
