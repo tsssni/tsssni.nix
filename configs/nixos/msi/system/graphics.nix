@@ -4,7 +4,7 @@
   ...
 }:
 {
-  environment.systemPackages = [ pkgs.steam ];
+  environment.systemPackages = with pkgs; [ steam ];
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware = {
