@@ -15,6 +15,10 @@
         input.type = "ibus";
       };
       version.enable = true;
+      wired = {
+        enable = true;
+        firefox = true;
+      };
     };
     intef = {
       shell.enable = true;

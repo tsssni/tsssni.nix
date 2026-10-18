@@ -131,6 +131,8 @@ in
     font = {
       nerdFont = fontOption pkgs.blex-mono-lite "BlexMono Nerd Font";
       latinFont = fontOption pkgs.ibm-plex-lite "IBM Plex Mono";
+      sansFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans";
+      serifFont = fontOption pkgs.ibm-plex-lite "IBM Plex Serif";
       hanzisFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans SC";
       hanzitFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans TC";
       kanjiFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans JP";
