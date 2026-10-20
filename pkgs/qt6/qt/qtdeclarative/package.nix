@@ -1,0 +1,25 @@
+{
+  qt6,
+  qt-prune,
+}:
+qt-prune qt6.qtdeclarative
+  [
+    "bin"
+    "libexec"
+    "metatypes"
+    "mkspecs"
+    "modules"
+    "lib/objects-Release"
+    "lib/qt-6/plugins"
+    "lib/qt-6/qml/{QML,QmlTime,Qt,QtCore,QtNetwork,QtTest}"
+    "lib/qt-6/qml/QtQml/{DesignSupport,XmlListModel}"
+    "lib/qt-6/qml/QtQuick/{Controls,Dialogs,Layouts,LocalStorage,Particles,Shapes,Templates,tooling,VectorImage}"
+  ]
+  [
+    "Qml"
+    "QmlMeta"
+    "QmlModels"
+    "QmlWorkerScript"
+    "Quick"
+    "QuickEffects"
+  ]

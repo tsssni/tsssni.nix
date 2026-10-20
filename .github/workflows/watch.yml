@@ -1,0 +1,40 @@
+name: watch
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: read
+
+defaults:
+  run:
+    shell: nix shell nixpkgs#nushell nixpkgs#gh --command nu {0}
+
+jobs:
+  watch:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: master
+      - name: nix
+        uses: NixOS/nix-installer-action@v1
+      - name: watch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          let locked = open flake.lock | from json | get nodes.nixpkgs.locked.rev
+          let latest = git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | split row "\t" | first
+          print $"locked ($locked), latest ($latest)"
+          if $locked != $latest {
+            gh workflow run flake.yml --ref master
+          }

@@ -7,6 +7,7 @@ inputs: {
       self.darwinModules.tsssni
       agenix.darwinModules.age
       home-manager.darwinModules.home-manager
+      nix-homebrew.darwinModules.nix-homebrew
     ];
     home = [
       self.homeModules.tsssni

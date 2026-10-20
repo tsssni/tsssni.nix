@@ -1,0 +1,34 @@
+{
+  boost189,
+}:
+boost189.override {
+  extraB2Args = map (l: "--without-${l}") [
+    "atomic"
+    "charconv"
+    "chrono"
+    "cobalt"
+    "container"
+    "contract"
+    "coroutine"
+    "date_time"
+    "fiber"
+    "filesystem"
+    "graph"
+    "graph_parallel"
+    "json"
+    "locale"
+    "log"
+    "math"
+    "mpi"
+    "nowide"
+    "process"
+    "program_options"
+    "serialization"
+    "stacktrace"
+    "test"
+    "thread"
+    "timer"
+    "type_erasure"
+    "wave"
+  ];
+}

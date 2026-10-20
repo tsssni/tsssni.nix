@@ -15,8 +15,8 @@ in
 
   config = lib.mkIf cfg.enable {
     environment.pathsToLink = [
-      "/share/xdg-desktop-portal"
       "/share/applications"
+      "/share/xdg-desktop-portal"
     ];
   };
 }

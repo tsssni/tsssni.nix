@@ -76,15 +76,22 @@ let
 
   outputsKdl = lib.concatStringsSep "\n\n" (lib.mapAttrsToList monitorKdl cfg.monitors);
 
-  wallpaperKdl = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (
-      monitor: value:
-      let
-        wallpaper = if value.wallpaper != null then value.wallpaper else ./config/wallpaper/moonscape.png;
-      in
-      ''spawn-at-startup "${lib.getExe pkgs.awww}" "img" "${wallpaper}" "-o" "${monitor}" "--transition-type" "none"''
-    ) cfg.monitors
-  );
+  wallpaperKdl =
+    cfg.monitors
+    |> lib.mapAttrsToList (
+      monitor: value: [
+        "-o"
+        monitor
+        "-i"
+        "${lib.defaultTo ./config/wallpaper/moonscape.png value.wallpaper}"
+        "-m"
+        "fill"
+      ]
+    )
+    |> lib.concatLists
+    |> map (arg: ''"${arg}"'')
+    |> toString
+    |> (args: ''spawn-at-startup "${lib.getExe pkgs.swaybg}" ${args}'');
 
   borderKdl = lib.optionalString literatureCfg.enable (
     lib.concatStringsSep "\n" [
@@ -146,12 +153,11 @@ let
 
     window-rule { clip-to-geometry true; geometry-corner-radius 20.0; }
     prefer-no-csd
-    layer-rule { match namespace="^awww"; place-within-backdrop true; }
+    layer-rule { match namespace="^wallpaper$"; place-within-backdrop true; }
     layer-rule { match namespace="^april-shell$"; background-effect { blur true; }; }
 
     binds {
-        Mod+Z { spawn-sh "april-shell ipc call toggleBlurryPlayer toggle"; }
-        Mod+T { spawn "ghostty"; }
+        Mod+T { spawn "alacritty"; }
         Mod+B { spawn "firefox"; }
         Mod+Q { quit skip-confirmation=true; }
         Mod+P { screenshot show-pointer=false; }
@@ -293,7 +299,7 @@ in
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Adwaita";
+        default = "hicolor";
       };
     };
 
@@ -314,20 +320,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni.intef.shell.environmentVariables = {
-      XCURSOR_SIZE = cfg.cursor.size;
-      XCURSOR_THEME = cfg.cursor.name;
-      QT_QPA_PLATFORMTHEME = "qt5ct";
-      XDG_SESSION_TYPE = "wayland";
-    };
-
-    services = {
-      awww.enable = true;
-      wlsunset = {
-        inherit (cfg.sunset) enable temperature;
-      }
-      // cfg.sunset.coordinate;
-    };
+    services.wlsunset = {
+      inherit (cfg.sunset) enable temperature;
+    }
+    // cfg.sunset.coordinate;
 
     systemd.user.services = {
       april-shell = {
@@ -350,7 +346,7 @@ in
         "xdg-desktop-portal-termfilechooser/config".text = ''
           [filechooser]
           cmd=${pkgs.writeShellScript "fzf-wrapper.sh" ''
-            ${lib.getExe pkgs.ghostty} -e ${fzfPicker} "$@"
+            ${lib.getExe pkgs.alacritty} -e ${fzfPicker} "$@"
           ''}
         '';
       };
@@ -364,7 +360,7 @@ in
       enable = true;
       theme = cfg.theme;
       iconTheme = cfg.icon;
-      font = literatureCfg.font.latinFont;
+      font = literatureCfg.font.monoFont;
       colorScheme = "dark";
       gtk2.extraConfig = "gtk-application-prefer-dark-theme = 1";
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;

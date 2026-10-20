@@ -5,7 +5,14 @@
 }:
 {
   boot = {
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackagesFor (
+      pkgs.linux-lean.override {
+        dotconfig = ./kernel.config;
+        kernelPatches = [ ];
+      }
+    );
+    bcache.enable = false;
+    kexec.enable = false;
     kernelModules = [ "kvm-amd" ];
     blacklistedKernelModules = [
       "amdgpu"
@@ -22,23 +29,15 @@
         "ahci"
         "usb_storage"
         "usbhid"
+        "hid_generic"
         "sd_mod"
       ];
+      includeDefaultModules = false;
       kernelModules = [ ];
     };
     loader = {
-      grub = {
+      systemd-boot = {
         enable = true;
-        zfsSupport = true;
-        efiSupport = true;
-        useOSProber = true;
-        mirroredBoots = [
-          {
-            devices = [ "nodev" ];
-            path = "/efi";
-          }
-        ];
-        theme = pkgs.hyperfluent-grub-theme;
         configurationLimit = 5;
       };
       efi = {
@@ -64,10 +63,20 @@
 
   system = {
     disableInstallerTools = true;
+    etc.overlay.enable = true;
     stateVersion = "24.11";
   };
-  services.userborn.enable = true;
+  services = {
+    userborn.enable = true;
+    lvm.enable = false;
+  };
+  security.polkit.enable = true;
+  systemd.package = pkgs.systemd-lean;
+  tsssni.infra.shell.enable = true;
+
+  programs.nano.enable = false;
+  documentation.man.enable = false;
+  xdg.sounds.enable = false;
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";
-  tsssni.infra.shell.enable = true;
 }

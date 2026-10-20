@@ -3,5 +3,8 @@
   ...
 }:
 {
-  imports = lib.importDir ./services/wired ++ [ ../system ];
+  imports = lib.importDir ./. ++ [
+    ../system
+    ../universal
+  ];
 }

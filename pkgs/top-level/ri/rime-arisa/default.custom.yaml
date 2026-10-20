@@ -1,4 +1,6 @@
 patch:
   __include: rime_ice_suggestion:/
+  ascii_composer/switch_key/Caps_Lock: noop
   schema_list:
+    - schema: english
     - schema: rime_ice

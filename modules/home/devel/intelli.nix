@@ -52,7 +52,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
-      package = if homeCfg.standalone then null else pkgs.claude-code;
+      package = homeCfg.install pkgs.claude-code;
       settings = {
         theme = "dark-ansi";
         editorMode = "vim";

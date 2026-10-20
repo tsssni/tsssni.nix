@@ -12,5 +12,15 @@ let
   packageFiles = lib.mergeAttrsList (
     lib.mapAttrsToList namesForShard (builtins.readDir baseDirectory)
   );
+
+  homonym =
+    super: name: file:
+    lib.optionalAttrs (super ? ${name} && lib.functionArgs (import file) ? ${name}) {
+      ${name} = super.${name};
+    };
+
+  callByName =
+    self: super: name: file:
+    self.callPackage file (homonym super name file);
 in
-self: _: lib.mapAttrs (_: file: self.callPackage file { }) packageFiles
+self: super: lib.mapAttrs (callByName self super) packageFiles

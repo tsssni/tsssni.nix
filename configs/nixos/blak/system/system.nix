@@ -10,7 +10,6 @@
       "net.ifnames=0"
     ];
     initrd = {
-      systemd.enable = true;
       availableKernelModules = [
         "virtio_pci"
         "virtio_scsi"

@@ -63,6 +63,7 @@ in
       splitright = true;
       swapfile = false;
       tabstop = 4;
+      termguicolors = true;
       timeoutlen = 500;
       updatetime = 300;
       whichwrap = "<,>,[,]";

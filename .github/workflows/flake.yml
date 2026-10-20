@@ -2,12 +2,12 @@ name: flake
 
 on:
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "17 16 * * *"
   workflow_dispatch:
 
 concurrency:
   group: flake
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -25,9 +25,11 @@ env:
     extra-substituters = https://nix-community.cachix.org
     extra-substituters = https://cache.nixos-cuda.org
     extra-substituters = https://jovian.cachix.org
+    extra-substituters = https://tsssni.cachix.org
     extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
     extra-trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=
     extra-trusted-public-keys = jovian.cachix.org-1:8Vq4Txku6VZIRhYrHYki3Ab9XHJRoWmdYqMqj4rB/Uc=
+    extra-trusted-public-keys = tsssni.cachix.org-1:LMXr408+oLBpr9IkXMxT6L6F3lJuVPvev8oTf9zQnB0=
 
 jobs:
   update:
@@ -35,7 +37,6 @@ jobs:
     permissions:
       contents: write
     outputs:
-      proceed: ${{ steps.update.outputs.proceed }}
       rev: ${{ steps.update.outputs.rev }}
       matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
@@ -47,7 +48,9 @@ jobs:
       - name: nix
         uses: NixOS/nix-installer-action@v1
         with:
-          extra-conf: ${{ env.NIX_EXTRA_CONF }}
+          extra-conf: |
+            ${{ env.NIX_EXTRA_CONF }}
+            ${{ env.NIX_EXTRA_SUBSTITUTERS }}
       - name: update
         id: update
         env:
@@ -59,14 +62,13 @@ jobs:
         if: steps.update.outputs.proceed == 'true'
         run: nu ./scripts/cachix.nu matrix
 
-  build:
+  stage1:
     needs: update
-    if: needs.update.outputs.proceed == 'true'
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.update.outputs.matrix) }}
+    if: fromJSON(needs.update.outputs.matrix || '{}').stage1
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage1 }}" }
+    name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
-    steps:
+    steps: &build
       - name: checkout
         uses: actions/checkout@v4
         with:
@@ -93,7 +95,70 @@ jobs:
           nix config show | lines | where $it =~ '^(substituters|trusted-public-keys) =' | str join "\n" | print
       - name: build
         run: |
-          let attr = [".#${{ matrix.kind }}.${{ matrix.name }}" "${{ matrix.attr }}"] | where $it != "" | str join "."
-          print $"::group::nix build ($attr)"
-          nix build --no-link $attr
+          print "::group::nix build .#${{ matrix.attr }}"
+          nix build --no-link ".#${{ matrix.attr }}"
           print "::endgroup::"
+
+  stage2:
+    needs: [update, stage1]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage2 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage2 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  stage3:
+    needs: [update, stage2]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage3 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage3 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  stage4:
+    needs: [update, stage3]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage4 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage4 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  stage5:
+    needs: [update, stage4]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage5 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage5 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  stage6:
+    needs: [update, stage5]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage6 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage6 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  stage7:
+    needs: [update, stage6]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage7 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage7 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  stage8:
+    needs: [update, stage7]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage8 }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage8 }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build
+
+  configs:
+    needs: [update, stage8]
+    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').configs }}
+    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).configs }}" }
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps: *build

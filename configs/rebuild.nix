@@ -14,6 +14,7 @@ let
   lib = inputs.nixpkgs.lib.extend (final: prev: import ../lib { lib = prev; });
   folder = "${distro}/${func}";
   pkgs = import inputs.nixpkgs { inherit system config; };
+  hydra = lib.optional (builtins.pathExists ./${folder}/hydra.nix) ./${folder}/hydra.nix;
 in
 eval (
   if (distro != "home") then
@@ -21,18 +22,22 @@ eval (
       inherit lib system;
       modules =
         modules.system
+        ++ hydra
+        ++ lib.optional (!root) glob
         ++ [
           ./${folder}/system
           prelude
-        ]
-        ++ lib.optional (!root) glob;
+        ];
     }
   else
     {
       inherit lib pkgs;
-      modules = modules.home ++ [
-        ./${folder}
-        prelude
-      ];
+      modules =
+        modules.home
+        ++ hydra
+        ++ [
+          ./${folder}
+          prelude
+        ];
     }
 )

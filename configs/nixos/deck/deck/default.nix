@@ -11,10 +11,6 @@
   tsssni = {
     intef = {
       shell.enable = true;
-      stream = {
-        enable = true;
-        steam = 181256525;
-      };
       terminal = {
         enable = true;
         terminfo = true;

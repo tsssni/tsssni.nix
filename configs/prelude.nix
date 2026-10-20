@@ -27,7 +27,6 @@ let
   packages = with pkgs; [
     nix
     nh
-    comma-with-db
   ];
 
   systemCfg = {
@@ -38,7 +37,15 @@ let
         substituters = substituters;
         trusted-substituters = substituters;
         trusted-public-keys = keys;
+        trusted-users = [ (if args.distro == "darwin" then "@admin" else "@wheel") ];
       };
+      registry.nixpkgs.to = {
+        type = "github";
+        owner = "NixOS";
+        repo = "nixpkgs";
+        rev = args.inputs.nixpkgs.rev;
+      };
+      nixPath = [ "nixpkgs=flake:nixpkgs" ];
       gc = {
         automatic = true;
         options = "-d";
@@ -49,6 +56,10 @@ let
     nixpkgs = {
       system = args.system;
       config = args.config;
+      flake = {
+        setFlakeRegistry = false;
+        setNixPath = false;
+      };
       overlays = with args.inputs; [
         (
           final: prev:
@@ -57,18 +68,15 @@ let
               inherit (args) system;
               config = final.config;
             };
-            vanilla = import nixpkgs {
-              inherit (args) system;
-            };
           in
           {
-            inherit (vanilla) firefox;
-            inherit (master) claude-code;
+            claude-code = master.claude-code.override { inherit (final) ripgrep socat bubblewrap; };
             nix = prev.nixVersions.latest;
+            gtk2 = prev.writeShellScriptBin "gtk-query-immodules-2.0" "";
+            coreutils-full = final.coreutils;
           }
         )
         self.overlays.default
-        nix-index-database.overlays.nix-index
       ];
     };
 
@@ -80,22 +88,39 @@ let
     documentation = {
       doc.enable = false;
       info.enable = false;
+      man.enable = false;
     }
     // lib.optionalAttrs (args.distro == "nixos") {
       nixos.enable = false;
     };
+  }
+  // lib.optionalAttrs (!args.root) {
+    home-manager.sharedModules = [
+      {
+        xdg.mime.enable = false;
+        programs.man.package = null;
+        manual.manpages.enable = false;
+      }
+    ];
   };
 
-  standloneCfg = removeAttrs systemCfg [ "environment" "documentation" ] // {
-    nix = removeAttrs systemCfg.nix [ "optimise" ];
-    home.packages = packages;
-    i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
-      pkgs.glibcLocales.override { allLocales = false; }
-    );
-    xdg.mime.enable = false;
-    systemd.user.systemctlPath = "/usr/bin/systemctl";
-    programs.man.package = null;
-    manual.manpages.enable = false;
-  };
+  standloneCfg =
+    removeAttrs systemCfg [
+      "documentation"
+      "environment"
+      "home-manager"
+    ]
+    // {
+      nix = removeAttrs systemCfg.nix [ "optimise" ];
+      nixpkgs = removeAttrs systemCfg.nixpkgs [ "flake" ];
+      home.packages = packages;
+      i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+        pkgs.glibcLocales.override { allLocales = false; }
+      );
+      xdg.mime.enable = false;
+      systemd.user.systemctlPath = "/usr/bin/systemctl";
+      programs.man.package = null;
+      manual.manpages.enable = false;
+    };
 in
 if (args.distro == "home") then standloneCfg else systemCfg

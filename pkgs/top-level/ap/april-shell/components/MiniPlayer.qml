@@ -165,14 +165,6 @@ Item {
     implicitWidth: lyricsStripWidth + 4
     implicitHeight: titleVisualHeight
 
-    signal clicked
-
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: root.clicked()
-    }
-
     Item {
         anchors.centerIn: parent
         width: root.lyricsStripWidth

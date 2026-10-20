@@ -1,0 +1,4 @@
+{
+  swaybg,
+}:
+swaybg.overrideAttrs { postInstall = ""; }

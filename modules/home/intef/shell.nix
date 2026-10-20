@@ -8,18 +8,12 @@ let
   cfg = config.tsssni.intef.shell;
   homeCfg = config.tsssni.home;
 
-  scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
-  homeEnvs = {
-    PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin" | uniq)'';
-  };
-  darwinEnvs = {
-    PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin" | uniq)'';
-  };
-  completions =
-    arr:
-    arr
-    |> map (x: "source ${scriptsPath}/custom-completions/${x}/${x}-completions.nu")
-    |> lib.concatStringsSep "\n";
+  completions = [
+    "git"
+    "jj"
+    "nix"
+    "zellij"
+  ];
 
   zjstatus = ''
     zjstatus location="file://${pkgs.zellijPlugins.zjstatus}" {
@@ -53,6 +47,42 @@ let
     }
   '';
 
+  wired = lib.hm.nushell.mkNushellInline ''
+    const api = "http://127.0.0.1:9090"
+
+    def "wired nodes" [] {
+      http get --raw $"($api)/proxies/wired" | from json | get all
+    }
+
+    def "wired delay" [] {
+      let selector = http get --raw $"($api)/proxies/wired" | from json
+      $selector.all | where $it != "direct" | par-each {|node|
+        let delay = try {
+          http get --raw $"($api)/proxies/($node)/delay?url=https%3A%2F%2Fwww.gstatic.com%2Fgenerate_204&timeout=5000" | from json | get delay
+        } catch { null }
+        { node: $node, active: ($node == $selector.now), delay: $delay }
+      } | sort-by {|row| $row.delay | default 999999 }
+    }
+
+    def "wired site" [...urls: string] {
+      let targets = if ($urls | is-empty) {
+        ["https://www.google.com" "https://www.youtube.com" "https://github.com" "https://www.baidu.com"]
+      } else { $urls }
+      $targets | par-each {|url|
+        let start = date now
+        let delay = try {
+          http head --max-time 5sec $url | ignore
+          ((date now) - $start) / 1ms | math round
+        } catch { null }
+        { site: $url, delay: $delay }
+      } | sort-by {|row| $row.delay | default 999999 }
+    }
+
+    def "wired use" [node: string@"wired nodes"] {
+      http put --content-type application/json $"($api)/proxies/wired" { name: $node } | ignore
+    }
+  '';
+
   blockCursor = lib.hm.nushell.mkNushellInline ''
     $env.config.hooks.pre_execution = (
       $env.config.hooks.pre_execution? | default [] | append {|| print -n (ansi -e '2 q') }
@@ -72,9 +102,10 @@ in
 {
   options.tsssni.intef.shell = {
     enable = lib.mkEnableOption "tsssni.intef.shell";
-    environmentVariables = lib.mkOption {
-      type = lib.types.attrsOf lib.hm.types.nushellValue;
-      default = { };
+    completions = lib.mkOption {
+      type = lib.types.package;
+      readOnly = true;
+      default = pkgs.nu-completions.override { inherit completions; };
     };
   };
 
@@ -82,7 +113,8 @@ in
     programs = {
       nushell = {
         enable = true;
-        package = if homeCfg.standalone then null else pkgs.nushell;
+        package = homeCfg.install pkgs.nushell;
+        loadSessionVariables = true;
         settings = {
           show_banner = false;
           edit_mode = "vi";
@@ -94,22 +126,18 @@ in
           completions.algorithm = "prefix";
           table.missing_value_symbol = "";
         };
-        environmentVariables =
-          { }
-          // (lib.optionalAttrs homeCfg.standalone homeEnvs)
-          // (lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin darwinEnvs)
-          // cfg.environmentVariables;
         configFile.text =
-          (completions [
-            "git"
-            "jj"
-            "nix"
-            "zellij"
-          ])
+          (
+            completions
+            |> map (x: "source ${cfg.completions}/share/nu-completions/${x}/${x}-completions.nu")
+            |> lib.concatStringsSep "\n"
+          )
           + "\n\n"
           + multiplex.expr
           + "\n\n"
-          + blockCursor.expr;
+          + blockCursor.expr
+          + "\n\n"
+          + wired.expr;
       };
 
       zellij = {
@@ -255,7 +283,7 @@ in
 
       fastfetch = {
         enable = true;
-        package = with pkgs; if homeCfg.standalone then null else fastfetch;
+        package = homeCfg.install pkgs.fastfetch;
         settings = {
           logo = {
             type = "file";
@@ -326,7 +354,7 @@ in
 
       btop = {
         enable = true;
-        package = if homeCfg.standalone then null else pkgs.btop;
+        package = homeCfg.install pkgs.btop;
         settings = {
           color_theme = "TTY";
           theme_background = false;
@@ -336,6 +364,6 @@ in
       };
     };
 
-    home.packages = lib.optionals (!homeCfg.standalone) [ pkgs.python3 ];
+    home.sessionPath = lib.optional homeCfg.standalone "${config.home.profileDirectory}/bin";
   };
 }

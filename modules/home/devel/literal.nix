@@ -9,6 +9,7 @@ let
   homeCfg = config.tsssni.home;
   colorCfg = cfg.color;
   fontCfg = cfg.font;
+
   colorOption =
     default:
     lib.mkOption {
@@ -18,12 +19,16 @@ let
   fontOption =
     package: name:
     lib.mkOption {
-      type = lib.hm.types.fontType;
-      default = {
-        inherit package name;
-        size = 16;
+      type = lib.types.submodule {
+        imports = lib.hm.types.fontType.getSubModules;
+        config = lib.mapAttrs (_: lib.mkDefault) {
+          inherit package name;
+          size = 16;
+        };
       };
+      default = { };
     };
+
   foreground = "#bebad9";
   background = "#303446";
   palette = [
@@ -62,6 +67,7 @@ let
     "lightCyan"
     "lightWhite"
   ];
+
   inputTypes = lib.types.enum (
     [ "none" ]
     ++ (
@@ -78,7 +84,18 @@ let
   );
   inputType = cfg.input.type;
 
+  rimePath =
+    if (inputType == "squirrel") then
+      "Library/Rime"
+    else if (inputType == "fcitx5") then
+      ".local/share/fcitx5/rime"
+    else if (inputType == "ibus") then
+      ".config/ibus/rime"
+    else
+      null;
+
   ibusRime = pkgs.ibus-engines.rime.override {
+    inherit (pkgs.rime-arisa) librime;
     rimeDataPkgs = [ pkgs.rime-arisa ];
   };
   ibusCfg = {
@@ -89,8 +106,8 @@ let
     fcitx5-with-addons = pkgs.fcitx5-arisa;
     addons = with pkgs; [
       fcitx5-fluent
-      fcitx5-mozc
       (fcitx5-rime.override {
+        inherit (rime-arisa) librime;
         rimeDataPkgs = [ rime-arisa ];
       })
     ];
@@ -99,7 +116,7 @@ let
       addons = {
         classicui.globalSection =
           let
-            uiFont = fontCfg.nerdFont.name + " 10";
+            uiFont = fontCfg.monoFont.name + " 10";
           in
           {
             Font = uiFont;
@@ -107,20 +124,16 @@ let
             TrayFont = uiFont;
             Theme = "FluentDark";
           };
+        rime.globalSection.LatinModeNameFromSchema = "True";
       };
-      globalOptions = {
-        HotKey.EnumerateWithTriggerKeys = "True";
-        "Hotkey/TriggerKeys"."0" = "Super+space";
-      };
+      globalOptions."Hotkey/TriggerKeys" = { };
       inputMethod = {
         "Groups/0" = {
           Name = "Default";
           "Default Layout" = "us";
           DefaultIM = "rime";
         };
-        "Groups/0/Items/0".Name = "keyboard-us";
-        "Groups/0/Items/1".Name = "rime";
-        "Groups/0/Items/2".Name = "mozc";
+        "Groups/0/Items/0".Name = "rime";
       };
     };
   };
@@ -129,14 +142,10 @@ in
   options.tsssni.devel.literal = {
     enable = lib.mkEnableOption "tsssni.devel.literal";
     font = {
-      nerdFont = fontOption pkgs.blex-mono-lite "BlexMono Nerd Font";
-      latinFont = fontOption pkgs.ibm-plex-lite "IBM Plex Mono";
-      sansFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans";
-      serifFont = fontOption pkgs.ibm-plex-lite "IBM Plex Serif";
-      hanzisFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans SC";
-      hanzitFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans TC";
-      kanjiFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans JP";
-      hangulFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans KR";
+      monoFont = fontOption pkgs.plextina "Plextina Mono";
+      sansFont = fontOption pkgs.plextina "Plextina Sans";
+      serifFont = fontOption pkgs.plextina "Plextina Serif";
+      mathFont = fontOption pkgs.plextina "Plextina Math";
       emojiFont =
         if !pkgs.stdenv.hostPlatform.isDarwin then
           fontOption pkgs.noto-fonts-color-emoji "Noto Color Emoji"
@@ -164,19 +173,29 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni = {
-      devel.literal.color = builtins.listToAttrs (
-        lib.imap0 (i: x: {
-          name = x;
-          value = lib.mkDefault (builtins.elemAt colorCfg.palette i);
-        }) colorList
-      );
-      intef.shell.environmentVariables =
-        { }
-        // lib.optionalAttrs (inputType == "fcitx5") {
-          GTK_IM_MODULE = "wayland";
-        };
-    };
+    tsssni.devel.literal.color = builtins.listToAttrs (
+      lib.imap0 (i: x: {
+        name = x;
+        value = lib.mkDefault (builtins.elemAt colorCfg.palette i);
+      }) colorList
+    );
+
+    fonts.fontconfig.enable = lib.mkIf homeCfg.standalone true;
+    fonts.fontconfig.defaultFonts = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+      with fontCfg;
+      {
+        monospace = [ monoFont.name ];
+        sansSerif = [
+          sansFont.name
+          monoFont.name
+        ];
+        serif = [
+          serifFont.name
+          monoFont.name
+        ];
+        emoji = [ emojiFont.name ];
+      }
+    );
 
     i18n.inputMethod =
       lib.optionalAttrs (inputType != "none" && pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone)
@@ -190,30 +209,27 @@ in
         );
 
     home = {
-      packages = lib.optionals (!homeCfg.standalone) (
-        builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg))
+      sessionVariables = lib.optionalAttrs (inputType == "fcitx5") {
+        GTK_IM_MODULE = "wayland";
+      };
+      activation.rimeBuild = lib.mkIf (rimePath != null) (
+        lib.hm.dag.entryBetween [ "linkGeneration" ] [ "writeBoundary" ] ''
+          rime="${config.home.homeDirectory}/${rimePath}"
+          if [ "$(readlink "$rime/.rime-arisa")" != "${pkgs.rime-arisa}" ]; then
+            run rm -rf "$rime/build"
+            run mkdir -p "$rime"
+            run ln -sfn "${pkgs.rime-arisa}" "$rime/.rime-arisa"
+          fi
+        ''
       );
-      file =
-        let
-          path =
-            if (inputType == "squirrel") then
-              "Library/Rime"
-            else if (inputType == "fcitx5") then
-              ".local/share/fcitx5/rime"
-            else if (inputType == "ibus") then
-              ".config/ibus/rime"
-            else
-              null;
-        in
-        lib.mkIf
-          (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin))
-          {
-            "${path}" = {
-              source = "${pkgs.rime-arisa}/share/rime-data";
-              recursive = true;
-              force = true;
-            };
-          };
+      packages = builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg));
+      file = lib.mkIf (rimePath != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin)) {
+        "${rimePath}" = {
+          source = "${pkgs.rime-arisa}/share/rime-data";
+          recursive = true;
+          force = true;
+        };
+      };
     };
   };
 }

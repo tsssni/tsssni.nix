@@ -3,5 +3,8 @@
   ...
 }:
 {
-  imports = lib.importDir ./. ++ [ ../system ];
+  imports = lib.importDir ./. ++ [
+    ../system
+    ../universal
+  ];
 }

@@ -15,9 +15,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni.intef.shell.environmentVariables.EDITOR = "nvim";
     programs.nixvim = {
       enable = true;
+      package = pkgs.neuvim;
       defaultEditor = true;
       enablePrintInit = false;
       enableMan = false;

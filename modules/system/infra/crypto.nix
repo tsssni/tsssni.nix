@@ -16,6 +16,19 @@ let
     "geosite-category-games@cn"
   ];
   rule_set = geoip ++ geosite;
+  rules = pkgs.runCommand "sing-rule-set" { } ''
+    mkdir $out
+    ${
+      rule_set
+      |> map (
+        tag:
+        "cp ${
+          if lib.hasPrefix "geoip" tag then pkgs.sing-geoip else pkgs.sing-geosite
+        }/share/sing-box/rule-set/${tag}.srs $out/"
+      )
+      |> lib.concatStringsSep "\n"
+    }
+  '';
 in
 {
   options.tsssni.infra.crypto = {
@@ -29,14 +42,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
-      "sbx-passwd" = {
-        file = cfg.passwd;
-        mode = "440";
+    age = {
+      ageBin = lib.getExe pkgs.rage;
+      secrets = {
+        "sbx-passwd" = {
+          file = cfg.passwd;
+          mode = "440";
+        };
       };
     };
     services.sing-box = {
       enable = true;
+      package = pkgs.hysteria-box;
       settings = {
         dns = {
           servers = [
@@ -77,6 +94,7 @@ in
         inbounds = [
           {
             type = "tun";
+            stack = "system";
             address = [
               "172.19.0.1/30"
               "fdfe:dcba:9876::1/126"
@@ -188,19 +206,12 @@ in
             type = "local";
             inherit tag;
             format = "binary";
-            path = "${
-              if lib.hasPrefix "geoip" tag then pkgs.sing-geoip else pkgs.sing-geosite
-            }/share/sing-box/rule-set/${tag}.srs";
+            path = "${rules}/${tag}.srs";
           }) rule_set;
           auto_detect_interface = true;
           final = "wired";
         };
-        experimental = {
-          clash_api = {
-            external_controller = "127.0.0.1:9090";
-            external_ui = "${pkgs.metacubexd}";
-          };
-        };
+        experimental.clash_api.external_controller = "127.0.0.1:9090";
       };
     };
   };

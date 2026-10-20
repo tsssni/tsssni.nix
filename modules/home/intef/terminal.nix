@@ -10,6 +10,11 @@ let
   literatureCfg = config.tsssni.devel.literal;
   colorCfg = literatureCfg.color;
   fontCfg = literatureCfg.font;
+  normal = lib.intersectAttrs bright colorCfg;
+  bright =
+    colorCfg
+    |> lib.filterAttrs (n: _: lib.hasPrefix "light" n)
+    |> lib.mapAttrs' (n: lib.nameValuePair (n |> lib.removePrefix "light" |> lib.toLower));
 in
 {
   options.tsssni.intef.terminal = {
@@ -18,54 +23,53 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = lib.optional cfg.terminfo pkgs.ghostty.terminfo;
+    home.packages = lib.optional cfg.terminfo pkgs.alacritty.terminfo;
 
-    programs.ghostty = lib.mkIf (!cfg.terminfo) {
+    programs.alacritty = lib.mkIf (!cfg.terminfo) {
       enable = true;
-      package =
-        with pkgs;
-        if homeCfg.standalone then
-          null
-        else if stdenv.hostPlatform.isLinux then
-          ghostty
-        else
-          ghostty-bin;
-      systemd.enable = pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone;
-      clearDefaultKeybinds = true;
+      package = homeCfg.install pkgs.alacritty;
       settings = {
-        window-decoration = "none";
-        window-inherit-working-directory = false;
-        confirm-close-surface = false;
-        desktop-notifications = false;
-        app-notifications = false;
-        bell-features = "no-system,no-audio,no-attention,no-title,no-border";
-        macos-option-as-alt = true;
-        maximize = pkgs.stdenv.hostPlatform.isDarwin;
-        keybind = [
-          "cmd+c=copy_to_clipboard"
-          "cmd+v=paste_from_clipboard"
-          "ctrl+equal=increase_font_size:1"
-          "ctrl+minus=decrease_font_size:1"
+        window = {
+          decorations = "None";
+          option_as_alt = "Both";
+          startup_mode = if pkgs.stdenv.hostPlatform.isDarwin then "Maximized" else "Windowed";
+        };
+        keyboard.bindings = [
+          {
+            key = "C";
+            mods = "Super";
+            action = "Copy";
+          }
+          {
+            key = "V";
+            mods = "Super";
+            action = "Paste";
+          }
+          {
+            key = "Equals";
+            mods = "Control";
+            action = "IncreaseFontSize";
+          }
+          {
+            key = "Minus";
+            mods = "Control";
+            action = "DecreaseFontSize";
+          }
         ];
-        theme = lib.mkIf literatureCfg.enable "plana";
-        font-family = lib.mkIf literatureCfg.enable [
-          fontCfg.nerdFont.name
-          fontCfg.latinFont.name
-          fontCfg.hanzisFont.name
-          fontCfg.hanzitFont.name
-          fontCfg.kanjiFont.name
-          fontCfg.hangulFont.name
-        ];
-        font-size = lib.mkIf literatureCfg.enable fontCfg.nerdFont.size;
-      };
-      themes = lib.mkIf literatureCfg.enable {
-        plana = {
-          palette = builtins.genList (i: "${toString i}=${builtins.elemAt colorCfg.palette i}") 16;
-          foreground = colorCfg.foreground;
-          background = colorCfg.background;
-          selection-background = colorCfg.lightBlack;
-          cursor-color = colorCfg.lightBlack;
-          cursor-text = colorCfg.lightWhite;
+        font = lib.mkIf literatureCfg.enable {
+          normal.family = fontCfg.monoFont.name;
+          size = fontCfg.monoFont.size;
+        };
+        colors = lib.mkIf literatureCfg.enable {
+          primary = {
+            inherit (colorCfg) foreground background;
+          };
+          inherit normal bright;
+          selection.background = colorCfg.lightBlack;
+          cursor = {
+            cursor = colorCfg.lightBlack;
+            text = colorCfg.lightWhite;
+          };
         };
       };
     };

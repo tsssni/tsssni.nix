@@ -1,6 +1,41 @@
 patch:
+  schema/name: 文法
   "translator/packs/+":
     - moegirl
+  "key_binder/bindings/+":
+    - { when: always, accept: Control+space, select: english }
+  "switches/@0/states": [ 文, AL ]
+  "switches/@0/abbrev": [ 文, AL ]
+  "switches/@0/reset": 0
   "switches/@next":
     name: ascii_punct
     reset: 1
+  schema/dependencies: []
+  engine/segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  engine/translators:
+    - punct_translator
+    - script_translator
+    - lua_translator@*date_translator
+    - lua_translator@*lunar
+    - lua_translator@*uuid
+    - table_translator@custom_phrase
+    - table_translator@cn_en
+    - lua_translator@*unicode
+    - lua_translator@*number_translator
+    - lua_translator@*calc_translator
+    - lua_translator@*force_gc
+  engine/filters:
+    - lua_filter@*corrector
+    - lua_filter@*autocap_filter
+    - lua_filter@*v_filter
+    - lua_filter@*pin_cand_filter
+    - lua_filter@*long_word_filter
+    - lua_filter@*reduce_english_filter
+    - simplifier@emoji
+    - simplifier@traditionalize
+    - uniquifier

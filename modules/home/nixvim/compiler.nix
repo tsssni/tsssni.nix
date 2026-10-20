@@ -35,6 +35,10 @@ in
         };
       };
     };
+    filetype.extension = {
+      hlsl = "shaderslang";
+      hlsli = "shaderslang";
+    };
 
     plugins = {
       lsp.enable = true;
@@ -43,14 +47,14 @@ in
         nixvimInjections = false;
         highlight.enable = true;
         grammarPackages = with grammars; [
-          # core
+          nix
+          # cpp
           c
           cpp
           cmake
+          # shader
           glsl
-          hlsl
           slang
-          nix
           # script
           nu
           bash
@@ -62,7 +66,6 @@ in
           markdown
           markdown_inline
           # embedded
-          query
           regex
           printf
           comment
@@ -71,8 +74,6 @@ in
           json
           yaml
           toml
-          # version
-          diff
         ];
       };
       blink-cmp = {

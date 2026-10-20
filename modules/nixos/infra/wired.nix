@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -15,7 +14,9 @@ in
       default = "tsssni";
     };
     tunnel = lib.mkEnableOption "tsssni.infra.wired.tunnel";
-    cloud = lib.mkEnableOption "tsssni.infra.wired.cloud";
+    wireless = lib.mkEnableOption "tsssni.infra.wired.wireless" // {
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -23,27 +24,19 @@ in
       hostName = cfg.host;
       hostId = "01145140";
       useDHCP = lib.mkDefault true;
+      useNetworkd = !cfg.wireless;
+      nameservers = lib.mkIf (!cfg.wireless) [ "223.5.5.5" ];
       firewall.enable = false;
-      networkmanager = {
+      networkmanager = lib.mkIf cfg.wireless {
         enable = true;
         wifi.backend = "iwd";
       };
+      modemmanager.enable = false;
     };
-    services.openssh.enable = lib.mkIf cfg.tunnel true;
+    services = {
+      openssh.enable = lib.mkIf cfg.tunnel true;
+      resolved.enable = lib.mkIf (!cfg.wireless) false;
+    };
     programs.ssh.startAgent = lib.mkIf cfg.tunnel true;
-
-    systemd.services.clouddrive2 = lib.mkIf cfg.cloud {
-      description = "clouddrive2";
-      wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
-      environment.CLOUDDRIVE_HOME = "/var/lib/clouddrive2";
-      serviceConfig = {
-        Type = "exec";
-        ExecStart = lib.getExe pkgs.clouddrive2;
-        StateDirectory = "clouddrive2";
-        Restart = "on-failure";
-      };
-    };
   };
 }

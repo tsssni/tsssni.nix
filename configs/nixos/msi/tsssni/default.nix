@@ -5,8 +5,11 @@
     homeDirectory = "/home/tsssni";
     stateVersion = "24.11";
   };
-
-  programs.home-manager.enable = true;
+  programs = {
+    home-manager.enable = true;
+    man.enable = false;
+  };
+  manual.manpages.enable = false;
 
   tsssni = {
     intef = {

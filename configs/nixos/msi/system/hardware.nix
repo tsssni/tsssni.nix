@@ -6,12 +6,10 @@
   hardware = {
     cpu.amd.updateMicrocode = true;
     firmware = [
-      (pkgs.runCommand "minimal-firmware" { passthru.compressFirmware = false; } ''
-        fw=${pkgs.compressFirmwareZstd pkgs.linux-firmware}/lib/firmware
-        mkdir -p $out/lib/firmware/{mediatek,rtl_nic}
-        cp $fw/mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin.zst $out/lib/firmware/mediatek/
-        cp $fw/rtl_nic/rtl8125b-2.fw.zst $out/lib/firmware/rtl_nic/
-      '')
+      (pkgs.linux-firmware-lean [
+        "mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin*"
+        "rtl_nic/rtl8125b-2.fw*"
+      ])
     ];
     bluetooth = {
       enable = true;
@@ -20,10 +18,6 @@
   };
 
   services = {
-    hardware.openrgb = {
-      enable = true;
-      startupProfile = "tsssni";
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;

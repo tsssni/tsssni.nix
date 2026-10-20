@@ -1,17 +1,28 @@
 {
+  pkgs,
   config,
   ...
 }:
 {
-  boot.loader = {
-    systemd-boot = {
-      enable = true;
-      configurationLimit = 3;
-      consoleMode = "5";
-    };
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/efi";
+  boot = {
+    kernelPackages = pkgs.linuxPackagesFor (
+      pkgs.linux-lean.override {
+        linux = pkgs.jovianPackages.linux;
+        dotconfig = ./kernel.config;
+        kernelPatches = [ ];
+      }
+    );
+    initrd.includeDefaultModules = false;
+    loader = {
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 3;
+        consoleMode = "5";
+      };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/efi";
+      };
     };
   };
 
@@ -26,7 +37,7 @@
     name = "deck";
     home = "/home/deck";
     shell = config.tsssni.infra.shell.package;
-    hashedPassword = "$6$C2DsafvrEGoy3g8A$gV9LFctSY7A1WHJk8sjwY6hu04zTldhHH6LWayvUBSm3D8s9oW//jqbVDv0VVD00BcH8QScp4leXzjmSqvieT.";
+    hashedPassword = "$y$j9T$RbIJsOOx4b/PpJOryla0n1$pYpVKXL7Lnbfkgv6sS/Dm7n9vd08hQfZu35.N.3hiyA";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOt/rZeCaRCYQAfdwkxwN3SuHqFfj7tP3sPDkSZ5tBjI dingyongyu2002@foxmail.com"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHcuEh4+o7omR+JR/zXw5Psw5dPN7ocRafhHEo4nUXnw dingyongyu2002@foxmail.com"
@@ -40,9 +51,11 @@
 
   system = {
     disableInstallerTools = true;
+    etc.overlay.enable = true;
     stateVersion = "24.11";
   };
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";
+  systemd.package = pkgs.systemd-lean;
   tsssni.infra.shell.enable = true;
 }
