@@ -314,13 +314,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni.intef.shell.environmentVariables = {
-      XCURSOR_SIZE = cfg.cursor.size;
-      XCURSOR_THEME = cfg.cursor.name;
-      QT_QPA_PLATFORMTHEME = "qt5ct";
-      XDG_SESSION_TYPE = "wayland";
-    };
-
     services = {
       awww.enable = true;
       wlsunset = {

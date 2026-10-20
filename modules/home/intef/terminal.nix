@@ -22,14 +22,7 @@ in
 
     programs.ghostty = lib.mkIf (!cfg.terminfo) {
       enable = true;
-      package =
-        with pkgs;
-        if homeCfg.standalone then
-          null
-        else if stdenv.hostPlatform.isLinux then
-          ghostty
-        else
-          ghostty-bin;
+      package = homeCfg.install (with pkgs; if stdenv.hostPlatform.isLinux then ghostty else ghostty-bin);
       systemd.enable = pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone;
       clearDefaultKeybinds = true;
       settings = {

@@ -18,7 +18,7 @@ let
     |> lib.mapAttrs (n: v: v.overrideAttrs strip);
 in
 symlinkJoin {
-  pname = "ibm-plex-lite";
+  pname = "plextina";
   inherit (plex) version meta;
   paths = lib.attrValues fonts ++ lib.optionals webfont (lib.mapAttrsToList (_: f: f.webfont) fonts);
   passthru = fonts;

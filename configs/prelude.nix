@@ -86,16 +86,21 @@ let
     };
   };
 
-  standloneCfg = removeAttrs systemCfg [ "environment" "documentation" ] // {
-    nix = removeAttrs systemCfg.nix [ "optimise" ];
-    home.packages = packages;
-    i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
-      pkgs.glibcLocales.override { allLocales = false; }
-    );
-    xdg.mime.enable = false;
-    systemd.user.systemctlPath = "/usr/bin/systemctl";
-    programs.man.package = null;
-    manual.manpages.enable = false;
-  };
+  standloneCfg =
+    removeAttrs systemCfg [
+      "environment"
+      "documentation"
+    ]
+    // {
+      nix = removeAttrs systemCfg.nix [ "optimise" ];
+      home.packages = packages;
+      i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+        pkgs.glibcLocales.override { allLocales = false; }
+      );
+      xdg.mime.enable = false;
+      systemd.user.systemctlPath = "/usr/bin/systemctl";
+      programs.man.package = null;
+      manual.manpages.enable = false;
+    };
 in
 if (args.distro == "home") then standloneCfg else systemCfg

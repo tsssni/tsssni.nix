@@ -9,12 +9,6 @@ let
   homeCfg = config.tsssni.home;
 
   scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
-  homeEnvs = {
-    PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"($env.HOME)/.nix-profile/bin" | uniq)'';
-  };
-  darwinEnvs = {
-    PATH = lib.hm.nushell.mkNushellInline ''($env.PATH | prepend $"/run/current-system/sw/bin/" | prepend $"/etc/profiles/per-user/${config.home.username}/bin" | uniq)'';
-  };
   completions =
     arr:
     arr
@@ -72,17 +66,14 @@ in
 {
   options.tsssni.intef.shell = {
     enable = lib.mkEnableOption "tsssni.intef.shell";
-    environmentVariables = lib.mkOption {
-      type = lib.types.attrsOf lib.hm.types.nushellValue;
-      default = { };
-    };
   };
 
   config = lib.mkIf cfg.enable {
     programs = {
       nushell = {
         enable = true;
-        package = if homeCfg.standalone then null else pkgs.nushell;
+        package = homeCfg.install pkgs.nushell;
+        loadSessionVariables = true;
         settings = {
           show_banner = false;
           edit_mode = "vi";
@@ -94,11 +85,6 @@ in
           completions.algorithm = "prefix";
           table.missing_value_symbol = "";
         };
-        environmentVariables =
-          { }
-          // (lib.optionalAttrs homeCfg.standalone homeEnvs)
-          // (lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin darwinEnvs)
-          // cfg.environmentVariables;
         configFile.text =
           (completions [
             "git"
@@ -255,7 +241,7 @@ in
 
       fastfetch = {
         enable = true;
-        package = with pkgs; if homeCfg.standalone then null else fastfetch;
+        package = homeCfg.install pkgs.glfetch;
         settings = {
           logo = {
             type = "file";
@@ -326,7 +312,7 @@ in
 
       btop = {
         enable = true;
-        package = if homeCfg.standalone then null else pkgs.btop;
+        package = homeCfg.install pkgs.btop;
         settings = {
           color_theme = "TTY";
           theme_background = false;
@@ -336,6 +322,6 @@ in
       };
     };
 
-    home.packages = lib.optionals (!homeCfg.standalone) [ pkgs.python3 ];
+    home.sessionPath = lib.optional homeCfg.standalone "${config.home.profileDirectory}/bin";
   };
 }

@@ -27,7 +27,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni.intef.shell.environmentVariables = {
+    programs.nushell.environmentVariables = {
       PROMPT_COMMAND = lib.hm.nushell.mkNushellInline "{||}";
       PROMPT_COMMAND_RIGHT = lib.hm.nushell.mkNushellInline ''
         {||

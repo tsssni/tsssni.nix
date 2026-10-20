@@ -129,14 +129,14 @@ in
   options.tsssni.devel.literal = {
     enable = lib.mkEnableOption "tsssni.devel.literal";
     font = {
-      nerdFont = fontOption pkgs.blex-mono-lite "BlexMono Nerd Font";
-      latinFont = fontOption pkgs.ibm-plex-lite "IBM Plex Mono";
-      sansFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans";
-      serifFont = fontOption pkgs.ibm-plex-lite "IBM Plex Serif";
-      hanzisFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans SC";
-      hanzitFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans TC";
-      kanjiFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans JP";
-      hangulFont = fontOption pkgs.ibm-plex-lite "IBM Plex Sans KR";
+      nerdFont = fontOption pkgs.blextina "BlexMono Nerd Font";
+      latinFont = fontOption pkgs.plextina "IBM Plex Mono";
+      sansFont = fontOption pkgs.plextina "IBM Plex Sans";
+      serifFont = fontOption pkgs.plextina "IBM Plex Serif";
+      hanzisFont = fontOption pkgs.plextina "IBM Plex Sans SC";
+      hanzitFont = fontOption pkgs.plextina "IBM Plex Sans TC";
+      kanjiFont = fontOption pkgs.plextina "IBM Plex Sans JP";
+      hangulFont = fontOption pkgs.plextina "IBM Plex Sans KR";
       emojiFont =
         if !pkgs.stdenv.hostPlatform.isDarwin then
           fontOption pkgs.noto-fonts-color-emoji "Noto Color Emoji"
@@ -164,19 +164,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    tsssni = {
-      devel.literal.color = builtins.listToAttrs (
-        lib.imap0 (i: x: {
-          name = x;
-          value = lib.mkDefault (builtins.elemAt colorCfg.palette i);
-        }) colorList
-      );
-      intef.shell.environmentVariables =
-        { }
-        // lib.optionalAttrs (inputType == "fcitx5") {
-          GTK_IM_MODULE = "wayland";
-        };
-    };
+    tsssni.devel.literal.color = builtins.listToAttrs (
+      lib.imap0 (i: x: {
+        name = x;
+        value = lib.mkDefault (builtins.elemAt colorCfg.palette i);
+      }) colorList
+    );
 
     i18n.inputMethod =
       lib.optionalAttrs (inputType != "none" && pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone)
@@ -190,6 +183,9 @@ in
         );
 
     home = {
+      sessionVariables = lib.optionalAttrs (inputType == "fcitx5") {
+        GTK_IM_MODULE = "wayland";
+      };
       packages = lib.optionals (!homeCfg.standalone) (
         builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg))
       );

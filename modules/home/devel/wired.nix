@@ -81,7 +81,7 @@ in
 
       firefox = lib.mkIf cfg.firefox {
         enable = true;
-        package = if homeCfg.standalone then null else pkgs.firefox;
+        package = homeCfg.install pkgs.firefox;
         configPath = "${config.xdg.configHome}/mozilla/firefox";
         profiles.default = {
           id = 0;

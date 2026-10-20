@@ -18,7 +18,7 @@ in
 
     programs.mpv = {
       enable = true;
-      package = pkgs.mpv.override { youtubeSupport = false; };
+      package = pkgs.mpvec;
       config.hwdec = "auto-safe";
     };
 
