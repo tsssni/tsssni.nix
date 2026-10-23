@@ -20,10 +20,6 @@
   };
 
   services = {
-    hardware.openrgb = {
-      enable = true;
-      startupProfile = "tsssni";
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;

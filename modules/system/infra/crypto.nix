@@ -29,14 +29,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
-      "sbx-passwd" = {
-        file = cfg.passwd;
-        mode = "440";
+    age = {
+      ageBin = lib.getExe pkgs.rage;
+      secrets = {
+        "sbx-passwd" = {
+          file = cfg.passwd;
+          mode = "440";
+        };
       };
     };
     services.sing-box = {
       enable = true;
+      package = pkgs.hysteria-box;
       settings = {
         dns = {
           servers = [
@@ -77,6 +81,7 @@ in
         inbounds = [
           {
             type = "tun";
+            stack = "system";
             address = [
               "172.19.0.1/30"
               "fdfe:dcba:9876::1/126"

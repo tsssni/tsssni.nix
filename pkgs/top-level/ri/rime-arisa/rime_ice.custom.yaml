@@ -1,6 +1,12 @@
 patch:
+  schema/name: 文法
   "translator/packs/+":
     - moegirl
+  "key_binder/bindings/+":
+    - { when: always, accept: Control+space, select: english }
+  "switches/@0/states": [ 文, AL ]
+  "switches/@0/abbrev": [ 文, AL ]
+  "switches/@0/reset": 0
   "switches/@next":
     name: ascii_punct
     reset: 1

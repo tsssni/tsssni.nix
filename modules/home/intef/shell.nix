@@ -8,11 +8,13 @@ let
   cfg = config.tsssni.intef.shell;
   homeCfg = config.tsssni.home;
 
-  scriptsPath = "${pkgs.nu_scripts}/share/nu_scripts";
   completions =
     arr:
+    let
+      scripts = pkgs.nu-completions.override { completions = arr; };
+    in
     arr
-    |> map (x: "source ${scriptsPath}/custom-completions/${x}/${x}-completions.nu")
+    |> map (x: "source ${scripts}/share/nu-completions/${x}/${x}-completions.nu")
     |> lib.concatStringsSep "\n";
 
   zjstatus = ''
@@ -102,9 +104,9 @@ in
         enable = true;
         package =
           if homeCfg.standalone then
-            pkgs.emptyDirectory // { inherit (pkgs.zellij) version; }
+            pkgs.emptyDirectory // { inherit (pkgs.multiplex) version; }
           else
-            pkgs.zellij;
+            pkgs.multiplex;
         settings = {
           theme = "ansi";
           pane_frame_style = "full";

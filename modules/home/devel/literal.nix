@@ -9,6 +9,7 @@ let
   homeCfg = config.tsssni.home;
   colorCfg = cfg.color;
   fontCfg = cfg.font;
+
   colorOption =
     default:
     lib.mkOption {
@@ -24,6 +25,7 @@ let
         size = 16;
       };
     };
+
   foreground = "#bebad9";
   background = "#303446";
   palette = [
@@ -62,6 +64,7 @@ let
     "lightCyan"
     "lightWhite"
   ];
+
   inputTypes = lib.types.enum (
     [ "none" ]
     ++ (
@@ -78,6 +81,16 @@ let
   );
   inputType = cfg.input.type;
 
+  rimePath =
+    if (inputType == "squirrel") then
+      "Library/Rime"
+    else if (inputType == "fcitx5") then
+      ".local/share/fcitx5/rime"
+    else if (inputType == "ibus") then
+      ".config/ibus/rime"
+    else
+      null;
+
   ibusRime = pkgs.ibus-engines.rime.override {
     rimeDataPkgs = [ pkgs.rime-arisa ];
   };
@@ -89,7 +102,6 @@ let
     fcitx5-with-addons = pkgs.fcitx5-arisa;
     addons = with pkgs; [
       fcitx5-fluent
-      fcitx5-mozc
       (fcitx5-rime.override {
         rimeDataPkgs = [ rime-arisa ];
       })
@@ -99,7 +111,7 @@ let
       addons = {
         classicui.globalSection =
           let
-            uiFont = fontCfg.nerdFont.name + " 10";
+            uiFont = fontCfg.latinFont.name + " 10";
           in
           {
             Font = uiFont;
@@ -107,20 +119,16 @@ let
             TrayFont = uiFont;
             Theme = "FluentDark";
           };
+        rime.globalSection.LatinModeNameFromSchema = "True";
       };
-      globalOptions = {
-        HotKey.EnumerateWithTriggerKeys = "True";
-        "Hotkey/TriggerKeys"."0" = "Super+space";
-      };
+      globalOptions."Hotkey/TriggerKeys" = { };
       inputMethod = {
         "Groups/0" = {
           Name = "Default";
           "Default Layout" = "us";
           DefaultIM = "rime";
         };
-        "Groups/0/Items/0".Name = "keyboard-us";
-        "Groups/0/Items/1".Name = "rime";
-        "Groups/0/Items/2".Name = "mozc";
+        "Groups/0/Items/0".Name = "rime";
       };
     };
   };
@@ -129,7 +137,7 @@ in
   options.tsssni.devel.literal = {
     enable = lib.mkEnableOption "tsssni.devel.literal";
     font = {
-      nerdFont = fontOption pkgs.blextina "BlexMono Nerd Font";
+      nerdFont = fontOption pkgs.plextina "Symbols Nerd Font";
       latinFont = fontOption pkgs.plextina "IBM Plex Mono";
       sansFont = fontOption pkgs.plextina "IBM Plex Sans";
       serifFont = fontOption pkgs.plextina "IBM Plex Serif";
@@ -171,6 +179,32 @@ in
       }) colorList
     );
 
+    fonts.fontconfig.defaultFonts = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+      let
+        cjk =
+          with fontCfg;
+          [
+            hanzisFont
+            hanzitFont
+            kanjiFont
+            hangulFont
+          ]
+          |> map (f: f.name)
+          |> lib.unique;
+      in
+      with fontCfg;
+      {
+        monospace = [
+          latinFont.name
+          nerdFont.name
+        ]
+        ++ cjk;
+        sansSerif = [ sansFont.name ] ++ cjk;
+        serif = [ serifFont.name ] ++ cjk;
+        emoji = [ emojiFont.name ];
+      }
+    );
+
     i18n.inputMethod =
       lib.optionalAttrs (inputType != "none" && pkgs.stdenv.hostPlatform.isLinux && !homeCfg.standalone)
         (
@@ -186,30 +220,26 @@ in
       sessionVariables = lib.optionalAttrs (inputType == "fcitx5") {
         GTK_IM_MODULE = "wayland";
       };
+      activation.rimeBuild = lib.mkIf (rimePath != null) (
+        lib.hm.dag.entryBetween [ "linkGeneration" ] [ "writeBoundary" ] ''
+          rime="${config.home.homeDirectory}/${rimePath}"
+          if [ "$(readlink "$rime/.rime-arisa")" != "${pkgs.rime-arisa}" ]; then
+            run rm -rf "$rime/build"
+            run mkdir -p "$rime"
+            run ln -sfn "${pkgs.rime-arisa}" "$rime/.rime-arisa"
+          fi
+        ''
+      );
       packages = lib.optionals (!homeCfg.standalone) (
         builtins.filter (p: p != null) (map (f: f.package) (builtins.attrValues fontCfg))
       );
-      file =
-        let
-          path =
-            if (inputType == "squirrel") then
-              "Library/Rime"
-            else if (inputType == "fcitx5") then
-              ".local/share/fcitx5/rime"
-            else if (inputType == "ibus") then
-              ".config/ibus/rime"
-            else
-              null;
-        in
-        lib.mkIf
-          (inputType != "none" && path != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin))
-          {
-            "${path}" = {
-              source = "${pkgs.rime-arisa}/share/rime-data";
-              recursive = true;
-              force = true;
-            };
-          };
+      file = lib.mkIf (rimePath != null && (homeCfg.standalone || pkgs.stdenv.hostPlatform.isDarwin)) {
+        "${rimePath}" = {
+          source = "${pkgs.rime-arisa}/share/rime-data";
+          recursive = true;
+          force = true;
+        };
+      };
     };
   };
 }

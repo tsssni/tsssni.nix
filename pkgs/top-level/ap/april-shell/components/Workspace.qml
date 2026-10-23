@@ -1,6 +1,5 @@
 import Quickshell
 import QtQuick
-import QtQuick.Layouts
 
 Rectangle {
     id: root
@@ -26,7 +25,7 @@ Rectangle {
     border.width: 1
     border.color: "#645e8c"
 
-    ColumnLayout {
+    Column {
         id: appsColumn
         anchors.centerIn: parent
         spacing: 4
@@ -35,9 +34,8 @@ Rectangle {
             model: root.apps
             delegate: Item {
                 required property var modelData
-                Layout.preferredWidth: 32
-                Layout.preferredHeight: 32
-                Layout.alignment: Qt.AlignHCenter
+                width: 32
+                height: 32
 
                 Rectangle {
                     anchors.fill: parent

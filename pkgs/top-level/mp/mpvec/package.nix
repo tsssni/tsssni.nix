@@ -2,9 +2,8 @@
   mpv,
   mpv-unwrapped,
 }:
-mpv.override {
-  youtubeSupport = false;
-  mpv-unwrapped =
+let
+  unwrapped =
     (mpv-unwrapped.override {
       alsaSupport = false;
       archiveSupport = false;
@@ -22,6 +21,12 @@ mpv.override {
       (prev: {
         postFixup = (prev.postFixup or "") + ''
           printf '#!/bin/sh\n[ -n "$MPV" ] || MPV=mpv\nexec "$MPV" "$@"\n' > $out/bin/umpv
+          rm $out/share/mpv/subfont.ttf
         '';
       });
-}
+in
+(mpv.override {
+  youtubeSupport = false;
+  mpv-unwrapped = unwrapped;
+}).overrideAttrs
+  { paths = [ unwrapped.out ]; }

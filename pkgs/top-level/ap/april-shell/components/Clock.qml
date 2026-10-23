@@ -1,7 +1,6 @@
 import QtQuick
-import QtQuick.Layouts
 
-RowLayout {
+Row {
     id: clock
 
     property string hours: ""
@@ -27,7 +26,7 @@ RowLayout {
     }
 
     component ClockText: Text {
-        Layout.alignment: Qt.AlignVCenter
+        anchors.verticalCenter: parent.verticalCenter
         font.pixelSize: 22
         font.bold: true
         font.family: "IBM Plex Mono"

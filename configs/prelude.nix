@@ -27,7 +27,6 @@ let
   packages = with pkgs; [
     nix
     nh
-    comma-with-db
   ];
 
   systemCfg = {
@@ -39,6 +38,13 @@ let
         trusted-substituters = substituters;
         trusted-public-keys = keys;
       };
+      registry.nixpkgs.to = {
+        type = "github";
+        owner = "NixOS";
+        repo = "nixpkgs";
+        rev = args.inputs.nixpkgs.rev;
+      };
+      nixPath = [ "nixpkgs=flake:nixpkgs" ];
       gc = {
         automatic = true;
         options = "-d";
@@ -49,6 +55,10 @@ let
     nixpkgs = {
       system = args.system;
       config = args.config;
+      flake = {
+        setFlakeRegistry = false;
+        setNixPath = false;
+      };
       overlays = with args.inputs; [
         (
           final: prev:
@@ -57,18 +67,15 @@ let
               inherit (args) system;
               config = final.config;
             };
-            vanilla = import nixpkgs {
-              inherit (args) system;
-            };
           in
           {
-            inherit (vanilla) firefox;
             inherit (master) claude-code;
             nix = prev.nixVersions.latest;
+            gtk2 = prev.writeShellScriptBin "gtk-query-immodules-2.0" "";
+            coreutils-full = final.coreutils;
           }
         )
         self.overlays.default
-        nix-index-database.overlays.nix-index
       ];
     };
 
@@ -93,6 +100,7 @@ let
     ]
     // {
       nix = removeAttrs systemCfg.nix [ "optimise" ];
+      nixpkgs = removeAttrs systemCfg.nixpkgs [ "flake" ];
       home.packages = packages;
       i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
         pkgs.glibcLocales.override { allLocales = false; }

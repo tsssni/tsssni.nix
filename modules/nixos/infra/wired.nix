@@ -26,6 +26,7 @@ in
         enable = true;
         wifi.backend = "iwd";
       };
+      modemmanager.enable = false;
     };
     services.openssh.enable = lib.mkIf cfg.tunnel true;
     programs.ssh.startAgent = lib.mkIf cfg.tunnel true;

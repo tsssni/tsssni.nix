@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Io
 import QtQuick
 import "components"
 
@@ -14,14 +13,12 @@ ShellRoot {
     }
 
     Variants {
-        id: bars
         model: Quickshell.screens
 
         Scope {
             id: barScope
             required property var modelData
             readonly property string screenName: modelData.name
-            property alias player: blurryPlayer
 
             PanelWindow {
                 id: bar
@@ -34,7 +31,7 @@ ShellRoot {
                 }
 
                 WlrLayershell.layer: WlrLayer.Top
-                WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+                WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
                 WlrLayershell.namespace: "april-shell"
                 exclusionMode: ExclusionMode.Auto
                 implicitWidth: 48
@@ -72,27 +69,8 @@ ShellRoot {
                     id: miniPlayer
                     anchors.centerIn: parent
                     visible: barScope.screenName === niriIpc.focusedOutput
-                    onClicked: blurryPlayer.toggle()
                 }
             }
-
-            BlurryPlayer {
-                id: blurryPlayer
-                screen: barScope.modelData
-                anchors.top: true
-                anchors.right: true
-                margins.right: bar.implicitWidth + 4
-                margins.top: Math.max(0, bar.height / 2 - implicitHeight / 2)
-            }
-        }
-    }
-
-    IpcHandler {
-        target: "toggleBlurryPlayer"
-        function toggle(): void {
-            for (const i of bars.instances)
-                if (i.screenName === niriIpc.focusedOutput)
-                    i.player.toggle();
         }
     }
 }

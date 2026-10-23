@@ -52,11 +52,6 @@
         flake-parts.follows = "flake-parts";
       };
     };
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     json2steamshortcut = {
       url = "github:ChrisOboe/json2steamshortcut";
       inputs = {
@@ -90,7 +85,9 @@
         scopes: pkgs:
         scopes
         |> lib.concatMapAttrs (_: scope: scope.collect pkgs)
-        |> lib.filterAttrs (_: drv: lib.meta.availableOn pkgs.stdenv.hostPlatform drv);
+        |> lib.filterAttrs (
+          _: drv: lib.isDerivation drv && lib.meta.availableOn pkgs.stdenv.hostPlatform drv
+        );
 
       collectConfigs =
         folder:

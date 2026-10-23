@@ -1,0 +1,61 @@
+{
+  lib,
+  pkgs,
+  pkgsi686Linux,
+  steam,
+  buildFHSEnv,
+  newScope,
+  replaceDependencies,
+  glibcLocales,
+  glibc-reaper,
+  xdg-utils-perless,
+  locales ? glibcLocales.override { allLocales = false; },
+}:
+let
+  buildFHSEnv' = buildFHSEnv.override {
+    callPackage = newScope {
+      pkgs = pkgs // {
+        glibcLocales = locales;
+      };
+    };
+  };
+
+  # for reaper
+  multiPkgs =
+    default: pkgs:
+    if pkgs.stdenv.hostPlatform.is32bit then
+      with pkgs;
+      [
+        glibc
+        libGL
+      ]
+    else
+      lib.remove pkgs.networkmanager (default pkgs);
+
+  targetPkgs =
+    default: pkgs:
+    lib.subtractLists [
+      pkgs.zenity
+      pkgs.xdg-utils
+    ] (default pkgs)
+    ++ [ xdg-utils-perless ];
+in
+replaceDependencies {
+  drv = steam.override {
+    buildFHSEnv =
+      args:
+      buildFHSEnv' (
+        args
+        // {
+          multiPkgs = multiPkgs args.multiPkgs;
+          targetPkgs = targetPkgs args.targetPkgs;
+        }
+      );
+  };
+  replacements = [
+    {
+      oldDependency = pkgsi686Linux.glibc;
+      newDependency = glibc-reaper;
+    }
+  ];
+}

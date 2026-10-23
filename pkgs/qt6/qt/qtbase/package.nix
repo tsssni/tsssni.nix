@@ -1,0 +1,27 @@
+{
+  qt6,
+  qt-prune,
+}:
+qt-prune qt6.qtbase
+  [
+    "bin"
+    "libexec"
+    "metatypes"
+    "mkspecs"
+    "modules"
+    "lib/qt-6/plugins/{egldeviceintegrations,generic,networkinformation,platforminputcontexts,printsupport,sqldrivers,tls,wayland-decoration-client,xcbglintegrations}"
+    "lib/qt-6/plugins/imageformats/libq{gif,ico,jpeg}.so"
+    "lib/qt-6/plugins/platforms/lib{qeglfs,qlinuxfb,qminimal,qminimalegl,qoffscreen,qvkkhrdisplay,qvnc,qxcb}.so"
+    "lib/qt-6/plugins/platformthemes/libqxdgdesktopportal.so"
+    "lib/qt-6/plugins/wayland-graphics-integration-client/lib{dmabuf,drm-egl,shm-emulation,vulkan}-server.so"
+    "lib/qt-6/plugins/wayland-shell-integration/lib{fullscreen-shell-v1,wl-shell-plugin}.so"
+  ]
+  [
+    "Core"
+    "DBus"
+    "Gui"
+    "Network"
+    "OpenGL"
+    "WaylandClient"
+    "Widgets"
+  ]

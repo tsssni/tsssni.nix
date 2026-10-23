@@ -4,21 +4,22 @@
   ...
 }:
 {
-  environment.systemPackages = with pkgs; [ steam ];
+  environment.systemPackages = [
+    (pkgs.steam-64.override { locales = config.i18n.glibcLocales; })
+  ];
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware = {
     steam-hardware.enable = true;
     graphics = {
       enable = true;
-      enable32Bit = true;
       package = config.hardware.nvidia.package;
-      package32 = config.hardware.nvidia.package.lib32;
     };
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      package = pkgs.nvidia-path-tracing;
       open = true;
       modesetting.enable = true;
+      nvidiaSettings = false;
     };
   };
 }

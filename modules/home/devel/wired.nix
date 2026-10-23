@@ -22,7 +22,7 @@ let
       lang: sans: {
         "font.name.sans-serif.${lang}" = sans;
         "font.name.serif.${lang}" = if lang == "x-western" then fontCfg.serifFont.name else sans;
-        "font.name.monospace.${lang}" = fontCfg.nerdFont.name;
+        "font.name.monospace.${lang}" = fontCfg.latinFont.name;
       }
     )
     |> lib.mergeAttrsList;
@@ -81,7 +81,7 @@ in
 
       firefox = lib.mkIf cfg.firefox {
         enable = true;
-        package = homeCfg.install pkgs.firefox;
+        package = homeCfg.install (pkgs.wrapFirefox pkgs.firefex { pname = "firefox-bin"; });
         configPath = "${config.xdg.configHome}/mozilla/firefox";
         profiles.default = {
           id = 0;

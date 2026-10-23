@@ -17,6 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;
+      package = pkgs.neovim-bvh;
       defaultEditor = true;
       enablePrintInit = false;
       enableMan = false;

@@ -1,0 +1,18 @@
+schema:
+  schema_id: english
+  name: Alphabet
+  version: "1"
+
+switches:
+  - name: ascii_mode
+    reset: 1
+    states: [ AL, AL ]
+    abbrev: [ AL, AL ]
+
+engine:
+  processors:
+    - key_binder
+
+key_binder:
+  bindings:
+    - { when: always, accept: Control+space, select: rime_ice }
