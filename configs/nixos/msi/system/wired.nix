@@ -12,6 +12,7 @@ in
     };
     crypto = {
       enable = true;
+      broadcast = true;
       passwd = ../../../../assets/infra/passwd.age;
       domains = [
         "tsssni.top"
@@ -29,6 +30,12 @@ in
         port = 8080;
         directory = root;
         permissions = "R";
+        rules = [
+          {
+            path = "/upload/";
+            permissions = "CRUD";
+          }
+        ];
         users = [
           {
             username = "tsssni";
@@ -40,7 +47,11 @@ in
   };
 
   systemd.services.webdav.serviceConfig = {
-    StateDirectory = "webdav/data";
+    StateDirectory = [
+      "webdav/data"
+      "webdav/data/upload"
+    ];
     StateDirectoryMode = "2770";
+    UMask = "0007";
   };
 }

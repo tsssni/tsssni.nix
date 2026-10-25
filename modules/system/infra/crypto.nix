@@ -33,6 +33,7 @@ in
 {
   options.tsssni.infra.crypto = {
     enable = lib.mkEnableOption "tsssni.infra.crypto";
+    broadcast = lib.mkEnableOption "tsssni.infra.crypto.broadcast";
     passwd = lib.mkOption {
       type = lib.types.path;
     };
@@ -102,7 +103,12 @@ in
             auto_route = true;
             strict_route = false;
           }
-        ];
+        ]
+        ++ lib.optional cfg.broadcast {
+          type = "mixed";
+          listen = "0.0.0.0";
+          listen_port = 7890;
+        };
         outbounds =
           let
             mkOutbound =
