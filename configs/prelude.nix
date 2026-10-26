@@ -63,14 +63,7 @@ let
       overlays = with args.inputs; [
         (
           final: prev:
-          let
-            master = import nixpkgs-master {
-              inherit (args) system;
-              config = final.config;
-            };
-          in
           {
-            claude-code = master.claude-code.override { inherit (final) ripgrep socat bubblewrap; };
             nix = prev.nixVersions.latest;
             gtk2 = prev.writeShellScriptBin "gtk-query-immodules-2.0" "";
             coreutils-full = final.coreutils;

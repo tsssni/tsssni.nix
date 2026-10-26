@@ -44,7 +44,6 @@ Rectangle {
                 }
 
                 Image {
-                    id: icon
                     anchors.centerIn: parent
                     width: 24
                     height: 24
@@ -52,22 +51,6 @@ Rectangle {
 
                     sourceSize: Qt.size(24, 24)
                     fillMode: Image.PreserveAspectFit
-                    scale: hoverArea.containsMouse ? 1.3 : 1.0
-
-                    Behavior on scale {
-                        NumberAnimation {
-                            duration: 150
-                            easing.type: Easing.OutCubic
-                        }
-                    }
-                }
-
-                MouseArea {
-                    id: hoverArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: root.niriIpc.focusWindow(modelData.id)
                 }
             }
         }

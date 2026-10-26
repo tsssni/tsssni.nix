@@ -14,17 +14,7 @@ Item {
         return ws ? ws.output : "";
     }
 
-    function focusWindow(windowId) {
-        focusProc.command = ["niri", "msg", "action", "focus-window", "--id", String(windowId)];
-        focusProc.running = true;
-    }
-
     visible: false
-
-    Process {
-        id: focusProc
-        running: false
-    }
 
     Process {
         id: workspacesProc

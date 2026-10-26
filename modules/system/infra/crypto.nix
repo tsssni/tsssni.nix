@@ -90,7 +90,6 @@ in
             }
           ];
           strategy = "ipv4_only";
-          independent_cache = true;
         };
         inbounds = [
           {

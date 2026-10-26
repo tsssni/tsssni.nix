@@ -7,70 +7,45 @@
 let
   cfg = config.tsssni.devel.intelli;
   homeCfg = config.tsssni.home;
-  model =
-    name: m:
-    pkgs.writeScriptBin name (lib.hm.nushell.mkNushellInline ''
-      #!/usr/bin/env nu
-      def --wrapped main [...args] {
-        let api_key = open "${m.apiKeyPath}" | str trim
-        with-env {
-          ANTHROPIC_BASE_URL: "${m.baseUrl}"
-          ANTHROPIC_AUTH_TOKEN: $api_key
-          ANTHROPIC_MODEL: "${m.model}"
-          ANTHROPIC_DEFAULT_OPUS_MODEL: "${m.model}"
-          ANTHROPIC_DEFAULT_SONNET_MODEL: "${m.model}"
-          ANTHROPIC_DEFAULT_HAIKU_MODEL: "${m.fastModel}"
-          CLAUDE_CODE_SUBAGENT_MODEL: "${m.fastModel}"
-        } { claude ...$args }
-      }
-    '').expr;
+  configDir =
+    if config.home.preferXdgDirectories then
+      "${config.xdg.configHome}/codex"
+    else
+      "${config.home.homeDirectory}/.codex";
+  settings = pkgs.writeText "codex-settings.json" (builtins.toJSON config.programs.codex.settings);
 in
 {
   options.tsssni.devel.intelli = {
     enable = lib.mkEnableOption "tsssni.devel.intelli";
-    models = lib.mkOption {
-      default = { };
-      type = lib.types.attrsOf (
-        lib.types.submodule (
-          { name, ... }:
-          {
-            options = {
-              baseUrl = lib.mkOption { type = lib.types.str; };
-              model = lib.mkOption { type = lib.types.str; };
-              fastModel = lib.mkOption { type = lib.types.str; };
-              apiKeyPath = lib.mkOption {
-                type = lib.types.str;
-                default = "${config.xdg.configHome}/${name}/api-key";
-              };
-            };
-          }
-        )
-      );
-    };
   };
 
   config = lib.mkIf cfg.enable {
-    programs.claude-code = {
+    programs.codex = {
       enable = true;
-      package = homeCfg.install pkgs.claude-code;
+      package = homeCfg.install pkgs.codex;
+      mutableSettings = true;
       settings = {
-        theme = "dark-ansi";
-        editorMode = "vim";
-        effortLevel = "medium";
-        permissions.defaultMode = "default";
-        alwaysThinkingEnabled = true;
-        showThinkingSummaries = true;
-        preferredNotifChannel = "notifications_disabled";
-        feedbackSurveyRate = 0;
+        default_permissions = ":read-only";
+        approval_policy = "on-request";
+        model = "gpt-6-astra";
+        model_auto_compact_token_limit = 900000;
+        model_context_window = 1000000;
+        model_reasoning_effort = "low";
+        model_reasoning_summary = "auto";
+        feedback.enabled = false;
+        tui = {
+          theme = "ansi";
+          vim_mode_default = true;
+          notifications = false;
+        };
       };
     };
 
-    home.packages = lib.mapAttrsToList model cfg.models;
-
-    tsssni.devel.intelli.models.deepseek = lib.mkDefault {
-      baseUrl = "https://api.deepseek.com/anthropic";
-      model = "deepseek-v4-pro[1m]";
-      fastModel = "deepseek-v4-flash";
-    };
+    home.activation.codexMutableSettings = lib.mkForce (
+      lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+        run ${lib.getExe pkgs.nushell} --no-config-file ${./config/codex.nu} \
+          ${settings} ${lib.escapeShellArg "${configDir}/config.toml"}
+      ''
+    );
   };
 }
