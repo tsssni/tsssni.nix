@@ -7,10 +7,20 @@
   ...
 }:
 let
-  cfg = config.tsssni.infra.light;
-  isNixos = options ? system.replaceDependencies;
-  isHome = options ? home.activationPackage;
   opt = type: default: lib.mkOption { inherit type default; };
+  cfg = config.tsssni.infra.light;
+  target =
+    if options ? home.activationPackage then
+      [
+        "home"
+        "activationPackage"
+      ]
+    else
+      [
+        "system"
+        "build"
+        "toplevel"
+      ];
 
   junk = [
     "etc/bash_completion.d"
@@ -48,7 +58,7 @@ let
 
   base =
     (extendModules { modules = [ { tsssni.infra.light.rewrite = lib.mkForce false; } ]; }).config
-    |> (c: if isNixos then c.system.build.toplevel else c.home.activationPackage);
+    |> lib.getAttrFromPath target;
   closure = pkgs.closureInfo { rootPaths = [ base ]; };
   present = "${closure}/store-paths" |> builtins.readFile |> lib.splitString "\n";
 
@@ -73,11 +83,21 @@ let
     |> map (d: rep d (strip r.newDependency));
   explicit = clears ++ lib.concatMap expand swaps;
   excluded = map key ([ base ] ++ cfg.keep ++ lib.concatMap lib.attrValues (swaps ++ clears));
+
   replacements =
     import scan
     |> lib.subtractLists excluded
     |> map (p: dynamic (stored p))
     |> lib.concat explicit;
+
+  rewritten =
+    pkgs.replaceDependencies {
+      drv = base;
+      inherit replacements;
+    }
+    |> lib.mkForce
+    |> lib.mkIf cfg.rewrite;
+
 in
 {
   options.tsssni.infra.light = with lib.types; {
@@ -90,31 +110,19 @@ in
     rewrite = opt bool true;
   };
 
-  config = lib.mkIf cfg.enable (
-    lib.mkMerge [
-      {
-        assertions = [
-          {
-            assertion = isNixos || isHome && pkgs.stdenv.hostPlatform.isLinux;
-            message = "tsssni.infra.light only supports nixos and home-manager on linux";
-          }
-        ];
-      }
-      (lib.optionalAttrs isNixos {
-        environment.corePackages = lib.mkIf (cfg.core != [ ]) (
+  config =
+    [
+      (lib.optionalAttrs (options ? system.replaceDependencies) {
+        environment.corePackages =
           (extendModules { modules = [ { tsssni.infra.light.core = lib.mkForce [ ]; } ]; })
           .config.environment.corePackages
           |> lib.subtractLists cfg.core
           |> lib.mkForce
-        );
-
+          |> lib.mkIf (cfg.core != [ ]);
         system.replaceDependencies.replacements = lib.mkIf cfg.rewrite replacements;
       })
-      (lib.optionalAttrs isHome {
-        home.activationPackage = lib.mkIf cfg.rewrite (
-          lib.mkForce (pkgs.replaceDependencies { drv = base; inherit replacements; })
-        );
-      })
+      (lib.setAttrByPath target rewritten |> lib.optionalAttrs (!(options ? system.replaceDependencies)))
     ]
-  );
+    |> lib.mkMerge
+    |> lib.mkIf cfg.enable;
 }

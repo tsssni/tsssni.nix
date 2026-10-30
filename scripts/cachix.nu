@@ -18,10 +18,10 @@ def "main update" [] {
   }
 
   print "update found, proceeding"
-  git config user.name "Claude"
-  git config user.email "noreply@anthropic.com"
+  git config user.name "Codex"
+  git config user.email "noreply@openai.com"
   if (git log -1 --format=%s | str trim) == "flake: update" {
-    git commit --amend --no-edit
+    git commit --amend --no-edit --reset-author
     git push --force-with-lease origin HEAD:master
   } else {
     git commit -m "flake: update"

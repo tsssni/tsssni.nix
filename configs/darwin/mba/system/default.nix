@@ -1,9 +1,12 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
 {
+  imports = lib.importDir ./.;
+
   users = {
     knownUsers = [ "tsssni" ];
     users.tsssni = {
@@ -22,7 +25,7 @@
 
   environment.systemPackages = [
     (config.system.build.darwin-rebuild.overrideAttrs (prev: {
-      buildPhase = builtins.replaceStrings [ "${pkgs.git}" ] [ "${pkgs.gitMinimal}" ] prev.buildPhase;
+      buildPhase = builtins.replaceStrings [ "${pkgs.git}" ] [ "${pkgs.git-light}" ] prev.buildPhase;
     }))
   ];
 

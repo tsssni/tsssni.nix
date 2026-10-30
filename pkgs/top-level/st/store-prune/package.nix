@@ -1,5 +1,7 @@
 {
   lib,
+  stdenv,
+  darwin,
   runCommandLocal,
   nix,
   patchelf,
@@ -14,10 +16,11 @@ runCommandLocal
   {
     nativeBuildInputs = [
       nix
-      patchelf
-    ];
+    ]
+    ++ lib.optional stdenv.hostPlatform.isLinux patchelf
+    ++ lib.optional stdenv.hostPlatform.isDarwin darwin.autoSignDarwinBinariesHook;
     meta = removeAttrs (drv.meta or { }) [ "outputsToInstall" ] // {
-      platforms = lib.platforms.linux;
+      platforms = drv.meta.platforms or lib.platforms.all;
     };
   }
   ''
@@ -28,4 +31,5 @@ runCommandLocal
     cd $out
     rm -rf ${lib.concatStringsSep " " paths}
     ${post}
+    ${lib.optionalString stdenv.hostPlatform.isDarwin ''signDarwinBinariesIn "$out"''}
   ''
