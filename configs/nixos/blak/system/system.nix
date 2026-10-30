@@ -1,21 +1,35 @@
 {
+  pkgs,
   lib,
   config,
   ...
 }:
 {
   boot = {
+    kernelPackages = pkgs.linuxPackagesFor (
+      pkgs.linux-lean.override {
+        virtualized = true;
+        dotconfig = ./config/kernel/kernel.config;
+        kernelPatches = [ ];
+      }
+    );
+    bcache.enable = false;
+    kexec.enable = false;
     kernelParams = [
       "audit=0"
       "net.ifnames=0"
     ];
     initrd = {
-      availableKernelModules = [
-        "virtio_pci"
-        "virtio_scsi"
-        "virtio_net"
-        "sd_mod"
-      ];
+      includeDefaultModules = false;
+      availableKernelModules = {
+        atkbd = true;
+        i8042 = true;
+        virtio_pci = true;
+        virtio_scsi = true;
+        virtio_net = true;
+        sd_mod = true;
+        efivarfs = lib.mkForce false;
+      };
       kernelModules = [
         "virtio_balloon"
         "virtio_console"
@@ -25,6 +39,7 @@
     loader.grub = {
       enable = !config.boot.isContainer;
       default = "saved";
+      splashImage = null;
       devices = [ "/dev/sda" ];
     };
   };
@@ -40,7 +55,27 @@
     };
   };
 
-  system.stateVersion = "24.11";
+  system = {
+    disableInstallerTools = true;
+    etc.overlay.enable = false;
+    stateVersion = "24.11";
+  };
+  services = {
+    userborn.enable = true;
+    lvm.enable = false;
+  };
+  systemd.package = pkgs.systemd-lean;
+  programs = {
+    nano.enable = false;
+    command-not-found.enable = false;
+  };
+  documentation.enable = false;
+  xdg = {
+    autostart.enable = false;
+    icons.enable = false;
+    mime.enable = false;
+    sounds.enable = false;
+  };
   time.timeZone = "America/Los_Angeles";
   nix = {
     gc.automatic = lib.mkForce false;

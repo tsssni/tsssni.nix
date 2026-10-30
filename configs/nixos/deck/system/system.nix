@@ -8,7 +8,7 @@
     kernelPackages = pkgs.linuxPackagesFor (
       pkgs.linux-lean.override {
         linux = pkgs.jovianPackages.linux;
-        dotconfig = ./kernel.config;
+        dotconfig = ./config/kernel/kernel.config;
         kernelPatches = [ ];
       }
     );

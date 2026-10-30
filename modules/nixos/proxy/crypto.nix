@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -24,6 +25,7 @@ in
     age.secrets."proxy-passwd".file = cfg.passwd;
     services.sing-box = {
       enable = true;
+      package = pkgs.hysteria-box;
       settings.inbounds = [
         {
           type = "hysteria2";

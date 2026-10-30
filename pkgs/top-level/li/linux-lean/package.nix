@@ -3,6 +3,7 @@
   stdenv,
   linux,
   linuxManualConfig,
+  virtualized ? false,
   dotconfig ? null,
   kernelPatches ? [ ],
   features ? null,
@@ -11,7 +12,7 @@
 let
   base = linux.override {
     ignoreConfigErrors = true;
-    structuredExtraConfig =
+    structuredExtraConfig = lib.optionalAttrs (!virtualized) (
       with lib.kernel;
       lib.genAttrs [
         "HYPERV"
@@ -20,7 +21,8 @@ let
         "KVM_GUEST"
         "MOUSE_PS2_VMMOUSE"
         "PARAVIRT_TIME_ACCOUNTING"
-      ] (_: lib.mkForce (option no));
+      ] (_: lib.mkForce (option no))
+    );
   };
 
   localmodconfig =

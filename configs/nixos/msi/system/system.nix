@@ -7,7 +7,7 @@
   boot = {
     kernelPackages = pkgs.linuxPackagesFor (
       pkgs.linux-lean.override {
-        dotconfig = ./kernel.config;
+        dotconfig = ./config/kernel/kernel.config;
         kernelPatches = [ ];
       }
     );
