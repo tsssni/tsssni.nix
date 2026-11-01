@@ -106,7 +106,10 @@ let
     // {
       nix = removeAttrs systemCfg.nix [ "optimise" ];
       nixpkgs = removeAttrs systemCfg.nixpkgs [ "flake" ];
-      home.packages = packages;
+      home = {
+        packages = packages;
+        emptyActivationPath = false;
+      };
       i18n.glibcLocales = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
         pkgs.glibcLocales.override { allLocales = false; }
       );

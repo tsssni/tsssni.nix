@@ -43,8 +43,7 @@ in
 
     home.activation.codexMutableSettings = lib.mkForce (
       lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-        run ${lib.getExe pkgs.nushell} --no-config-file ${./config/codex.nu} \
-          ${settings} ${lib.escapeShellArg "${configDir}/config.toml"}
+        run nu --no-config-file ${./config/codex.nu} ${settings} ${lib.escapeShellArg "${configDir}/config.toml"}
       ''
     );
   };
