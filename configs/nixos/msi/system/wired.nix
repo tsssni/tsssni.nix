@@ -12,7 +12,7 @@ in
     };
     crypto = {
       enable = true;
-      broadcast = true;
+      broadcast = "0.0.0.0";
       passwd = ../../../../assets/infra/passwd.age;
       domains = [
         "tsssni.top"
