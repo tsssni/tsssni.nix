@@ -34,6 +34,7 @@ let
       package = pkgs.nix;
       settings = {
         experimental-features = features;
+        narinfo-cache-positive-ttl = 0;
         substituters = substituters;
         trusted-substituters = substituters;
         trusted-public-keys = keys;
@@ -61,14 +62,11 @@ let
         setNixPath = false;
       };
       overlays = with args.inputs; [
-        (
-          final: prev:
-          {
-            nix = prev.nixVersions.latest;
-            gtk2 = prev.writeShellScriptBin "gtk-query-immodules-2.0" "";
-            coreutils-full = final.coreutils;
-          }
-        )
+        (final: prev: {
+          nix = prev.nixVersions.latest;
+          gtk2 = prev.writeShellScriptBin "gtk-query-immodules-2.0" "";
+          coreutils-full = final.coreutils;
+        })
         self.overlays.default
       ];
     };

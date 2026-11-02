@@ -2,12 +2,11 @@ name: flake
 
 on:
   schedule:
-    - cron: "17 16 * * *"
+    - cron: "23 * * * *"
   workflow_dispatch:
 
 concurrency:
   group: flake
-  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -51,8 +50,12 @@ jobs:
           extra-conf: |
             ${{ env.NIX_EXTRA_CONF }}
             ${{ env.NIX_EXTRA_SUBSTITUTERS }}
+      - name: watch
+        id: watch
+        run: nu ./scripts/cachix.nu watch
       - name: update
         id: update
+        if: steps.watch.outputs.proceed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: nix shell nixpkgs#nushell nixpkgs#gh nixpkgs#nurl --command nu {0}
@@ -88,16 +91,10 @@ jobs:
         with:
           name: ${{ env.CACHIX_CACHE }}
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: substituters
-        run: |
-          mkdir ~/.config/nix
-          $env.NIX_EXTRA_SUBSTITUTERS | save --append ~/.config/nix/nix.conf
-          nix config show | lines | where $it =~ '^(substituters|trusted-public-keys) =' | str join "\n" | print
+      - name: substitute
+        run: nu ./scripts/cachix.nu substitute
       - name: build
-        run: |
-          print "::group::nix build .#${{ matrix.attr }}"
-          nix build --no-link ".#${{ matrix.attr }}"
-          print "::endgroup::"
+        run: nu ./scripts/cachix.nu build "${{ matrix.attr }}"
 
   stage2:
     needs: [update, stage1]

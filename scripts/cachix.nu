@@ -6,6 +6,13 @@ def output [key: string, value] {
   $"($key)=($value)\n" | save --append $env.GITHUB_OUTPUT
 }
 
+def "main watch" [] {
+  let locked = open flake.lock | from json | get nodes.nixpkgs.locked.rev
+  let latest = git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | split row "\t" | first
+  print $"locked ($locked), latest ($latest)"
+  output proceed ($locked != $latest)
+}
+
 def "main update" [] {
   nix flake update
   nu ./pkgs/update.nu
@@ -30,6 +37,18 @@ def "main update" [] {
 
   output proceed true
   output rev (git rev-parse HEAD | str trim)
+}
+
+def "main substitute" [] {
+  mkdir ~/.config/nix
+  $env.NIX_EXTRA_SUBSTITUTERS | save --append ~/.config/nix/nix.conf
+  nix config show | lines | where $it =~ '^(substituters|trusted-public-keys) =' | str join "\n" | print
+}
+
+def "main build" [attr: string] {
+  print $"::group::nix build .#($attr)"
+  nix build --no-link $".#($attr)"
+  print "::endgroup::"
 }
 
 const runners = {

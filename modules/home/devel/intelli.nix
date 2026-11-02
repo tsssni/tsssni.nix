@@ -13,6 +13,7 @@ let
     else
       "${config.home.homeDirectory}/.codex";
   settings = pkgs.writeText "codex-settings.json" (builtins.toJSON config.programs.codex.settings);
+  nu = if homeCfg.standalone then "nu" else lib.getExe pkgs.nushell;
 in
 {
   options.tsssni.devel.intelli = {
@@ -43,7 +44,7 @@ in
 
     home.activation.codexMutableSettings = lib.mkForce (
       lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-        run nu --no-config-file ${./config/codex.nu} ${settings} ${lib.escapeShellArg "${configDir}/config.toml"}
+        run ${nu} --no-config-file ${./config/codex.nu} ${settings} ${lib.escapeShellArg "${configDir}/config.toml"}
       ''
     );
   };
