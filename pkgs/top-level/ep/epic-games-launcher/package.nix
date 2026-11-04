@@ -7,10 +7,10 @@
 }:
 let
   pname = "epic-games-launcher";
-  version = "0.109.0";
-  build = "ge564459";
-  linuxHash = "sha256-ILWhpRzMIJeaBGIdNLHCpPxS826FzFKDOxaMrS2Shew=";
-  darwinHash = "sha256-b3XnziTDDOvXzscFEAhdfEGEtBaXvMUmSLDJ4mJvRTI=";
+  version = "0.110.0";
+  build = "gf2e5ba5";
+  linuxHash = "sha256-U7vRJC4JX2CZYygO8TIVgRVEKrcZukV4XFqT6vqpXEA=";
+  darwinHash = "sha256-NINzCdo5/PhgdQx/ymXE9fDS6kqSWceLeSawSLl2sIo=";
 
   baseUrl = "https://content-download-egs.distro.on.epicgames.com/Builds/EGLv2/${version}%2B${build}";
 
