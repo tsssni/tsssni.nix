@@ -126,12 +126,23 @@ in
               };
             mkOutbounds =
               attrs:
+              let
+                tags = map (attr: attr.tag) attrs;
+              in
               [
                 {
                   type = "selector";
                   tag = "wired";
-                  outbounds = (map (attr: attr.tag) attrs) ++ [ "direct" ];
+                  outbounds = [ "auto" ] ++ tags ++ [ "direct" ];
                   default = (lib.last attrs).tag;
+                }
+                {
+                  type = "urltest";
+                  tag = "auto";
+                  outbounds = tags;
+                  url = "https://www.gstatic.com/generate_204";
+                  interval = "1m";
+                  tolerance = 50;
                 }
               ]
               ++ map (attr: mkOutbound attr) attrs
