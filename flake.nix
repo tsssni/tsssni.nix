@@ -25,10 +25,6 @@
       url = "path:./systems.nix";
       flake = false;
     };
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -49,13 +45,6 @@
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         flake-parts.follows = "flake-parts";
-      };
-    };
-    json2steamshortcut = {
-      url = "github:ChrisOboe/json2steamshortcut";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
       };
     };
   };

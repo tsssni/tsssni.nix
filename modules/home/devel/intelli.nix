@@ -26,12 +26,9 @@ in
       package = homeCfg.install pkgs.codex;
       mutableSettings = true;
       settings = {
-        default_permissions = ":read-only";
-        approval_policy = "on-request";
-        model = "gpt-6-astra";
         model_auto_compact_token_limit = 900000;
         model_context_window = 1000000;
-        model_reasoning_effort = "low";
+        model_reasoning_effort = "high";
         model_reasoning_summary = "auto";
         feedback.enabled = false;
         tui = {

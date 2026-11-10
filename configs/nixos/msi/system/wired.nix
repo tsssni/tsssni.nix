@@ -9,6 +9,7 @@ in
       host = "msi";
       tunnel = true;
       wireless = false;
+      stream = true;
     };
     crypto = {
       enable = true;

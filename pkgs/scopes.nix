@@ -31,10 +31,10 @@ in
         jovianPackages = prev.jovianPackages.overrideScope set;
       };
   };
-  qt6Basic = rec {
+  qt6 = rec {
     set = byName ./qt6;
-    collect = filter set (pkgs: pkgs.qt6Basic);
-    merge = final: _: { qt6Basic = lib.makeScope final.newScope (self: set self { }); };
+    collect = filter set (pkgs: pkgs.qt6);
+    merge = _: prev: { qt6 = prev.qt6.overrideScope set; };
   };
   vimPlugins = rec {
     set = byName ./nixvim;

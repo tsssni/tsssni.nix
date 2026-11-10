@@ -85,6 +85,10 @@ in
               server = "local";
             }
             {
+              domain_keyword = [ "raysengine" ];
+              server = "local";
+            }
+            {
               query_type = [
                 "A"
                 "AAAA"

@@ -17,6 +17,7 @@ in
     wireless = lib.mkEnableOption "tsssni.infra.wired.wireless" // {
       default = true;
     };
+    stream = lib.mkEnableOption "tsssni.infra.wired.stream";
   };
 
   config = lib.mkIf cfg.enable {
@@ -38,5 +39,6 @@ in
       resolved.enable = lib.mkIf (!cfg.wireless) false;
     };
     programs.ssh.startAgent = lib.mkIf cfg.tunnel true;
+    services.sunshine.enable = lib.mkIf cfg.stream true;
   };
 }

@@ -30,6 +30,7 @@
       wired = {
         enable = true;
         tunnel = true;
+        stream = true;
       };
     };
   };

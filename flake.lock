@@ -93,26 +93,6 @@
         "type": "github"
       }
     },
-    "flake-utils": {
-      "inputs": {
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791914995,
-        "narHash": "sha256-Zf/xfQEAasnwnmEfHqW/4hjDE/s44yn2hD4RuVIZRjA=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "b7a79d3fea1e214f6d668d521cecec0c01e26544",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -151,29 +131,6 @@
       "original": {
         "owner": "Jovian-Experiments",
         "repo": "Jovian-NixOS",
-        "type": "github"
-      }
-    },
-    "json2steamshortcut": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1763116114,
-        "narHash": "sha256-0gI7PnQUDZTFjhHgg0eP1SCJOvW5gw3sQ2UAMspipnQ=",
-        "owner": "ChrisOboe",
-        "repo": "json2steamshortcut",
-        "rev": "b829fe2871fd1736d2406724e4abbb492527cb08",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ChrisOboe",
-        "repo": "json2steamshortcut",
         "type": "github"
       }
     },
@@ -304,10 +261,8 @@
         "agenix": "agenix",
         "disko": "disko",
         "flake-parts": "flake-parts",
-        "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "jovian": "jovian",
-        "json2steamshortcut": "json2steamshortcut",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixos-wsl": "nixos-wsl",

@@ -6,7 +6,6 @@ inputs: {
     home = [
       self.homeModules.tsssni
       nixvim.homeModules.nixvim
-      json2steamshortcut.homeModules.default
     ];
   };
 }
