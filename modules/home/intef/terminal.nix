@@ -19,13 +19,13 @@ in
 {
   options.tsssni.intef.terminal = {
     enable = lib.mkEnableOption "tsssni.intef.terminal";
-    terminfo = lib.mkEnableOption "tsssni.intef.terminal.terminfo";
+    server = lib.mkEnableOption "tsssni.intef.terminal.server";
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = lib.optional cfg.terminfo pkgs.alacritty.terminfo;
+    home.packages = lib.optional cfg.server pkgs.alacritty.terminfo;
 
-    programs.alacritty = lib.mkIf (!cfg.terminfo) {
+    programs.alacritty = lib.mkIf (!cfg.server) {
       enable = true;
       package = homeCfg.install pkgs.alacritty;
       settings = {

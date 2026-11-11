@@ -1,20 +1,33 @@
 {
-  apple-cursor,
   emptyDirectory,
   gamescope-session,
   kdePackages,
-  runCommand,
+  lib,
+  resholve,
 }:
 (gamescope-session.override {
   ibus = emptyDirectory;
+  resholve = resholve // {
+    phraseSolution =
+      name: solution:
+      resholve.phraseSolution name (
+        solution
+        // lib.optionalAttrs (name == "gamescope-session") {
+          inputs = lib.remove kdePackages.kconfig solution.inputs;
+          execer = lib.remove "cannot:${kdePackages.kconfig}/bin/kwriteconfig6" solution.execer;
+        }
+      );
+  };
   kdePackages = kdePackages // {
-    breeze = runCommand "apple-cursor-steam" { } ''
-      mkdir -p $out/share/icons
-      ln -s ${apple-cursor}/share/icons/macOS $out/share/icons/steam
-    '';
+    breeze = emptyDirectory;
   };
 }).overrideAttrs
   (prev: {
+    postPatch = (prev.postPatch or "") + ''
+      substituteInPlace gamescope-session --replace-fail \
+        'kwriteconfig6 --file gtk-3.0/settings.ini  --group Settings --key gtk-cursor-theme-name steam' \
+        ':'
+    '';
     postFixup = (prev.postFixup or "") + ''
       for d in $out/lib/systemd/user $out/share/systemd/user; do
         [ -d $d ] || continue

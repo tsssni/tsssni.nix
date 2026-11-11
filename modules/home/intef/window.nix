@@ -198,6 +198,7 @@ in
 {
   options.tsssni.intef.window = {
     enable = lib.mkEnableOption "tsssni.intef.window";
+    desktop = lib.mkEnableOption "tsssni.intef.window.desktop";
 
     monitors = lib.mkOption {
       type =
@@ -305,7 +306,7 @@ in
 
     cursor = {
       package = lib.mkOption {
-        type = lib.types.package;
+        type = lib.types.nullOr lib.types.package;
         default = pkgs.apple-cursor;
       };
       name = lib.mkOption {
@@ -325,7 +326,7 @@ in
     }
     // cfg.sunset.coordinate;
 
-    systemd.user.services = {
+    systemd.user.services = lib.mkIf cfg.desktop {
       april-shell = {
         Unit = {
           Description = "april-shell";
@@ -340,7 +341,7 @@ in
       };
     };
 
-    xdg = {
+    xdg = lib.mkIf cfg.desktop {
       configFile = {
         "niri/config.kdl".text = niriKdl;
         "xdg-desktop-portal-termfilechooser/config".text = ''
@@ -376,20 +377,24 @@ in
     };
 
     home = {
-      packages = with pkgs; [
-        niri
-        kwin
-        april-shell
-        xwayland-satellite
-        wl-clipboard
-        xdg-utils
-        dconf
-      ];
-      pointerCursor = {
-        enable = true;
-        gtk.enable = true;
-      }
-      // cfg.cursor;
+      packages =
+        with pkgs;
+        lib.optionals cfg.desktop [
+          niri
+          kwin
+          april-shell
+          xwayland-satellite
+          wl-clipboard
+          xdg-utils
+          dconf
+        ];
+      pointerCursor = lib.mkIf (cfg.cursor.package != null) (
+        {
+          enable = true;
+          gtk.enable = true;
+        }
+        // cfg.cursor
+      );
     };
   };
 }

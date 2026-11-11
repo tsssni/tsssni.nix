@@ -17,6 +17,7 @@
       terminal.enable = true;
       window = {
         enable = true;
+        desktop = true;
         monitors = {
           DP-2 = {
             width = 3840;

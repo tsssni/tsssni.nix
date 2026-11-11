@@ -28,7 +28,6 @@
 
   security.pki.certificateFiles = [ ../../../../assets/intef/comodo-rsa-dv.pem ];
   services = {
-    displayManager.sddm.wayland.enable = true;
     openssh.settings.PasswordAuthentication = false;
     userborn.enable = true;
   };

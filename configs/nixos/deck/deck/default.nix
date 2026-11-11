@@ -13,7 +13,12 @@
       shell.enable = true;
       terminal = {
         enable = true;
-        terminfo = true;
+        server = true;
+      };
+      window = {
+        enable = true;
+        desktop = false;
+        cursor.package = null;
       };
     };
     nixvim.enable = true;
