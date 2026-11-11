@@ -1,12 +1,15 @@
 name: flake
+run-name: ${{ github.event.client_payload.nixpkgs_rev && format('flake {0}', github.event.client_payload.nixpkgs_rev) || 'flake watch' }}
 
 on:
   schedule:
     - cron: "23 * * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types: [flake-update]
 
 concurrency:
-  group: flake
+  group: ${{ github.event_name == 'repository_dispatch' && 'flake-build' || 'flake-watch' }}
 
 permissions:
   contents: read
@@ -31,12 +34,35 @@ env:
     extra-trusted-public-keys = tsssni.cachix.org-1:LMXr408+oLBpr9IkXMxT6L6F3lJuVPvev8oTf9zQnB0=
 
 jobs:
-  update:
+  watch:
+    if: ${{ github.event_name != 'repository_dispatch' }}
     runs-on: ubuntu-26.04
     permissions:
+      actions: read
       contents: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: nix
+        uses: NixOS/nix-installer-action@v1
+        with:
+          extra-conf: |
+            ${{ env.NIX_EXTRA_CONF }}
+            ${{ env.NIX_EXTRA_SUBSTITUTERS }}
+      - name: watch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: nix shell nixpkgs#nushell nixpkgs#gh --command nu {0}
+        run: nu ./scripts/cachix.nu watch
+
+  update:
+    if: ${{ github.event_name == 'repository_dispatch' }}
+    runs-on: ubuntu-26.04
     outputs:
       rev: ${{ steps.update.outputs.rev }}
+      proceed: ${{ steps.update.outputs.proceed }}
       matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - name: checkout
@@ -50,12 +76,8 @@ jobs:
           extra-conf: |
             ${{ env.NIX_EXTRA_CONF }}
             ${{ env.NIX_EXTRA_SUBSTITUTERS }}
-      - name: watch
-        id: watch
-        run: nu ./scripts/cachix.nu watch
       - name: update
         id: update
-        if: steps.watch.outputs.proceed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: nix shell nixpkgs#nushell nixpkgs#gh nixpkgs#nurl --command nu {0}
@@ -64,11 +86,17 @@ jobs:
         id: matrix
         if: steps.update.outputs.proceed == 'true'
         run: nu ./scripts/cachix.nu matrix
+      - name: candidate
+        if: steps.update.outputs.proceed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: flake-${{ github.event.client_payload.nixpkgs_rev }}
+          path: ${{ runner.temp }}/flake-candidate.patch
 
   stage1:
     needs: update
-    if: fromJSON(needs.update.outputs.matrix || '{}').stage1
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage1 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage1 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage1 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: &build
@@ -77,6 +105,11 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ needs.update.outputs.rev }}
+      - name: candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-${{ github.event.client_payload.nixpkgs_rev }}
+          path: ${{ runner.temp }}
       - name: nothing-but-nix
         if: matrix.platform == 'linux'
         uses: wimpysworld/nothing-but-nix@v10
@@ -93,69 +126,96 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: substitute
         run: nu ./scripts/cachix.nu substitute
+      - name: apply
+        run: nu ./scripts/cachix.nu apply
       - name: build
         run: nu ./scripts/cachix.nu build "${{ matrix.attr }}"
 
   stage2:
     needs: [update, stage1]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage2 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage2 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage2 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage2 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   stage3:
     needs: [update, stage2]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage3 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage3 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage3 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage3 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   stage4:
     needs: [update, stage3]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage4 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage4 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage4 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage4 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   stage5:
     needs: [update, stage4]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage5 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage5 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage5 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage5 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   stage6:
     needs: [update, stage5]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage6 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage6 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage6 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage6 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   stage7:
     needs: [update, stage6]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage7 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage7 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage7 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage7 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   stage8:
     needs: [update, stage7]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage8 }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).stage8 }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').stage8 }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).stage8 }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
 
   configs:
     needs: [update, stage8]
-    if: ${{ !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').configs }}
-    strategy: { fail-fast: false, matrix: "${{ fromJSON(needs.update.outputs.matrix).configs }}" }
+    if: ${{ !failure() && !cancelled() && fromJSON(needs.update.outputs.matrix || '{}').configs }}
+    strategy: { matrix: "${{ fromJSON(needs.update.outputs.matrix).configs }}" }
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps: *build
+
+  commit:
+    needs: [update, configs]
+    if: >-
+      ${{ !failure() && !cancelled() && needs.configs.result == 'success' }}
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.update.outputs.rev }}
+      - name: candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-${{ github.event.client_payload.nixpkgs_rev }}
+          path: ${{ runner.temp }}
+      - name: nix
+        uses: NixOS/nix-installer-action@v1
+        with:
+          extra-conf: ${{ env.NIX_EXTRA_CONF }}
+      - name: commit
+        run: nu ./scripts/cachix.nu commit

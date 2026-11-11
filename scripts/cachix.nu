@@ -8,12 +8,34 @@ def output [key: string, value] {
 
 def "main watch" [] {
   let locked = open flake.lock | from json | get nodes.nixpkgs.locked.rev
-  let latest = git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | split row "\t" | first
+  let latest = git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | split row "\t" | first | str trim
   print $"locked ($locked), latest ($latest)"
-  output proceed ($locked != $latest)
+  if $locked == $latest {
+    print "already accepted, nothing to do"
+    return
+  }
+
+  let query = '.workflow_runs[] | select(.display_title == "flake HASH") | [.status, .conclusion, .html_url] | @tsv' | str replace HASH $latest
+  let runs = gh api --paginate $"repos/($env.GITHUB_REPOSITORY)/actions/workflows/flake.yml/runs?per_page=100" --jq $query
+  let attempts = $runs | lines
+  if ($attempts | is-not-empty) {
+    let previous = $attempts | first | split row "\t"
+    if ($previous | get 0) != "completed" {
+      print $"candidate already queued or running: ($previous | get 2)"
+      return
+    }
+    if ($previous | get 1) in [failure timed_out] {
+      print $"candidate previously failed; not submitting again: ($previous | get 2)"
+      return
+    }
+  }
+
+  gh api --method POST $"repos/($env.GITHUB_REPOSITORY)/dispatches" --raw-field event_type=flake-update --raw-field $"client_payload[nixpkgs_rev]=($latest)"
+  print $"dispatched flake ($latest)"
 }
 
 def "main update" [] {
+  output rev (git rev-parse HEAD | str trim)
   nix flake update
   nu ./pkgs/update.nu
 
@@ -24,7 +46,16 @@ def "main update" [] {
     return
   }
 
-  print "update found, proceeding"
+  git diff --cached --binary | save --force ($env.RUNNER_TEMP | path join "flake-candidate.patch")
+  output proceed true
+}
+
+def "main apply" [] {
+  git apply --index ($env.RUNNER_TEMP | path join "flake-candidate.patch")
+}
+
+def "main commit" [] {
+  main apply
   git config user.name "Codex"
   git config user.email "noreply@openai.com"
   if (git log -1 --format=%s | str trim) == "flake: update" {
@@ -34,9 +65,6 @@ def "main update" [] {
     git commit -m "flake: update"
     git push origin HEAD:master
   }
-
-  output proceed true
-  output rev (git rev-parse HEAD | str trim)
 }
 
 def "main substitute" [] {
