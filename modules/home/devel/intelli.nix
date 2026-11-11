@@ -17,7 +17,7 @@ let
 in
 {
   options.tsssni.devel.intelli = {
-    enable = lib.mkEnableOption "tsssni.devel.intelli";
+    enable = lib.mkEnableOption "Codex configuration";
   };
 
   config = lib.mkIf cfg.enable {

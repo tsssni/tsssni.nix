@@ -11,7 +11,7 @@ in
   imports = lib.importDir ./.;
 
   options.tsssni.nixvim = {
-    enable = lib.mkEnableOption "tsssni.nixvim";
+    enable = lib.mkEnableOption "nixvim configuration";
   };
 
   config = lib.mkIf cfg.enable {

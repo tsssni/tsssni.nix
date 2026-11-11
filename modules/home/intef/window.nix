@@ -197,40 +197,48 @@ let
 in
 {
   options.tsssni.intef.window = {
-    enable = lib.mkEnableOption "tsssni.intef.window";
-    desktop = lib.mkEnableOption "tsssni.intef.window.desktop";
+    enable = lib.mkEnableOption "desktop settings";
+    desktop = lib.mkEnableOption "desktop environment";
 
     monitors = lib.mkOption {
+      description = "Monitor configurations.";
       type =
         with lib.types;
         attrsOf (submodule {
           options = {
             name = lib.mkOption {
+              description = "Output identifier.";
               type = nullOr str;
               default = null;
             };
             width = lib.mkOption {
+              description = "Output width in pixels.";
               type = nullOr int;
               default = null;
             };
             height = lib.mkOption {
+              description = "Output height in pixels.";
               type = nullOr int;
               default = null;
             };
             refresh = lib.mkOption {
+              description = "Refresh rate in hertz.";
               type = nullOr float;
               default = null;
             };
             scale = lib.mkOption {
+              description = "Output scale factor.";
               type = nullOr float;
               default = null;
             };
             transform = {
               flipped = lib.mkOption {
+                description = "Horizontal output reflection.";
                 type = bool;
                 default = false;
               };
               rotation = lib.mkOption {
+                description = "Output rotation in degrees.";
                 type = enum [
                   0
                   90
@@ -241,15 +249,23 @@ in
               };
             };
             position = lib.mkOption {
+              description = "Logical output position.";
               type = nullOr (submodule {
                 options = {
-                  x = lib.mkOption { type = int; };
-                  y = lib.mkOption { type = int; };
+                  x = lib.mkOption {
+                    description = "Horizontal logical coordinate.";
+                    type = int;
+                  };
+                  y = lib.mkOption {
+                    description = "Vertical logical coordinate.";
+                    type = int;
+                  };
                 };
               });
               default = null;
             };
             wallpaper = lib.mkOption {
+              description = "Wallpaper image path.";
               type = nullOr path;
               default = null;
             };
@@ -259,23 +275,27 @@ in
     };
 
     sunset = {
-      enable = lib.mkEnableOption "tsssni.intef.window.sunset";
+      enable = lib.mkEnableOption "automatic screen color temperature";
       coordinate = {
         latitude = lib.mkOption {
+          description = "Latitude in degrees.";
           type = lib.types.float;
           default = 35.6620;
         };
         longitude = lib.mkOption {
+          description = "Longitude in degrees.";
           type = lib.types.float;
           default = 139.7038;
         };
       };
       temperature = {
         day = lib.mkOption {
+          description = "Daytime temperature in kelvin.";
           type = lib.types.int;
           default = 6504;
         };
         night = lib.mkOption {
+          description = "Nighttime temperature in kelvin.";
           type = lib.types.int;
           default = 3450;
         };
@@ -283,37 +303,41 @@ in
     };
 
     theme = {
-      package = lib.mkOption {
-        type = lib.types.nullOr lib.types.package;
+      package = lib.mkPackageOption pkgs "GTK theme" {
+        nullable = true;
         default = null;
       };
       name = lib.mkOption {
+        description = "GTK theme name.";
         type = lib.types.str;
         default = "Adwaita";
       };
     };
 
     icon = {
-      package = lib.mkOption {
-        type = lib.types.nullOr lib.types.package;
+      package = lib.mkPackageOption pkgs "icon theme" {
+        nullable = true;
         default = null;
       };
       name = lib.mkOption {
+        description = "Icon theme name.";
         type = lib.types.str;
         default = "hicolor";
       };
     };
 
     cursor = {
-      package = lib.mkOption {
-        type = lib.types.nullOr lib.types.package;
-        default = pkgs.apple-cursor;
+      package = lib.mkPackageOption pkgs "cursor theme" {
+        nullable = true;
+        default = "apple-cursor";
       };
       name = lib.mkOption {
+        description = "Cursor theme name.";
         type = lib.types.str;
         default = "macOS";
       };
       size = lib.mkOption {
+        description = "Cursor size in pixels.";
         type = lib.types.int;
         default = 24;
       };

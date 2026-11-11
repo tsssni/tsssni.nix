@@ -32,15 +32,18 @@ let
 in
 {
   options.tsssni.infra.crypto = {
-    enable = lib.mkEnableOption "tsssni.infra.crypto";
+    enable = lib.mkEnableOption "encrypted traffic forwarding";
     broadcast = lib.mkOption {
+      description = "Shared proxy listen address.";
       type = lib.types.nullOr lib.types.str;
       default = null;
     };
     passwd = lib.mkOption {
+      description = "Encrypted proxy password file.";
       type = lib.types.path;
     };
     domains = lib.mkOption {
+      description = "Proxy server domains.";
       type = lib.types.listOf lib.types.str;
     };
   };

@@ -48,10 +48,10 @@ let
 in
 {
   options.tsssni.devel.wired = {
-    enable = lib.mkEnableOption "tsssni.devel.wired";
-    tunnel = lib.mkEnableOption "tsssni.devel.wired.tunnel";
-    firefox = lib.mkEnableOption "tsssni.devel.wired.browser";
-    stream = lib.mkEnableOption "tsssni.devel.wired.stream";
+    enable = lib.mkEnableOption "networking tools";
+    tunnel = lib.mkEnableOption "tunnel tools";
+    firefox = lib.mkEnableOption "firefox configuration";
+    stream = lib.mkEnableOption "stream client";
   };
 
   config = lib.mkIf cfg.enable {

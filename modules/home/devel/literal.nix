@@ -13,12 +13,14 @@ let
   colorOption =
     default:
     lib.mkOption {
+      description = "Color value.";
       type = (with lib.types; nullOr str);
       inherit default;
     };
   fontOption =
     package: name:
     lib.mkOption {
+      description = "Font settings.";
       type = lib.types.submodule {
         imports = lib.hm.types.fontType.getSubModules;
         config = lib.mapAttrs (_: lib.mkDefault) {
@@ -140,7 +142,7 @@ let
 in
 {
   options.tsssni.devel.literal = {
-    enable = lib.mkEnableOption "tsssni.devel.literal";
+    enable = lib.mkEnableOption "system text settings";
     font = {
       monoFont = fontOption pkgs.plextina "Plextina Mono";
       sansFont = fontOption pkgs.plextina "Plextina Sans";
@@ -154,6 +156,7 @@ in
     };
     color = {
       palette = lib.mkOption {
+        description = "ANSI color palette.";
         type = with lib.types; listOf str;
         default = palette;
       };
@@ -167,6 +170,7 @@ in
       }) colorList
     );
     input.type = lib.mkOption {
+      description = "Input method framework.";
       type = inputTypes;
       default = "none";
     };

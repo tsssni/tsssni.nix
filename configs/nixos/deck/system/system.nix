@@ -12,6 +12,8 @@
         kernelPatches = [ ];
       }
     );
+    bcache.enable = false;
+    kexec.enable = false;
     initrd.includeDefaultModules = false;
     loader = {
       systemd-boot = {
@@ -30,6 +32,7 @@
   services = {
     openssh.settings.PasswordAuthentication = false;
     userborn.enable = true;
+    lvm.enable = false;
   };
 
   users.users.deck = {
@@ -54,8 +57,11 @@
     etc.overlay.enable = true;
     stateVersion = "24.11";
   };
+  systemd.package = pkgs.systemd-lean;
   time.timeZone = "Asia/Shanghai";
   i18n.defaultLocale = "en_US.UTF-8";
-  systemd.package = pkgs.systemd-lean;
+  programs.nano.enable = false;
+  fonts.enableDefaultPackages = false;
+  xdg.sounds.enable = false;
   tsssni.infra.shell.enable = true;
 }

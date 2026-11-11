@@ -19,7 +19,7 @@ in
 {
   options = {
     services.v2raya = {
-      enable = lib.mkEnableOption "v2raya";
+      enable = lib.mkEnableOption "v2rayA proxy management";
       package = lib.mkPackageOption pkgs "v2raya" { };
     };
   };

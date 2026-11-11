@@ -9,7 +9,7 @@ let
 in
 {
   options.tsssni.infra.shell = {
-    enable = lib.mkEnableOption "tsssni.infra.shell";
+    enable = lib.mkEnableOption "system shell integration";
     package = lib.mkPackageOption pkgs "nushell" { };
   };
 

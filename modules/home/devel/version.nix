@@ -15,12 +15,14 @@ let
 in
 {
   options.tsssni.devel.version = {
-    enable = lib.mkEnableOption "tsssni.devel.version";
+    enable = lib.mkEnableOption "version control and direnv";
     name = lib.mkOption {
+      description = "Commit author name.";
       type = lib.types.nullOr lib.types.str;
       default = null;
     };
     email = lib.mkOption {
+      description = "Commit author email.";
       type = lib.types.nullOr lib.types.str;
       default = null;
     };

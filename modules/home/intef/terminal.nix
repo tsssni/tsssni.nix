@@ -18,8 +18,8 @@ let
 in
 {
   options.tsssni.intef.terminal = {
-    enable = lib.mkEnableOption "tsssni.intef.terminal";
-    server = lib.mkEnableOption "tsssni.intef.terminal.server";
+    enable = lib.mkEnableOption "Alacritty terminal configuration";
+    server = lib.mkEnableOption "Alacritty terminfo only";
   };
 
   config = lib.mkIf cfg.enable {

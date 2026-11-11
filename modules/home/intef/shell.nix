@@ -101,8 +101,9 @@ let
 in
 {
   options.tsssni.intef.shell = {
-    enable = lib.mkEnableOption "tsssni.intef.shell";
+    enable = lib.mkEnableOption "Nushell and CLI tools";
     completions = lib.mkOption {
+      description = "Nushell completion scripts.";
       type = lib.types.package;
       readOnly = true;
       default = pkgs.nu-completions.override { inherit completions; };

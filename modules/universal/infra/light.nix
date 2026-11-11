@@ -7,7 +7,9 @@
   ...
 }:
 let
-  opt = type: default: lib.mkOption { inherit type default; };
+  opt =
+    description: type: default:
+    lib.mkOption { inherit description type default; };
   cfg = config.tsssni.infra.light;
   target =
     if options ? home.activationPackage then
@@ -101,13 +103,13 @@ let
 in
 {
   options.tsssni.infra.light = with lib.types; {
-    enable = lib.mkEnableOption "tsssni.infra.light";
-    replace = opt (attrsOf package) { };
-    scopes = opt (attrsOf raw) { };
-    clear = opt (listOf package) [ ];
-    keep = opt (listOf package) [ ];
-    core = opt (listOf package) [ ];
-    rewrite = opt bool true;
+    enable = lib.mkEnableOption "closure size reduction";
+    replace = opt "Dependency replacements." (attrsOf package) { };
+    scopes = opt "Package scope replacements." (attrsOf raw) { };
+    clear = opt "Packages to empty." (listOf package) [ ];
+    keep = opt "Packages exempt from pruning." (listOf package) [ ];
+    core = opt "Core packages to exclude." (listOf package) [ ];
+    rewrite = opt "Apply closure dependency replacements." bool true;
   };
 
   config =

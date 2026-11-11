@@ -8,16 +8,17 @@ let
 in
 {
   options.tsssni.infra.wired = {
-    enable = lib.mkEnableOption "tsssni.infra.wired";
+    enable = lib.mkEnableOption "system networking";
     host = lib.mkOption {
+      description = "System hostname.";
       type = lib.types.str;
       default = "tsssni";
     };
-    tunnel = lib.mkEnableOption "tsssni.infra.wired.tunnel";
-    wireless = lib.mkEnableOption "tsssni.infra.wired.wireless" // {
+    tunnel = lib.mkEnableOption "SSH server and agent";
+    wireless = lib.mkEnableOption "wireless networking" // {
       default = true;
     };
-    stream = lib.mkEnableOption "tsssni.infra.wired.stream";
+    stream = lib.mkEnableOption "Sunshine game streaming";
   };
 
   config = lib.mkIf cfg.enable {

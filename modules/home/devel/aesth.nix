@@ -8,7 +8,7 @@ let
   cfg = config.tsssni.devel.aesth;
 in
 {
-  options.tsssni.devel.aesth.enable = lib.mkEnableOption "tsssni.devel.aesth";
+  options.tsssni.devel.aesth.enable = lib.mkEnableOption "content creation and viewing";
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [

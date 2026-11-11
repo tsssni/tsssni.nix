@@ -9,7 +9,7 @@ let
 in
 {
   options.services.clouddrive = {
-    enable = lib.mkEnableOption "clouddrive2";
+    enable = lib.mkEnableOption "CloudDrive2 cloud storage mounting";
     package = lib.mkPackageOption pkgs "clouddrive2" { };
   };
 
