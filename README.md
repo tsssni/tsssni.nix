@@ -1,6 +1,5 @@
-# tsssni.nix
-
-![md0](./assets/intef/window.png)
+tsssni.nix
+============
 
 ## Intro
 
@@ -61,17 +60,22 @@ nixpkgs.overlays = [ inputs.tsssni.overlays.default ];
 
 ## Config
 
-Put system configs under `./configs/(nixos|nix-darwin)/${host-name}` and home-manager configs under `./configs/home-manager/${user-name}`. Write system configs under `${config-path}/system/` and home-manager configs under `${config-path}/${user-name}/`, should have `rebuild.nix` under above directories. Build system with `(nixos|darwin)-rebuild switch --flake .` or build home with `home-manager switch --flake .`.
+- System configs: `configs/{nixos,darwin}/<host>/system/`
+- System home configs: `configs/{nixos,darwin}/<host>/<user>/`
+- Standalone home configs: `configs/home/<user>/`
 
-`rebuild.nix` should follow this format. `system` is required since it could not be detected.
+Each host or standalone user directory needs a `rebuild.nix`:
 
 ```nix
-{
+inputs: {
+  root = true;
   system = "x86_64-linux";
   config = {
     cudaSupport = true;
-    cudaCapabilities = [ "8.9" ];
+    cudaCapabilities = [ "8.9" ]
+  };
+  modules = with inputs; {
+    system = [ self.nixosModules.tsssni ];
   };
 }
 ```
-

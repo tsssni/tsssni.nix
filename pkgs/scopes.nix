@@ -34,7 +34,9 @@ in
   qt6 = rec {
     set = byName ./qt6;
     collect = filter set (pkgs: pkgs.qt6);
-    merge = _: prev: { qt6 = prev.qt6.overrideScope set; };
+    merge = _: prev: {
+      qt6 = lib.makeOverridable (args: (prev.qt6.override args).overrideScope set) { };
+    };
   };
   vimPlugins = rec {
     set = byName ./nixvim;
