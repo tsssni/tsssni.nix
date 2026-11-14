@@ -9,14 +9,15 @@ def output [key: string, value] {
 def "main watch" [] {
   let locked = open flake.lock | from json | get nodes.nixpkgs.locked.rev
   let latest = git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | split row "\t" | first | str trim
+  let short = $latest | str substring 0..6
   print $"locked ($locked), latest ($latest)"
   if $locked == $latest {
     print "already accepted, nothing to do"
     return
   }
 
-  let query = '.workflow_runs[] | select(.display_title == "flake HASH") | [.status, .conclusion, .html_url] | @tsv' | str replace HASH $latest
-  let runs = gh api --paginate $"repos/($env.GITHUB_REPOSITORY)/actions/workflows/flake.yml/runs?per_page=100" --jq $query
+  let query = '.workflow_runs[] | select(.display_title == "ci HASH") | [.status, .conclusion, .html_url] | @tsv' | str replace HASH $short
+  let runs = gh api --paginate $"repos/($env.GITHUB_REPOSITORY)/actions/workflows/ci.yml/runs?per_page=100" --jq $query
   let attempts = $runs | lines
   if ($attempts | is-not-empty) {
     let previous = $attempts | first | split row "\t"
@@ -30,7 +31,7 @@ def "main watch" [] {
     }
   }
 
-  gh api --method POST $"repos/($env.GITHUB_REPOSITORY)/dispatches" --raw-field event_type=flake-update --raw-field $"client_payload[nixpkgs_rev]=($latest)"
+  gh api --method POST $"repos/($env.GITHUB_REPOSITORY)/dispatches" --raw-field event_type=flake-update --raw-field $"client_payload[nixpkgs_rev]=($latest)" --raw-field $"client_payload[nixpkgs_short_rev]=($short)"
   print $"dispatched flake ($latest)"
 }
 

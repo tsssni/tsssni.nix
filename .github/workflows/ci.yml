@@ -1,5 +1,5 @@
-name: flake
-run-name: ${{ github.event.client_payload.nixpkgs_rev && format('flake {0}', github.event.client_payload.nixpkgs_rev) || 'flake watch' }}
+name: ci
+run-name: ${{ github.event.client_payload.nixpkgs_short_rev && format('ci {0}', github.event.client_payload.nixpkgs_short_rev) || 'ci watch' }}
 
 on:
   schedule:

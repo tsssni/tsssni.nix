@@ -8,17 +8,12 @@ import "components"
 ShellRoot {
     id: root
 
-    NiriIpc {
-        id: niriIpc
-    }
-
     Variants {
         model: Quickshell.screens
 
         Scope {
             id: barScope
             required property var modelData
-            readonly property string screenName: modelData.name
 
             PanelWindow {
                 id: bar
@@ -36,6 +31,7 @@ ShellRoot {
                 exclusionMode: ExclusionMode.Auto
                 implicitWidth: 48
                 color: "#cc303446"
+                mask: Region {}
 
                 Column {
                     id: topSection
@@ -50,12 +46,6 @@ ShellRoot {
                         sourceSize.width: 40
                         sourceSize.height: 40
                     }
-
-                    Workspace {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        niriIpc: niriIpc
-                        output: barScope.screenName
-                    }
                 }
 
                 Clock {
@@ -68,7 +58,6 @@ ShellRoot {
                 MiniPlayer {
                     id: miniPlayer
                     anchors.centerIn: parent
-                    visible: barScope.screenName === niriIpc.focusedOutput
                 }
             }
         }
