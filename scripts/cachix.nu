@@ -6,17 +6,42 @@ def output [key: string, value] {
   $"($key)=($value)\n" | save --append $env.GITHUB_OUTPUT
 }
 
+def sync [upstream: string, fork: string] {
+  let comparison = gh api $"repos/tsssni/nixpkgs/compare/($upstream)...($fork)" | from json
+  if $comparison.behind_by == 0 {
+    print $"stable already includes upstream ($upstream)"
+    return
+  }
+
+  let repo = $env.RUNNER_TEMP | path join "nixpkgs"
+  git clone --filter=blob:none --single-branch --no-tags --depth ($comparison.ahead_by + 1) --branch stable https://github.com/tsssni/nixpkgs.git $repo
+  git -C $repo fetch --filter=blob:none --no-tags --depth ($comparison.behind_by + 1) https://github.com/NixOS/nixpkgs.git $"($upstream):refs/remotes/upstream/nixos-unstable"
+  git -C $repo config user.name "Codex"
+  git -C $repo config user.email "noreply@openai.com"
+  git -C $repo rebase upstream/nixos-unstable
+
+  with-env { GH_TOKEN: $env.NIXPKGS_TOKEN } {
+    git -C $repo -c credential.helper= -c 'credential.helper=!gh auth git-credential' push $"--force-with-lease=refs/heads/stable:($fork)" origin HEAD:refs/heads/stable
+  }
+  print $"rebased stable onto ($upstream)"
+}
+
 def "main watch" [] {
-  let locked = open flake.lock | from json | get nodes.nixpkgs.locked.rev
-  let latest = git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | split row "\t" | first | str trim
+  let upstream = git ls-remote https://github.com/NixOS/nixpkgs.git refs/heads/nixos-unstable | split row "\t" | first | str trim
+  let fork = git ls-remote https://github.com/tsssni/nixpkgs.git refs/heads/stable | split row "\t" | first | str trim
+  sync $upstream $fork
+
+  let locked = open --raw flake.lock | from json | get nodes.nixpkgs.locked.rev
+  let latest = git ls-remote https://github.com/tsssni/nixpkgs.git refs/heads/stable | split row "\t" | first | str trim
+  let short = $latest | str substring 0..6
   print $"locked ($locked), latest ($latest)"
   if $locked == $latest {
     print "already accepted, nothing to do"
     return
   }
 
-  let query = '.workflow_runs[] | select(.display_title == "flake HASH") | [.status, .conclusion, .html_url] | @tsv' | str replace HASH $latest
-  let runs = gh api --paginate $"repos/($env.GITHUB_REPOSITORY)/actions/workflows/flake.yml/runs?per_page=100" --jq $query
+  let query = '.workflow_runs[] | select(.display_title == "ci HASH") | [.status, .conclusion, .html_url] | @tsv' | str replace HASH $short
+  let runs = gh api --paginate $"repos/($env.GITHUB_REPOSITORY)/actions/workflows/ci.yml/runs?per_page=100" --jq $query
   let attempts = $runs | lines
   if ($attempts | is-not-empty) {
     let previous = $attempts | first | split row "\t"
@@ -30,7 +55,7 @@ def "main watch" [] {
     }
   }
 
-  gh api --method POST $"repos/($env.GITHUB_REPOSITORY)/dispatches" --raw-field event_type=flake-update --raw-field $"client_payload[nixpkgs_rev]=($latest)"
+  gh api --method POST $"repos/($env.GITHUB_REPOSITORY)/dispatches" --raw-field event_type=flake-update --raw-field $"client_payload[nixpkgs_rev]=($latest)" --raw-field $"client_payload[nixpkgs_short_rev]=($short)"
   print $"dispatched flake ($latest)"
 }
 

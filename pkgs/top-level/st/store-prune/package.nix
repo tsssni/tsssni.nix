@@ -18,7 +18,10 @@ runCommandLocal
       nix
     ]
     ++ lib.optional stdenv.hostPlatform.isLinux patchelf
-    ++ lib.optional stdenv.hostPlatform.isDarwin darwin.autoSignDarwinBinariesHook;
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      darwin.cctools
+      darwin.autoSignDarwinBinariesHook
+    ];
     meta = removeAttrs (drv.meta or { }) [ "outputsToInstall" ] // {
       platforms = drv.meta.platforms or lib.platforms.all;
     };

@@ -189,9 +189,6 @@ let
         Mod+Alt+L { maximize-column; }
         Mod+Alt+J { switch-preset-window-height; }
         Mod+Alt+K { reset-window-height; }
-
-        Mod+WheelScrollUp { focus-column-left; }
-        Mod+WheelScrollDown { focus-column-right; }
     }
   '';
 in
