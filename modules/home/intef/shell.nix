@@ -158,6 +158,7 @@ in
           mouse_mode = true;
           advanced_mouse_actions = false;
           scroll_mode_sync = false;
+          attention.enabled = false;
         };
         extraConfig = ''
           keybinds clear-defaults=true {
