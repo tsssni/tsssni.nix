@@ -32,7 +32,10 @@
     nixvim.enable = true;
     devel = {
       aesth.enable = true;
-      intelli.enable = true;
+      intelli = {
+        enable = true;
+        antigravity = true;
+      };
       literal = {
         enable = true;
         input.type = "fcitx5";

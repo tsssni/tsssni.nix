@@ -9,7 +9,10 @@
   tsssni = {
     home.standalone = true;
     devel = {
-      intelli.enable = true;
+      intelli = {
+        enable = true;
+        antigravity = true;
+      };
       literal = {
         enable = true;
         font.monoFont.size = 19;

@@ -16,7 +16,10 @@
     nixvim.enable = true;
     devel = {
       aesth.enable = true;
-      intelli.enable = true;
+      intelli = {
+        enable = true;
+        antigravity = true;
+      };
       literal = {
         enable = true;
         font.emojiFont.package = null;
