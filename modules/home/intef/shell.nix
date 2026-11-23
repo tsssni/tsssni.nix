@@ -165,14 +165,9 @@ in
               shared_except "entersearch" "renametab" "renamepane" {
                   bind "Alt j" { GoToNextTab; }
                   bind "Alt k" { GoToPreviousTab; }
-                  bind "Alt f" { ToggleFloatingPanes; }
                   bind "Alt n" { NewPane; }
-                  bind "Alt p" { SwitchToMode "Pane"; }
                   bind "Alt t" { SwitchToMode "Tab"; }
-                  bind "Alt r" { SwitchToMode "Resize"; }
-                  bind "Alt m" { SwitchToMode "Move"; }
                   bind "Alt s" { SwitchToMode "Scroll"; }
-                  bind "Alt o" { SwitchToMode "Session"; }
                   bind "Alt q" { Detach; }
               }
               shared_except "normal" "entersearch" "renametab" "renamepane" {

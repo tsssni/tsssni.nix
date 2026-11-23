@@ -5,7 +5,7 @@ def main [settings_file: path, config_file: path] {
     }
 
     let parsed = $config_file | path parse
-    let ext = $parsed.extension | str downcase
+    let ext = $parsed.extension | str lowercase
     if $ext not-in ["json" "toml"] {
         error make {msg: $"Unsupported config format: ($ext)"}
     }
