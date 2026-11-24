@@ -9,6 +9,8 @@
     _:
     stdenv.mkDerivation {
       inherit (tree-sitter) pname version src;
+      __structuredAttrs = true;
+      strictDeps = true;
       makeFlags = [ "PREFIX=$(out)" ];
       passthru = { inherit (tree-sitter) buildGrammar; };
     }

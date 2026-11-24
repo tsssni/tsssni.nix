@@ -19,6 +19,9 @@ stdenv.mkDerivation {
   pname = "metal-cpp";
   version = selected;
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   src = fetchzip {
     url = "https://developer.apple.com/metal/cpp/files/metal-cpp_${selected}.zip";
     inherit hash;

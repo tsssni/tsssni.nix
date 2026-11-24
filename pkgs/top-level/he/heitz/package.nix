@@ -26,6 +26,9 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "heitz";
   version = "hal-02150657-${sppStr}spp";
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   src = fetchurl {
     url = "https://hal.science/hal-02150657/file/samplerCPP.zip";
     sha256 = "sha256-pWy9WfVElQjjToSabWLW0qIJK++Lnmk6UjKzXitMa3A=";

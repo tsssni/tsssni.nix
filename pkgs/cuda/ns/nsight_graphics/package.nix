@@ -73,6 +73,9 @@ stdenv.mkDerivation {
   pname = "nsight_graphics";
   version = "${version}.${vercode}";
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   src = fetchurl {
     url = "https://developer.nvidia.com/downloads/assets/tools/secure/nsight-graphics/${pver}/linux_x64/NVIDIA_Nsight_Graphics_${version}.${vercode}-linux_x64.run";
     inherit hash;

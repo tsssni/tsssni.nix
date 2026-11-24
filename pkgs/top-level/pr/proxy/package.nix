@@ -8,6 +8,9 @@ stdenv.mkDerivation rec {
   pname = "proxy";
   version = "4.1.0";
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   src = fetchFromGitHub {
     owner = "ngcpp";
     repo = "proxy";

@@ -30,6 +30,8 @@ let
     stdenv.mkDerivation {
       pname = "linux-lean-config";
       inherit (base) version src;
+      __structuredAttrs = true;
+      strictDeps = true;
       inherit (base.configfile) nativeBuildInputs RUST_LIB_SRC;
       buildPhase = ''
         cp ${base.configfile} .config

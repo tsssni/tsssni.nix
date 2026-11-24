@@ -25,10 +25,10 @@
 }:
 let
   pname = "epic-games-launcher";
-  version = "0.118.0";
-  build = "g45ea4d4";
-  linuxHash = "sha256-cZFUv2IYiuFEgTbAHv90tcPZU/l/jnEOUwbZHewnMUA=";
-  darwinHash = "sha256-0W+i9/6jbfdYtN3auGOvSHOfz+gk80dK85GJfhE+oq0=";
+  version = "0.121.0";
+  build = "g81137b1";
+  linuxHash = "sha256-3qWM3eoBiEL47qbJVJ/qnJt3i89Fh13gBfaN7Bdekok=";
+  darwinHash = "sha256-XtTkLigbtJqjHp5Tpj69VeaFIMnqCR20h050+KZVveQ=";
 
   baseUrl = "https://content-download-egs.distro.on.epicgames.com/Builds/EGLv2/${version}%2B${build}";
 
@@ -53,6 +53,8 @@ let
       unwrapped = stdenvNoCC.mkDerivation {
         pname = "${pname}-unwrapped";
         inherit version src;
+        __structuredAttrs = true;
+        strictDeps = true;
         nativeBuildInputs = [
           autoPatchelfHook
           dpkg
@@ -130,6 +132,9 @@ let
 
   darwin = stdenvNoCC.mkDerivation {
     inherit pname version meta;
+
+    __structuredAttrs = true;
+    strictDeps = true;
 
     src = fetchurl {
       url = "${baseUrl}/macOS/EpicGamesLauncher.dmg";

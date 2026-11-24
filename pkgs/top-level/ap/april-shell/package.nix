@@ -8,6 +8,9 @@ stdenvNoCC.mkDerivation rec {
   name = "april-shell";
   src = ./.;
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   nativeBuildInputs = [
     makeWrapper
   ];

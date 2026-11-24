@@ -8,6 +8,9 @@ stdenv.mkDerivation rec {
   pname = "hyperfluent-grub-theme";
   version = "1.0.1";
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   src = fetchFromGitHub {
     owner = "Coopydood";
     repo = "HyperFluent-GRUB-Theme";
